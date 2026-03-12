@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Martín Sogoloff — Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Navbar-->
+  <nav id="nav">
+    <a href="#hero" class="nav-logo">M<span>.</span>S</a>
+    <ul class="nav-links">
+      <li><a href="#about">¿Quien soy?</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Proyectos</a></li>
+      <li><a href="#contact">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+
+    <!-- Contenido dividido: texto izquierda, decoracion derecha -->
+    <div class="hero-layout">
+      <div class="hero-left">
+        <div class="hero-tag">Disponible para trabajo &amp; freelance</div>
+        <!-- Nombre -->
+        <h1>
+          Martín
+          <span class="highlight">Sogoloff</span>
+        </h1>
+        <!-- Descripcion corta: una sola oracion poderosa -->
+        <p class="hero-desc">
+          Desarrollador de software full stack con visión de diseño, construyendo productos que funcionan y se sienten bien.
+        </p>
+        <div class="hero-ctas">
+          <a href="#projects" class="btn-primary">Ver proyectos ↓</a>
+          <a href="#contact" class="btn-outline">Contactarme →</a>
+        </div>
+      </div>
+
+      <!-- Bloque de codigo animado que "escribe solo" — decoracion hero -->
+      <div class="hero-code-block" aria-hidden="true">
+        <div class="code-header">
+          <span class="code-dot red"></span>
+          <span class="code-dot yellow"></span>
+          <span class="code-dot green"></span>
+          <span class="code-filename">martin.py</span>
+        </div>
+        <pre class="code-body"><code id="typewriter-code"></code></pre>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      scrollea hacia abajo
+    </div>
+  </section>
+
+  <!-- ¿Quien soy?-->
+  <section id="about">
+    <div class="section-header reveal">
+      <span class="section-num">01</span>
+      <h2 class="section-title">¿Quién soy?</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <!-- Descripcion personal -->
+        <p class="reveal reveal-delay-1">
+          ¡Hola, soy <strong>Martín</strong>! Estudiante de la <strong>Licenciatura en Ciencias de la Computación en la Universidad de Buenos Aires (UBA)</strong> y un apasionado software developer centrado en el diseño y la experiencia del usuario.
+        </p>
+        <p class="reveal reveal-delay-2">
+          Me apasiona construir productos que sean tanto <strong>técnicamente sólidos</strong> como <strong>agradables de usar</strong>.
+          Mi enfoque combina el <strong>precisión técnica</strong> de la <strong>lógica computacional</strong> con la mentalidad centrada en el <strong>UX/UI</strong>, permitiéndome construir productos que no solo funcionan con eficiencia, sino que se sienten intuitivos al usarlos. Me especializo en transformar ideas complejas en interfaces sólidas, escalables y estéticamente cuidadas.
+          <strong>No solo escribo código, diseño soluciones que resuelven problemas reales.</strong>
+        </p>
+        <p class="reveal reveal-delay-3">
+          Actualmente, busco <strong>colaborar</strong> en proyectos <strong>desafiantes</strong> o equipos <strong>innovadores</strong> donde pueda aportar, aprender y seguir elevando el estándar del desarrollo de software.
+        </p>
+      </div>
+
+      <!-- Certificados -->
+      <div class="certs">
+        <div class="cert-item reveal reveal-delay-1">
+          <div class="cert-icon"><a href="https://en.wikipedia.org/wiki/University_of_Buenos_Aires" target="_blank"><img src="https://traduccionescouto.com.ar/wp-content/uploads/2025/08/traductoresargentinalogo.png" width="80" height="80" /></a></div>
+          <div>
+            <strong>Lic. en Ciencias de la Computación</strong>
+            <span>Universidad de Buenos Aires (UBA) · En curso</span>
+          </div>
+        </div>
+        <div class="cert-item reveal reveal-delay-3">
+          <div class="cert-icon"><a href="https://en.wikipedia.org/wiki/Harvard_University" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Harvard_University_shield.png" width="80" height="80" /></a></div>
+          <div>
+            <strong>CS50P - Introduction to Python</strong>
+            <span>Harvard University · Completado</span>
+          </div>
+        </div>
+                <div class="cert-item reveal reveal-delay-2">
+          <div class="cert-icon"><a href="http://linkedin.com/school/coderhouse/posts/?feedView=all" target="_blank"><img src="https://uiuxassets.com/media/site/d47f7ac79a-1749935961/icon-512x512.png" width="80" height="80" /></a></div>
+          <div>
+            <strong>Diseñador UX/UI</strong>
+            <span>Certificado de diseñador obtenido</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Habilidades y herramientas -->
+  <section id="skills">
+    <div class="section-header reveal">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Skills &amp; Herramientas</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <!-- Grid y Cards de herramientas/habilidades -->
+    <div>
+      <!-- Forato: class: orden de aparecimiento, <a> con link a su wiki, <i> o <img> con el icono, span con el nombre -->
+      <div class="skills-grid">
+
+        <!-- Python -->
+        <a class="skill-card reveal reveal-delay-1" href="https://en.wikipedia.org/wiki/Python_(programming_language)" target="_blank">
+          <i class="devicon-python-plain colored"></i><span class="skill-name">Python</span>
+        </a>
+      
+        <!-- HTML -->
+        <a class="skill-card reveal reveal-delay-1" href="https://en.wikipedia.org/wiki/HTML" target="_blank">
+          <i class="devicon-html5-plain colored"></i><span class="skill-name">HTML</span>
+        </a>
+
+        <!-- CSS -->
+        <a class="skill-card reveal reveal-delay-2" href="https://en.wikipedia.org/wiki/CSS" target="_blank">
+          <i class="devicon-css3-plain colored"></i><span class="skill-name">CSS</span>
+        </a>
+
+        <!-- JavaScript -->
+        <a class="skill-card reveal reveal-delay-2" href="https://en.wikipedia.org/wiki/JavaScript" target="_blank">
+          <i class="devicon-javascript-plain colored"></i><span class="skill-name">JavaScript</span>
+        </a>
+
+        <!-- Figma -->
+        <a class="skill-card reveal reveal-delay-3" href="https://en.wikipedia.org/wiki/Figma" target="_blank">
+          <i class="devicon-figma-plain colored"></i><span class="skill-name">Figma</span>
+        </a>
+
+        <!-- Git / GitHub -->
+        <a class="skill-card reveal reveal-delay-3" href="https://en.wikipedia.org/wiki/Git" target="_blank">
+          <i class="devicon-github-original"></i><span class="skill-name">Git / GitHub</span>
+        </a>
+
+        <!-- UX/UI -->
+        <a class="skill-card reveal reveal-delay-4" href="https://en.wikipedia.org/wiki/UX_design" target="_blank">
+          <img src="https://uiuxassets.com/media/site/d47f7ac79a-1749935961/icon-512x512.png" width="60" height="60" id="ux-icon" />
+          <span class="skill-name">UX / UI</span>
+        </a>
+
+        <!-- ML / LLMs -->
+        <a class="skill-card reveal reveal-delay-4" href="https://en.wikipedia.org/wiki/Machine_learning" target="_blank">
+          <img src="https://cdn-icons-png.freepik.com/512/7364/7364323.png" width="60" height="60" id="ml-icon" />
+          <span class="skill-name">ML / LLMs</span>
+        </a>
+
+    </div>
+  </section>
+
+  <!-- Proyectos -->
+  <section id="projects">
+    <div class="section-header reveal">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Proyectos</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <!-- Grilla con proyectos -->
+    <div class="projects-grid">
+
+      <!-- PolyglotLAB -->
+      <div class="project-card reveal reveal-delay-1">
+
+        <!-- Galeria de imagenes -->
+        <div class="project-gallery" data-index="0">
+          <div class="gallery-slides">
+            <div class="gallery-slide active">
+              <img src="images/Polyglot 1.png" alt="PolyglotLAB - pantalla principal" loading="lazy" />
+            </div>
+            <div class="gallery-slide">
+              <img src="images/Polyglot 2.png" alt="PolyglotLAB - traduccion" loading="lazy" />
+            </div>
+            <div class="gallery-slide">
+              <img src="images/Polyglot 3.png" alt="PolyglotLAB - tema alternativo" loading="lazy" />
+            </div>
+            <div class="gallery-slide">
+              <img src="images/Polyglot 4.png" alt="PolyglotLAB - idiomas" loading="lazy" />
+            </div>
+          </div>
+
+          <!-- Flechas de navegacion -->
+          <button class="gallery-btn prev" onclick="slideGallery(this, -1)" aria-label="Anterior">‹</button>
+          <button class="gallery-btn next" onclick="slideGallery(this, 1)" aria-label="Siguiente">›</button>
+          <!-- Puntos indicadores -->
+          <div class="gallery-dots">
+            <span class="dot active" onclick="goToSlide(this, 0)"></span>
+            <span class="dot" onclick="goToSlide(this, 1)"></span>
+            <span class="dot" onclick="goToSlide(this, 2)"></span>
+            <span class="dot" onclick="goToSlide(this, 3)"></span>
+          </div>
+        </div>
+
+        <div class="project-header">
+          <div class="project-name">PolyglotLAB</div>
+          <div class="project-links">
+            <a href="https://github.com/Marto-ZZ/PolyglotLAB-python-translator" target="_blank" class="project-link" title="Ver en GitHub">
+              <i class="devicon-github-original"></i>
+            </a>
+          </div>
+        </div>
+        <p class="project-desc">
+          Aplicación web de traducción de texto. Frontend completo en HTML, CSS y JS, con backend en Python que integra el modelo deep-translator para traducciones precisas y contextuales en múltiples idiomas.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">Flask</span>
+        </div>
+      </div>
+
+      <!-- IMAGO -->
+      <div class="project-card reveal reveal-delay-2">
+
+          <!-- Galeria de imagenes -->
+          <div class="project-gallery" data-index="0">
+            <div class="gallery-slides">
+              <div class="gallery-slide active">
+                <img src="images/imago 1.jpg" alt="IMAGO - pantalla principal" loading="lazy" />
+              </div>
+              <div class="gallery-slide">
+                <img src="images/imago 2.png" alt="IMAGO - preview imagen" loading="lazy" />
+              </div>
+              <div class="gallery-slide">
+                <img src="images/imago 3.png" alt="IMAGO - formato de archivos" loading="lazy" />
+              </div>
+              <div class="gallery-slide">
+                <img src="images/imago 4.png" alt="IMAGO - bandeja de descarga" loading="lazy" />
+              </div>
+            </div>
+
+            <!-- Flechas de navegacion -->
+            <button class="gallery-btn prev" onclick="slideGallery(this, -1)" aria-label="Anterior">‹</button>
+            <button class="gallery-btn next" onclick="slideGallery(this, 1)" aria-label="Siguiente">›</button>
+            <!-- Puntos indicadores -->
+            <div class="gallery-dots">
+              <span class="dot active" onclick="goToSlide(this, 0)"></span>
+              <span class="dot" onclick="goToSlide(this, 1)"></span>
+              <span class="dot" onclick="goToSlide(this, 2)"></span>
+              <span class="dot" onclick="goToSlide(this, 3)"></span>
+            </div>
+          </div>
+
+        <div class="project-header">
+          <div class="project-name">IMAGO</div>
+          <div class="project-links">
+            <a href="https://github.com/Marto-ZZ/IMAGO-Image-Converter" target="_blank" class="project-link" title="Ver en GitHub">
+              <i class="devicon-github-original"></i>
+            </a>
+          </div>
+        </div>
+        <p class="project-desc">
+          Herramienta web minimalista para convertir imágenes entre distintos formatos (JPG, PNG y WEBP, GIF). Incluye interfaz Drag &amp; Drop con feedback visual dinámico, gestión inteligente de canales alfa y descarga automática sin recargar la página. Los archivos se procesan en el servidor sin persistencia, priorizando la privacidad del usuario.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">Flask</span>
+          <span class="tag">Pillow</span>
+        </div>
+      </div>
+
+      <!-- Freely app -->
+      <div class="project-card reveal reveal-delay-3">
+
+        <!-- Galeria de imagenes -->
+        <div class="project-gallery" data-index="0">
+          <div class="gallery-slides">
+            <div class="gallery-slide active">
+              <img src="images/freely 1.webp" alt="Freely App - Mockup 1" loading="lazy" />
+            </div>
+            <div class="gallery-slide">
+              <img src="images/freely 2.webp" alt="Freely App - Mockup 2" loading="lazy" />
+            </div>
+            <div class="gallery-slide">
+              <img src="images/freely 3.webp" alt="Freely App - estadisticas" loading="lazy" />
+            </div>
+            <div class="gallery-slide">
+              <img src="images/freely 4.webp" alt="Freely App - elevator pitch" loading="lazy" />
+            </div>
+          </div>
+
+          <!-- Flechas de navegacion -->
+          <button class="gallery-btn prev" onclick="slideGallery(this, -1)" aria-label="Anterior">‹</button>
+          <button class="gallery-btn next" onclick="slideGallery(this, 1)" aria-label="Siguiente">›</button>
+
+          <!-- Puntos indicadores -->
+          <div class="gallery-dots">
+            <span class="dot active" onclick="goToSlide(this, 0)"></span>
+            <span class="dot" onclick="goToSlide(this, 1)"></span>
+            <span class="dot" onclick="goToSlide(this, 2)"></span>
+            <span class="dot" onclick="goToSlide(this, 3)"></span>
+          </div>
+        </div>
+
+        <div class="project-header">
+          <div class="project-name">Freely App</div>
+          <div class="project-links">
+            <a href="https://www.behance.net/gallery/228834679/Diseno-UXUI-Freely-App-Coderhouse" target="_blank" class="project-link" title="Ver en Behance">
+              <i class="devicon-behance-plain"></i>
+            </a>
+          </div>
+        </div>
+        <p class="project-desc">
+          Proyecto de diseño UX/UI de una aplicación móvil de viajes desarrollado en Coderhouse. Comprende investigación de usuarios, arquitectura de información, wireframes, prototipado interactivo y sistema de diseño completo. El proceso y los entregables están publicados en Behance.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Figma</span>
+          <span class="tag">UX Research</span>
+          <span class="tag">UI Design</span>
+          <span class="tag">Prototipado</span>
+          <span class="tag">Mobile App</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contact">
+    <div class="section-header reveal">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Contacto</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-inner">
+      <p class="contact-intro reveal">
+        ¿Tenés un proyecto en mente? Estoy disponible para trabajo, proyectos freelance y colaboraciones. No dudes en escribirme.
+      </p>
+
+      <!-- Links de contacto -->
+      <div class="contact-links">
+        <a class="contact-item reveal reveal-delay-1">
+          <div class="contact-icon">
+            <i class="fa-solid fa-envelope"></i>
+          </div>
+
+          <!-- MAIL -->
+          <div class="contact-info">
+            <strong>Email</strong>
+            <span><span class="contact-info">martinsogoloff@gmail.com</span></span>
+          </div>
+          <div class="contact-arrow">→</div>
+        </a>
+        <a href="https://www.linkedin.com/in/mart%C3%ADn-sogoloff/" target="_blank" class="contact-item reveal reveal-delay-2">
+          <div class="contact-icon">
+            <i class="devicon-linkedin-plain"></i>
+          </div>
+
+          <!-- LINKEDIN -->
+          <div class="contact-info">
+            <strong>LinkedIn</strong>
+            <span>martín-sogoloff</span>
+          </div>
+          <div class="contact-arrow">→</div>
+        </a>
+        <a href="https://github.com/Marto-ZZ" target="_blank" class="contact-item reveal reveal-delay-3">
+          <div class="contact-icon">
+            <i class="devicon-github-original"></i>
+          </div>
+
+          <!-- GITHUB -->
+          <div class="contact-info">
+            <strong>GitHub</strong>
+            <span>Marto-ZZ</span>
+          </div>
+          <div class="contact-arrow">→</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <span>Martín <span class="accent">Sogoloff</span> · 2025</span>
+    <span>Buenos Aires, Argentina</span>
+  </footer>
+
+
+  <!-- Scripts (cursor, navbar, scroll, terminal hero, galeria proyectos) -->
+  <script>
+    // Cursor customizado (oculto hasta primer movimiento)
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    cursor.style.opacity = '0';
+    ring.style.opacity = '0';
+    let mx = -999, my = -999, rx = -999, ry = -999;
+    let cursorVisible = false;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+      if (!cursorVisible) {
+        cursor.style.opacity = '1';
+        ring.style.opacity = '1';
+        cursorVisible = true;
+      }
+    });
+
+    function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+    });
+
+    // Nav on scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => io.observe(el));
+
+    // Terminal (bloque de codigo animado en el hero)
+    const codeLines = [
+      { text: 'class Developer:', color: 'kw' },
+      { text: '    name = "Martín Sogoloff"', color: 'str' },
+      { text: '    role = "Full Stack Jr."', color: 'str' },
+      { text: '    location = "Buenos Aires, Argentina"', color: 'str' },
+      { text: '' },
+      { text: '    stack = [', color: 'normal' },
+      { text: '        "Python", "Machine Learning",', color: 'str' },
+      { text: '        "HTML", "CSS", "JS",', color: 'str' },
+      { text: '        "Figma", "UX/UI"', color: 'str' },
+      { text: '    ]', color: 'normal' },
+      { text: '' },
+      { text: '    def build(self, idea):', color: 'kw' },
+      { text: '        # codigo + diseño', color: 'comment' },
+      { text: '        return producto_solido', color: 'normal' },
+    ];
+
+    const colorMap = {
+      kw: '#c084fc',
+      str: '#86efac',
+      comment: '#6b7280',
+      normal: '#ede9f6',
+    };
+
+    const tw = document.getElementById('typewriter-code');
+    let lineIdx = 0, charIdx = 0;
+    let rendered = '';
+
+    function typeNext() {
+      if (lineIdx >= codeLines.length) {
+        // Cuando termina, parpadea el cursor y reinicia despues de 3 segundos
+        setTimeout(() => {
+          tw.innerHTML = '';
+          rendered = '';
+          lineIdx = 0; charIdx = 0;
+          typeNext();
+        }, 3000);
+        return;
+      }
+
+      const line = codeLines[lineIdx];
+      const fullText = line.text;
+      const color = colorMap[line.color] || '#ede9f6';
+
+      if (charIdx < fullText.length) {
+        // Escribir caracter a caracter
+        const partial = fullText.slice(0, charIdx + 1);
+        const escapedPrev = rendered;
+        tw.innerHTML = escapedPrev + `<span style="color:${color}">${escHtml(partial)}</span><span class="tw-cursor">▋</span>`;
+        charIdx++;
+        setTimeout(typeNext, 28);
+      } else {
+        // Linea completa (guardar y pasar a la siguiente)
+        rendered += `<span style="color:${color}">${escHtml(fullText)}</span>\n`;
+        tw.innerHTML = rendered + `<span class="tw-cursor">▋</span>`;
+        lineIdx++;
+        charIdx = 0;
+        setTimeout(typeNext, fullText === '' ? 80 : 120);
+      }
+    }
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    // Arrancar la terminal cuando el hero es visible
+    setTimeout(typeNext, 800);
+
+    // Galeria de proyectos (slideshow con flechas)
+    function getGallery(btn) {
+      return btn.closest('.project-gallery');
+    }
+
+    function updateGallery(gallery, newIndex) {
+      const slides = gallery.querySelectorAll('.gallery-slide');
+      const dots = gallery.querySelectorAll('.dot');
+      const total = slides.length;
+      newIndex = (newIndex + total) % total;
+
+      slides.forEach((s, i) => s.classList.toggle('active', i === newIndex));
+      dots.forEach((d, i) => d.classList.toggle('active', i === newIndex));
+      gallery.dataset.index = newIndex;
+    }
+
+    function slideGallery(btn, dir) {
+      const gallery = getGallery(btn);
+      const current = parseInt(gallery.dataset.index);
+      updateGallery(gallery, current + dir);
+    }
+
+    function goToSlide(dot, idx) {
+      const gallery = dot.closest('.project-gallery');
+      updateGallery(gallery, idx);
+    }
+
+    // Auto-avance de las galerias cada 4 segundos
+    document.querySelectorAll('.project-gallery').forEach(gallery => {
+      setInterval(() => {
+        const current = parseInt(gallery.dataset.index);
+        const total = gallery.querySelectorAll('.gallery-slide').length;
+        updateGallery(gallery, (current + 1) % total);
+      }, 4000);
+    });
+  </script>
