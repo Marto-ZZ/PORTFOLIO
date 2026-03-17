@@ -156,3 +156,35 @@
         updateGallery(gallery, (current + 1) % total);
       }, 4000);
     });
+
+
+    // Sistema de idiomas (ES / EN)
+    // La idea: cada elemento traducible tiene data-es y data-en
+    // Al cambiar idioma recorremos todos y swapeamos el innerHTML
+    let currentLang = localStorage.getItem('lang') || 'es';
+
+    function applyLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+
+      // Cambiar el atributo lang del html para accesibilidad
+      document.documentElement.lang = lang;
+
+      // Actualizar todos los elementos con data-es / data-en
+      document.querySelectorAll('[data-es][data-en]').forEach(el => {
+        el.innerHTML = el.dataset[lang];
+      });
+
+      // Resaltar la opcion activa en el toggle
+      document.querySelectorAll('.lang-opt').forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.lang === lang);
+      });
+    }
+
+    // Click en el toggle: si ya es ES pasa a EN y viceversa
+    document.getElementById('langToggle').addEventListener('click', () => {
+      applyLang(currentLang === 'es' ? 'en' : 'es');
+    });
+
+    // Aplicar el idioma guardado al cargar la pagina
+    applyLang(currentLang);
