@@ -977,3 +977,36 @@ footer .accent {
     display: none;
   }
 }
+
+/* Toggle de idioma en el navbar */
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 0.35rem 0.75rem;
+  cursor: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  transition: border-color 0.2s;
+  margin-left: 1.5rem;
+  flex-shrink: 0;
+}
+.lang-toggle:hover {
+  border-color: var(--border-bright);
+}
+
+.lang-opt {
+  color: var(--text-dim);
+  transition: color 0.2s;
+}
+.lang-opt.active {
+  color: var(--violet);
+}
+
+.lang-sep {
+  color: var(--text-dim);
+  font-size: 0.65rem;
+}

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Martín Sogoloff — Developer</title>
+  <title>Martín Sogoloff Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
@@ -21,11 +21,18 @@
   <nav id="nav">
     <a href="#hero" class="nav-logo">M<span>.</span>S</a>
     <ul class="nav-links">
-      <li><a href="#about">¿Quien soy?</a></li>
+      <li><a href="#about" data-es="¿Quien soy?" data-en="About me">¿Quien soy?</a></li>
       <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Proyectos</a></li>
-      <li><a href="#contact">Contacto</a></li>
+      <li><a href="#projects" data-es="Proyectos" data-en="Projects">Proyectos</a></li>
+      <li><a href="#contact" data-es="Contacto" data-en="Contact">Contacto</a></li>
     </ul>
+
+    <!-- Toggle de idioma, guarda la preferencia en localStorage -->
+    <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+      <span class="lang-opt" data-lang="es">ES</span>
+      <span class="lang-sep">/</span>
+      <span class="lang-opt" data-lang="en">EN</span>
+    </button>
   </nav>
 
   <!-- Hero -->
@@ -36,19 +43,19 @@
     <!-- Contenido dividido: texto izquierda, decoracion derecha -->
     <div class="hero-layout">
       <div class="hero-left">
-        <div class="hero-tag">Disponible para trabajo &amp; freelance</div>
+        <div class="hero-tag" data-es="Disponible para trabajo &amp; freelance" data-en="Available for work &amp; freelance">Disponible para trabajo &amp; freelance</div>
         <!-- Nombre -->
         <h1>
           Martín
           <span class="highlight">Sogoloff</span>
         </h1>
         <!-- Descripcion corta: una sola oracion poderosa -->
-        <p class="hero-desc">
+        <p class="hero-desc" data-es="Desarrollador de software full stack con visión de diseño, construyendo productos que funcionan y se sienten bien." data-en="Full stack software developer with a design mindset, building products that work and feel great.">
           Desarrollador de software full stack con visión de diseño, construyendo productos que funcionan y se sienten bien.
         </p>
         <div class="hero-ctas">
-          <a href="#projects" class="btn-primary">Ver proyectos ↓</a>
-          <a href="#contact" class="btn-outline">Contactarme →</a>
+          <a href="#projects" class="btn-primary" data-es="Ver proyectos ↓" data-en="View projects ↓">Ver proyectos ↓</a>
+          <a href="#contact" class="btn-outline" data-es="Contactarme →" data-en="Contact me →">Contactarme →</a>
         </div>
       </div>
 
@@ -66,7 +73,7 @@
 
     <div class="hero-scroll">
       <div class="scroll-line"></div>
-      scrollea hacia abajo
+      <span data-es="scrollea hacia abajo" data-en="scroll down">scrollea hacia abajo</span>
     </div>
   </section>
 
@@ -74,21 +81,21 @@
   <section id="about">
     <div class="section-header reveal">
       <span class="section-num">01</span>
-      <h2 class="section-title">¿Quién soy?</h2>
+      <h2 class="section-title" data-es="¿Quién soy?" data-en="About me">¿Quién soy?</h2>
       <div class="section-line"></div>
     </div>
     <div class="about-grid">
       <div class="about-text">
         <!-- Descripcion personal -->
-        <p class="reveal reveal-delay-1">
+        <p class="reveal reveal-delay-1" data-es="¡Hola, soy <strong>Martín</strong>! Estudiante de la <strong>Licenciatura en Ciencias de la Computación en la Universidad de Buenos Aires (UBA)</strong> y un apasionado software developer centrado en el diseño y la experiencia del usuario." data-en="Hi, I'm <strong>Martín</strong>! I study <strong>Computer Science at the University of Buenos Aires (UBA)</strong> and I'm a passionate software developer focused on design and user experience.">
           ¡Hola, soy <strong>Martín</strong>! Estudiante de la <strong>Licenciatura en Ciencias de la Computación en la Universidad de Buenos Aires (UBA)</strong> y un apasionado software developer centrado en el diseño y la experiencia del usuario.
         </p>
-        <p class="reveal reveal-delay-2">
+        <p class="reveal reveal-delay-2" data-es="Me apasiona construir productos que sean tanto <strong>técnicamente sólidos</strong> como <strong>agradables de usar</strong>. Mi enfoque combina el <strong>precisión técnica</strong> de la <strong>lógica computacional</strong> con la mentalidad centrada en el <strong>UX/UI</strong>, permitiéndome construir productos que no solo funcionan con eficiencia, sino que se sienten intuitivos al usarlos. Me especializo en transformar ideas complejas en interfaces sólidas, escalables y estéticamente cuidadas. <strong>No solo escribo código, diseño soluciones que resuelven problemas reales.</strong>" data-en="I love building products that are both <strong>technically solid</strong> and <strong>enjoyable to use</strong>. My approach blends the <strong>technical precision</strong> of <strong>computational logic</strong> with a <strong>UX/UI</strong> mindset, letting me build products that don't just work efficiently — they feel intuitive. I specialize in turning complex ideas into solid, scalable, and aesthetically thoughtful interfaces. <strong>I don't just write code, I design solutions to real problems.</strong>">
           Me apasiona construir productos que sean tanto <strong>técnicamente sólidos</strong> como <strong>agradables de usar</strong>.
           Mi enfoque combina el <strong>precisión técnica</strong> de la <strong>lógica computacional</strong> con la mentalidad centrada en el <strong>UX/UI</strong>, permitiéndome construir productos que no solo funcionan con eficiencia, sino que se sienten intuitivos al usarlos. Me especializo en transformar ideas complejas en interfaces sólidas, escalables y estéticamente cuidadas.
           <strong>No solo escribo código, diseño soluciones que resuelven problemas reales.</strong>
         </p>
-        <p class="reveal reveal-delay-3">
+        <p class="reveal reveal-delay-3" data-es="Actualmente, busco <strong>colaborar</strong> en proyectos <strong>desafiantes</strong> o equipos <strong>innovadores</strong> donde pueda aportar, aprender y seguir elevando el estándar del desarrollo de software." data-en="Right now I'm looking to <strong>collaborate</strong> on <strong>challenging</strong> projects or <strong>innovative</strong> teams where I can contribute, learn, and keep raising the bar.">
           Actualmente, busco <strong>colaborar</strong> en proyectos <strong>desafiantes</strong> o equipos <strong>innovadores</strong> donde pueda aportar, aprender y seguir elevando el estándar del desarrollo de software.
         </p>
       </div>
@@ -98,22 +105,22 @@
         <div class="cert-item reveal reveal-delay-1">
           <div class="cert-icon"><a href="https://en.wikipedia.org/wiki/University_of_Buenos_Aires" target="_blank"><img src="https://traduccionescouto.com.ar/wp-content/uploads/2025/08/traductoresargentinalogo.png" width="80" height="80" /></a></div>
           <div>
-            <strong>Lic. en Ciencias de la Computación</strong>
-            <span>Universidad de Buenos Aires (UBA) · En curso</span>
+            <strong data-es="Lic. en Ciencias de la Computación" data-en="B.S. in Computer Science">Lic. en Ciencias de la Computación</strong>
+            <span data-es="Universidad de Buenos Aires (UBA) · En curso" data-en="University of Buenos Aires (UBA) · In progress">Universidad de Buenos Aires (UBA) · En curso</span>
           </div>
         </div>
         <div class="cert-item reveal reveal-delay-3">
           <div class="cert-icon"><a href="https://en.wikipedia.org/wiki/Harvard_University" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Harvard_University_shield.png" width="80" height="80" /></a></div>
           <div>
             <strong>CS50P - Introduction to Python</strong>
-            <span>Harvard University · Completado</span>
+            <span data-es="Harvard University · Completado" data-en="Harvard University · Completed">Harvard University · Completado</span>
           </div>
         </div>
                 <div class="cert-item reveal reveal-delay-2">
           <div class="cert-icon"><a href="http://linkedin.com/school/coderhouse/posts/?feedView=all" target="_blank"><img src="https://uiuxassets.com/media/site/d47f7ac79a-1749935961/icon-512x512.png" width="80" height="80" /></a></div>
           <div>
-            <strong>Diseñador UX/UI</strong>
-            <span>Certificado de diseñador obtenido</span>
+            <strong data-es="Diseñador UX/UI" data-en="UX/UI Designer">Diseñador UX/UI</strong>
+            <span data-es="Certificado de diseñador obtenido" data-en="Professional design certificate">Certificado de diseñador obtenido</span>
           </div>
         </div>
       </div>
@@ -124,7 +131,7 @@
   <section id="skills">
     <div class="section-header reveal">
       <span class="section-num">02</span>
-      <h2 class="section-title">Skills &amp; Herramientas</h2>
+      <h2 class="section-title" data-es="Skills &amp; Herramientas" data-en="Skills &amp; Tools">Skills &amp; Herramientas</h2>
       <div class="section-line"></div>
     </div>
 
@@ -182,7 +189,7 @@
   <section id="projects">
     <div class="section-header reveal">
       <span class="section-num">03</span>
-      <h2 class="section-title">Proyectos</h2>
+      <h2 class="section-title" data-es="Proyectos" data-en="Projects">Proyectos</h2>
       <div class="section-line"></div>
     </div>
 
@@ -229,7 +236,7 @@
             </a>
           </div>
         </div>
-        <p class="project-desc">
+        <p class="project-desc" data-es="Aplicación web de traducción de texto. Frontend completo en HTML, CSS y JS, con backend en Python que integra el modelo deep-translator para traducciones precisas y contextuales en múltiples idiomas." data-en="Web-based text translation app. Full frontend in HTML, CSS and JS, with a Python backend integrating deep-translator for accurate, contextual translations across multiple languages.">
           Aplicación web de traducción de texto. Frontend completo en HTML, CSS y JS, con backend en Python que integra el modelo deep-translator para traducciones precisas y contextuales en múltiples idiomas.
         </p>
         <div class="project-tags">
@@ -281,7 +288,7 @@
             </a>
           </div>
         </div>
-        <p class="project-desc">
+        <p class="project-desc" data-es="Herramienta web minimalista para convertir imágenes entre distintos formatos (JPG, PNG y WEBP, GIF). Incluye interfaz Drag &amp; Drop con feedback visual dinámico, gestión inteligente de canales alfa y descarga automática sin recargar la página. Los archivos se procesan en el servidor sin persistencia, priorizando la privacidad del usuario." data-en="Minimalist web tool for converting images between formats (JPG, PNG, WEBP, GIF). Features a Drag &amp; Drop interface with dynamic visual feedback, smart alpha channel handling, and automatic download without page reload. Files are processed server-side with no persistence, keeping user privacy first.">
           Herramienta web minimalista para convertir imágenes entre distintos formatos (JPG, PNG y WEBP, GIF). Incluye interfaz Drag &amp; Drop con feedback visual dinámico, gestión inteligente de canales alfa y descarga automática sin recargar la página. Los archivos se procesan en el servidor sin persistencia, priorizando la privacidad del usuario.
         </p>
         <div class="project-tags">
@@ -335,15 +342,15 @@
             </a>
           </div>
         </div>
-        <p class="project-desc">
+        <p class="project-desc" data-es="Proyecto de diseño UX/UI de una aplicación móvil de viajes desarrollado en Coderhouse. Comprende investigación de usuarios, arquitectura de información, wireframes, prototipado interactivo y sistema de diseño completo. El proceso y los entregables están publicados en Behance." data-en="UX/UI design project for a travel mobile app, built during Coderhouse. Covers user research, information architecture, wireframes, interactive prototyping and a full design system. The full process and deliverables are published on Behance.">
           Proyecto de diseño UX/UI de una aplicación móvil de viajes desarrollado en Coderhouse. Comprende investigación de usuarios, arquitectura de información, wireframes, prototipado interactivo y sistema de diseño completo. El proceso y los entregables están publicados en Behance.
         </p>
         <div class="project-tags">
           <span class="tag">Figma</span>
-          <span class="tag">UX Research</span>
-          <span class="tag">UI Design</span>
-          <span class="tag">Prototipado</span>
-          <span class="tag">Mobile App</span>
+          <span class="tag" data-es="UX Research" data-en="UX Research">UX Research</span>
+          <span class="tag" data-es="UI Design" data-en="UI Design">UI Design</span>
+          <span class="tag" data-es="Prototipado" data-en="Prototyping">Prototipado</span>
+          <span class="tag" data-es="Mobile App" data-en="Mobile App">Mobile App</span>
         </div>
       </div>
 
@@ -354,11 +361,11 @@
   <section id="contact">
     <div class="section-header reveal">
       <span class="section-num">04</span>
-      <h2 class="section-title">Contacto</h2>
+      <h2 class="section-title" data-es="Contacto" data-en="Contact">Contacto</h2>
       <div class="section-line"></div>
     </div>
     <div class="contact-inner">
-      <p class="contact-intro reveal">
+      <p class="contact-intro reveal" data-es="¿Tenés un proyecto en mente? Estoy disponible para trabajo, proyectos freelance y colaboraciones. No dudes en escribirme." data-en="Got a project in mind? I'm open to work, freelance projects and collaborations. Feel free to reach out.">
         ¿Tenés un proyecto en mente? Estoy disponible para trabajo, proyectos freelance y colaboraciones. No dudes en escribirme.
       </p>
 
@@ -372,7 +379,7 @@
           <!-- MAIL -->
           <div class="contact-info">
             <strong>Email</strong>
-            <span><span class="contact-info">martinsogoloff@gmail.com</span></span>
+            <span><span class="contact-info"><span class="__cf_email__" data-cfemail="dfb2beadabb6b1acb0b8b0b3b0b9b99fb8b2beb6b3f1bcb0b2">[email&#160;protected]</span></span></span>
           </div>
           <div class="contact-arrow">→</div>
         </a>
@@ -410,162 +417,7 @@
     <span>Buenos Aires, Argentina</span>
   </footer>
 
-
-  <!-- Scripts (cursor, navbar, scroll, terminal hero, galeria proyectos) -->
-  <script>
-    // Cursor customizado (oculto hasta primer movimiento)
-    const cursor = document.getElementById('cursor');
-    const ring = document.getElementById('cursorRing');
-    cursor.style.opacity = '0';
-    ring.style.opacity = '0';
-    let mx = -999, my = -999, rx = -999, ry = -999;
-    let cursorVisible = false;
-
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      cursor.style.left = mx + 'px';
-      cursor.style.top = my + 'px';
-      if (!cursorVisible) {
-        cursor.style.opacity = '1';
-        ring.style.opacity = '1';
-        cursorVisible = true;
-      }
-    });
-
-    function animRing() {
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      ring.style.left = rx + 'px';
-      ring.style.top = ry + 'px';
-      requestAnimationFrame(animRing);
-    }
-    animRing();
-
-    document.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-      el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-    });
-
-    // Nav on scroll
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 40);
-    });
-
-    // Scroll reveal
-    const reveals = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    reveals.forEach(el => io.observe(el));
-
-    // Terminal (bloque de codigo animado en el hero)
-    const codeLines = [
-      { text: 'class Developer:', color: 'kw' },
-      { text: '    name = "Martín Sogoloff"', color: 'str' },
-      { text: '    role = "Full Stack Jr."', color: 'str' },
-      { text: '    location = "Buenos Aires, Argentina"', color: 'str' },
-      { text: '' },
-      { text: '    stack = [', color: 'normal' },
-      { text: '        "Python", "Machine Learning",', color: 'str' },
-      { text: '        "HTML", "CSS", "JS",', color: 'str' },
-      { text: '        "Figma", "UX/UI"', color: 'str' },
-      { text: '    ]', color: 'normal' },
-      { text: '' },
-      { text: '    def build(self, idea):', color: 'kw' },
-      { text: '        # codigo + diseño', color: 'comment' },
-      { text: '        return producto_solido', color: 'normal' },
-    ];
-
-    const colorMap = {
-      kw: '#c084fc',
-      str: '#86efac',
-      comment: '#6b7280',
-      normal: '#ede9f6',
-    };
-
-    const tw = document.getElementById('typewriter-code');
-    let lineIdx = 0, charIdx = 0;
-    let rendered = '';
-
-    function typeNext() {
-      if (lineIdx >= codeLines.length) {
-        // Cuando termina, parpadea el cursor y reinicia despues de 3 segundos
-        setTimeout(() => {
-          tw.innerHTML = '';
-          rendered = '';
-          lineIdx = 0; charIdx = 0;
-          typeNext();
-        }, 3000);
-        return;
-      }
-
-      const line = codeLines[lineIdx];
-      const fullText = line.text;
-      const color = colorMap[line.color] || '#ede9f6';
-
-      if (charIdx < fullText.length) {
-        // Escribir caracter a caracter
-        const partial = fullText.slice(0, charIdx + 1);
-        const escapedPrev = rendered;
-        tw.innerHTML = escapedPrev + `<span style="color:${color}">${escHtml(partial)}</span><span class="tw-cursor">▋</span>`;
-        charIdx++;
-        setTimeout(typeNext, 28);
-      } else {
-        // Linea completa (guardar y pasar a la siguiente)
-        rendered += `<span style="color:${color}">${escHtml(fullText)}</span>\n`;
-        tw.innerHTML = rendered + `<span class="tw-cursor">▋</span>`;
-        lineIdx++;
-        charIdx = 0;
-        setTimeout(typeNext, fullText === '' ? 80 : 120);
-      }
-    }
-
-    function escHtml(s) {
-      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    }
-
-    // Arrancar la terminal cuando el hero es visible
-    setTimeout(typeNext, 800);
-
-    // Galeria de proyectos (slideshow con flechas)
-    function getGallery(btn) {
-      return btn.closest('.project-gallery');
-    }
-
-    function updateGallery(gallery, newIndex) {
-      const slides = gallery.querySelectorAll('.gallery-slide');
-      const dots = gallery.querySelectorAll('.dot');
-      const total = slides.length;
-      newIndex = (newIndex + total) % total;
-
-      slides.forEach((s, i) => s.classList.toggle('active', i === newIndex));
-      dots.forEach((d, i) => d.classList.toggle('active', i === newIndex));
-      gallery.dataset.index = newIndex;
-    }
-
-    function slideGallery(btn, dir) {
-      const gallery = getGallery(btn);
-      const current = parseInt(gallery.dataset.index);
-      updateGallery(gallery, current + dir);
-    }
-
-    function goToSlide(dot, idx) {
-      const gallery = dot.closest('.project-gallery');
-      updateGallery(gallery, idx);
-    }
-
-    // Auto-avance de las galerias cada 4 segundos
-    document.querySelectorAll('.project-gallery').forEach(gallery => {
-      setInterval(() => {
-        const current = parseInt(gallery.dataset.index);
-        const total = gallery.querySelectorAll('.gallery-slide').length;
-        updateGallery(gallery, (current + 1) % total);
-      }, 4000);
-    });
-  </script>
+  <script src="script.js"></script>
+  
+</body>
+</html>
