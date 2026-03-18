@@ -158,6 +158,7 @@
     });
 
 
+    
     // Sistema de idiomas (ES / EN)
     // La idea: cada elemento traducible tiene data-es y data-en
     // Al cambiar idioma recorremos todos y swapeamos el innerHTML
