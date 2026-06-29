@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" class="no-js" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Martín Sogoloff Portfolio</title>
+  <meta name="description"
+    content="Portfolio de Martín Sogoloff" />
+  <meta name="theme-color" content="#0a0a0f" id="metaTheme" />
+
+  <!-- Preferencias antes del primer paint: sin destello de tema ni de animación -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      try {
+        var t = localStorage.getItem('def-theme');
+        if (t !== 'dark' && t !== 'light') {
+          t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        d.setAttribute('data-theme', t);
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var anim = localStorage.getItem('def-anim');
+        var off = anim === 'off' || (anim === null && reduce);
+        d.setAttribute('data-anim', off ? 'off' : 'on');
+      } catch (e) { d.setAttribute('data-anim', 'on'); }
+      d.classList.remove('no-js');
+      d.classList.add('js');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230a0a0f'/%3E%3Ctext x='31' y='44' font-family='Arial,Helvetica,sans-serif' font-size='27' font-weight='bold' letter-spacing='-1' text-anchor='middle' fill='%23ececf2'%3EMS%3Ctspan fill='%238b7cf6'%3E.%3C/tspan%3E%3C/text%3E%3C/svg%3E" />
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>
