@@ -246,6 +246,9 @@ export function initPortfolio() {
     ['devicon-css3-plain', '#3c99dc'],
     ['devicon-figma-plain', '#f24e1e'],
     ['devicon-github-original', '#cfcfe6'],
+    ['devicon-mongodb-plain', '#4faa41'],
+    ['devicon-cloudflare-plain', '#f38020'],
+    ['devicon-vitejs-plain', '#8b7cf6'],
   ];
   skills.forEach(card => {
     let glow = 'var(--accent-glow)';

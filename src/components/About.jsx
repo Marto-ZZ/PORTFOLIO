@@ -16,7 +16,19 @@ const certificates = [
     inst: 'Harvard University',
     stateEs: 'Completado', stateEn: 'Completed', live: false,
   },
-  {
+    {
+    logo: asset('/images/logo-ibm.svg'), alt: 'IBM',
+    title: 'Developing Front-End Apps with React',
+    inst: 'IBM',
+    stateEs: 'Completado', stateEn: 'Completed', live: false,
+  },
+    {
+    logo: asset('/images/logo-ibm.svg'), alt: 'IBM',
+    title: 'JavaScript Programming Essentials',
+    inst: 'IBM',
+    stateEs: 'Completado', stateEn: 'Completed', live: false,
+  },
+    {
     logo: asset('/images/logo-coderhouse.png'), alt: 'Coderhouse',
     titleEs: 'Diseño UX/UI', titleEn: 'UX/UI Design',
     inst: 'Coderhouse',

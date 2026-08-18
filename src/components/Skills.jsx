@@ -7,9 +7,11 @@ const techLogos = [
   { node: <i className="devicon-javascript-plain colored" />, title: 'JavaScript', href: 'https://developer.mozilla.org/docs/Web/JavaScript' },
   { node: <img src={asset('/images/logo-nodejs.svg')} alt="Node.js" />, title: 'Node.js', href: 'https://nodejs.org/' },
   { node: <i className="devicon-react-original colored" />, title: 'React', href: 'https://react.dev/' },
-  { node: <img src={asset('/images/logo-fastapi.svg')} alt="FastAPI" />, title: 'FastAPI', href: 'https://fastapi.tiangolo.com/' },
   { node: <i className="devicon-html5-plain colored" />, title: 'HTML', href: 'https://developer.mozilla.org/docs/Web/HTML' },
   { node: <i className="devicon-css3-plain colored" />, title: 'CSS', href: 'https://developer.mozilla.org/docs/Web/CSS' },
+  { node: <i className="devicon-mongodb-plain colored" />, title: 'MongoDB', href: 'https://www.mongodb.com/' },
+  { node: <i className="devicon-cloudflare-plain colored" />, title: 'Cloudflare', href: 'https://www.cloudflare.com/' },
+  { node: <i className="devicon-vitejs-plain colored" />, title: 'Vite', href: 'https://vite.dev/' },  
   { node: <i className="devicon-git-plain colored" />, title: 'Git', href: 'https://git-scm.com/' },
   { node: <i className="devicon-github-original" />, title: 'Git / GitHub', href: 'https://github.com/Marto-ZZ' },
   { node: <i className="devicon-figma-plain colored" />, title: 'Figma', href: 'https://www.figma.com/' },
@@ -42,10 +44,6 @@ export default function Skills() {
             <span className="skill-ico"><i className="devicon-react-original colored"></i></span>
             <span className="skill-name">React</span>
           </a>
-          <a className="skill reveal" href="https://fastapi.tiangolo.com/" target="_blank" rel="noopener">
-            <span className="skill-ico"><img id="fastapi-ico" src={asset('/images/logo-fastapi.svg')} /></span>
-            <span className="skill-name">FastAPI</span>
-          </a>
           <a className="skill reveal" href="https://developer.mozilla.org/docs/Web/HTML" target="_blank" rel="noopener">
             <span className="skill-ico"><i className="devicon-html5-plain colored"></i></span>
             <span className="skill-name">HTML</span>
@@ -57,6 +55,19 @@ export default function Skills() {
           <a className="skill reveal" href="https://github.com/Marto-ZZ" target="_blank" rel="noopener">
             <span className="skill-ico"><i className="devicon-github-original"></i></span>
             <span className="skill-name">Git / GitHub</span>
+          </a>
+
+          <a className="skill reveal" href="https://www.mongodb.com/" target="_blank" rel="noopener">
+            <span className="skill-ico"><i className="devicon-mongodb-plain colored"></i></span>
+            <span className="skill-name">MongoDB</span>
+          </a>
+          <a className="skill reveal" href="https://www.cloudflare.com/" target="_blank" rel="noopener">
+            <span className="skill-ico"><i className="devicon-cloudflare-plain colored"></i></span>
+            <span className="skill-name">Cloudflare</span>
+          </a>
+          <a className="skill reveal" href="https://vite.dev/" target="_blank" rel="noopener">
+            <span className="skill-ico"><i className="devicon-vitejs-plain colored"></i></span>
+            <span className="skill-name">Vite</span>
           </a>
           <a className="skill reveal" href="https://www.figma.com/" target="_blank" rel="noopener">
             <span className="skill-ico"><i className="devicon-figma-plain colored"></i></span>
