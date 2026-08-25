@@ -25,14 +25,21 @@ export function initPortfolio() {
   const logoDot = document.querySelector('.nav-logo .dot');
   let lastY = scrollY;
 
+  // Con scroll suave (Lenis) el evento llega en cada frame o más; agrupar en un
+  // rAF evita encadenar recálculos de estilo durante el scroll.
+  let navRaf = 0;
   addEventListener('scroll', () => {
-    const y = scrollY;
-    nav.classList.toggle('scrolled', y > 30);
-    if (animOn()) {
-      if (y > 320 && y > lastY + 6) nav.classList.add('hidden');
-      else if (y < lastY - 4) nav.classList.remove('hidden');
-    }
-    lastY = y;
+    if (navRaf) return;
+    navRaf = requestAnimationFrame(() => {
+      navRaf = 0;
+      const y = scrollY;
+      nav.classList.toggle('scrolled', y > 30);
+      if (animOn()) {
+        if (y > 320 && y > lastY + 6) nav.classList.add('hidden');
+        else if (y < lastY - 4) nav.classList.remove('hidden');
+      }
+      lastY = y;
+    });
   }, { passive: true });
 
   const ids = ['inicio', 'sobre-mi', 'skills', 'proyectos', 'contacto'];
@@ -134,8 +141,13 @@ export function initPortfolio() {
       renderFull();
     } else {
       let li = 0, ci = 0, done = '';
+      // El tipeo reescribe innerHTML ~40 veces por segundo y el ciclo se reinicia
+      // solo: si el hero no está en pantalla, se pausa (no tiene sentido pagar
+      // layout+paint por algo que nadie ve) y se reanuda al volver.
+      let heroVisible = true, waitingHero = false;
       const step = () => {
         if (!animOn()) { renderFull(); return; }
+        if (!heroVisible) { waitingHero = true; return; }
         if (li >= codeLines.length) {
           setTimeout(() => { tw.innerHTML = ''; done = ''; li = 0; ci = 0; step(); }, 3200);
           return;
@@ -152,6 +164,13 @@ export function initPortfolio() {
           setTimeout(step, line.t === '' ? 70 : 120);
         }
       };
+      const heroEl = document.getElementById('inicio');
+      if (heroEl) {
+        new IntersectionObserver(es => {
+          heroVisible = es[0].isIntersecting;
+          if (heroVisible && waitingHero) { waitingHero = false; step(); }
+        }, { rootMargin: '150px' }).observe(heroEl);
+      }
       setTimeout(step, 700);
     }
     // el punto verde "ejecuta" el código
@@ -195,6 +214,9 @@ export function initPortfolio() {
   }
   function startAuto(g) {
     if (!animOn()) return;
+    // Sólo rotan las galerías visibles: animar slides fuera de pantalla es
+    // paint puro tirado a la basura.
+    if (g.dataset.inview === '0') return;
     stopAuto(g);
     timers.set(g, setInterval(() => apply(g, (parseInt(g.dataset.index, 10) || 0) + 1, 1), AUTO));
   }
@@ -234,6 +256,14 @@ export function initPortfolio() {
     g.addEventListener('focusin', () => stopAuto(g));
     g.addEventListener('focusout', () => startAuto(g));
     startAuto(g);
+    // El observer corrige enseguida: apaga las galerías que quedaron fuera de
+    // pantalla y las vuelve a encender al entrar. Arrancar antes de observar
+    // deja el comportamiento igual al anterior si el observer tarda.
+    new IntersectionObserver(es => {
+      const vis = es[0].isIntersecting;
+      g.dataset.inview = vis ? '1' : '0';
+      if (vis) startAuto(g); else stopAuto(g);
+    }, { rootMargin: '150px' }).observe(g);
   });
 
   /* /// SKILLS: color de marca + borde cónico /// */
@@ -263,31 +293,68 @@ export function initPortfolio() {
   let px = -999, py = -999, pointerMoved = false;
   const skillsSection = document.getElementById('skills');
   if (skillsSection && FINE) {
-    new IntersectionObserver(es => { skillsInView = es[0].isIntersecting; }, { rootMargin: '120px' }).observe(skillsSection);
-    addEventListener('pointermove', e => { px = e.clientX; py = e.clientY; pointerMoved = true; }, { passive: true });
-    const loop = () => {
-      if (pointerMoved && skillsInView && animOn()) {
-        for (const card of skills) {
-          const r = card.getBoundingClientRect();
-          const ang = Math.atan2(py - (r.top + r.height / 2), px - (r.left + r.width / 2)) * 180 / Math.PI + 90;
-          card.style.setProperty('--ang', ang.toFixed(1) + 'deg');
-        }
-        pointerMoved = false;
-      }
-      requestAnimationFrame(loop);
+    // Los centros se guardan en coordenadas de página (no cambian al scrollear),
+    // así el frame no vuelve a leer el layout. Se refrescan como mucho 2 veces
+    // por segundo, que alcanza para reveals/resize sin costar un reflow por frame.
+    let centers = [], measuredAt = 0;
+    const measure = () => {
+      const sx = scrollX, sy = scrollY;
+      centers = skills.map(card => {
+        const r = card.getBoundingClientRect();
+        return { card, cx: r.left + sx + r.width / 2, cy: r.top + sy + r.height / 2 };
+      });
+      measuredAt = performance.now();
     };
-    requestAnimationFrame(loop);
+
+    // El rAF no queda encolado para siempre: corre sólo mientras haya movimiento
+    // real del puntero dentro de la sección, y se apaga solo.
+    let raf = 0;
+    const loop = () => {
+      raf = 0;
+      if (!pointerMoved || !skillsInView || !animOn()) return;
+      pointerMoved = false;
+      if (!centers.length || performance.now() - measuredAt > 500) measure();
+      const sx = scrollX, sy = scrollY;
+      for (const c of centers) {
+        const ang = Math.atan2(py - (c.cy - sy), px - (c.cx - sx)) * 180 / Math.PI + 90;
+        c.card.style.setProperty('--ang', ang.toFixed(1) + 'deg');
+      }
+    };
+    const schedule = () => { if (!raf) raf = requestAnimationFrame(loop); };
+
+    new IntersectionObserver(es => {
+      skillsInView = es[0].isIntersecting;
+      if (!skillsInView && raf) { cancelAnimationFrame(raf); raf = 0; }
+    }, { rootMargin: '120px' }).observe(skillsSection);
+
+    addEventListener('pointermove', e => {
+      if (!skillsInView) return;
+      px = e.clientX; py = e.clientY; pointerMoved = true;
+      schedule();
+    }, { passive: true });
   }
 
   /* /// BOTONES MAGNÉTICOS (sutil) /// */
   if (FINE) {
     document.querySelectorAll('.btn').forEach(el => {
+      // pointermove puede dispararse >100 veces por segundo. Medir y escribir en
+      // cada evento intercala lectura/escritura de layout; agrupando en un rAF
+      // queda como mucho un reflow por frame y sólo del botón bajo el cursor.
+      let raf = 0, mx = 0, my = 0;
       el.addEventListener('pointermove', e => {
         if (!animOn()) return;
-        const r = el.getBoundingClientRect();
-        el.style.transform = `translate(${((e.clientX - (r.left + r.width / 2)) * 0.12).toFixed(1)}px, ${((e.clientY - (r.top + r.height / 2)) * 0.18 - 2).toFixed(1)}px)`;
+        mx = e.clientX; my = e.clientY;
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          raf = 0;
+          const r = el.getBoundingClientRect();
+          el.style.transform = `translate(${((mx - (r.left + r.width / 2)) * 0.12).toFixed(1)}px, ${((my - (r.top + r.height / 2)) * 0.18 - 2).toFixed(1)}px)`;
+        });
       }, { passive: true });
-      el.addEventListener('pointerleave', () => { el.style.transform = ''; }, { passive: true });
+      el.addEventListener('pointerleave', () => {
+        if (raf) { cancelAnimationFrame(raf); raf = 0; }
+        el.style.transform = '';
+      }, { passive: true });
     });
   }
 

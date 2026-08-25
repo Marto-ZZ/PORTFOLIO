@@ -795,8 +795,8 @@ html.js[data-anim="on"] .section-head.reveal.in .rule {
   border-radius: 18px;
   padding: clamp(1.6rem, 3vw, 2.4rem);
   box-shadow: var(--shadow-card);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  /* sin backdrop-filter: detrás de esta tarjeta sólo hay fondo plano, así que el
+     desenfoque no se ve, pero obliga a recomponer el fondo en cada frame de scroll */
   transition: border-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease), transform var(--dur-2) var(--ease);
 }
 .card:hover {
@@ -1091,8 +1091,7 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   border-radius: 22px;
   padding: clamp(1rem, 1.6vw, 1.4rem);
   box-shadow: var(--shadow-card);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  /* ídem .card: el desenfoque de fondo acá no aporta y encarece el scroll */
   transition: border-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease), transform var(--dur-2) var(--ease);
 }
 .project:hover {
@@ -1333,8 +1332,7 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   border: 1px solid var(--border);
   border-radius: 18px;
   overflow: hidden;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  /* ídem .card: el desenfoque de fondo acá no aporta y encarece el scroll */
   transition: border-color var(--dur-2) var(--ease), transform var(--dur-2) var(--ease), background var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
 }
 .contact-card:hover {
