@@ -67,10 +67,10 @@ export default function Projects() {
             <div className="project-media">
               <div className="gallery" data-index="0">
                 <div className="gallery-track">
-                  <div className="slide active"><img src={asset('/images/Polyglot 1.jpg')} alt="PolyglotLAB — pantalla principal" loading="lazy" decoding="async" /></div>
-                  <div className="slide"><img src={asset('/images/Polyglot 2.jpg')} alt="PolyglotLAB — traducción" loading="lazy" decoding="async" /></div>
-                  <div className="slide"><img src={asset('/images/Polyglot 3.jpg')} alt="PolyglotLAB — tema alternativo" loading="lazy" decoding="async" /></div>
-                  <div className="slide"><img src={asset('/images/Polyglot 4.jpg')} alt="PolyglotLAB — idiomas" loading="lazy" decoding="async" /></div>
+                  <div className="slide active"><img src={asset('/images/Polyglot 1.png')} alt="PolyglotLAB — pantalla principal" loading="lazy" decoding="async" /></div>
+                  <div className="slide"><img src={asset('/images/Polyglot 2.png')} alt="PolyglotLAB — traducción" loading="lazy" decoding="async" /></div>
+                  <div className="slide"><img src={asset('/images/Polyglot 3.png')} alt="PolyglotLAB — tema alternativo" loading="lazy" decoding="async" /></div>
+                  <div className="slide"><img src={asset('/images/Polyglot 4.png')} alt="PolyglotLAB — idiomas" loading="lazy" decoding="async" /></div>
                 </div>
                 <button className="gal-btn prev" onClick={(e) => slide(e, -1)} aria-label="Anterior">‹</button>
                 <button className="gal-btn next" onClick={(e) => slide(e, 1)} aria-label="Siguiente">›</button>
