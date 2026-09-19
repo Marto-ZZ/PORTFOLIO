@@ -10,7 +10,12 @@ export function initSmoothScroll() {
 
   function start() {
     if (lenis) return;
-    lenis = new Lenis({ duration: 1.1, smoothWheel: true, touchMultiplier: 1.5 });
+    // duration es lo que más define si la página "se siente" rápida o pesada:
+    // es el tiempo que sigue deslizándose después de soltar la rueda.
+    // Medido: 1.1 -> 968ms hasta frenar (se percibe como lag), 0.8 -> 699ms,
+    // 0.6 -> 533ms, 0.45 -> 401ms. El scroll nativo ronda los 100-150ms.
+    // 0.6 conserva el deslizamiento suave sin que la página se sienta lenta.
+    lenis = new Lenis({ duration: 0.6, smoothWheel: true, touchMultiplier: 1.5 });
     window.__lenis = lenis;
     const loop = (t) => { lenis.raf(t); raf = requestAnimationFrame(loop); };
     raf = requestAnimationFrame(loop);
