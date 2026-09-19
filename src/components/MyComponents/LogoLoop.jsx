@@ -103,14 +103,28 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
       rafRef.current = requestAnimationFrame(animate);
     };
 
-    rafRef.current = requestAnimationFrame(animate);
+    const startLoop = () => {
+      if (rafRef.current !== null) return;
+      lastTimestampRef.current = null;
+      rafRef.current = requestAnimationFrame(animate);
+    };
+    const stopLoop = () => {
+      if (rafRef.current === null) return;
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+      lastTimestampRef.current = null;
+    };
+
+    startLoop();
+    const io = new IntersectionObserver(es => { es[0].isIntersecting ? startLoop() : stopLoop(); });
+    io.observe(track);
+    const onVisibility = () => { document.hidden ? stopLoop() : startLoop(); };
+    document.addEventListener('visibilitychange', onVisibility);
 
     return () => {
-      if (rafRef.current !== null) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
-      }
-      lastTimestampRef.current = null;
+      io.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
+      stopLoop();
     };
   }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical, trackRef]);
 };

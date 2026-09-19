@@ -140,7 +140,6 @@ const Waves = ({
   }, [lineColor, waveSpeedX, waveSpeedY, waveAmpX, waveAmpY, friction, tension, maxCursorMove, xGap, yGap]);
 
   useEffect(() => {
-    console.log('Waves mounted');
     const canvas = canvasRef.current;
     const container = containerRef.current;
     ctxRef.current = canvas.getContext('2d');
@@ -209,33 +208,44 @@ const Waves = ({
       });
     }
 
-    function moved(point, withCursor = true) {
-      const x = point.x + point.wave.x + (withCursor ? point.cursor.x : 0);
-      const y = point.y + point.wave.y + (withCursor ? point.cursor.y : 0);
-      return { x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10 };
-    }
-
+    // Se calcula la posición inline en vez de usar moved(): esa función devolvía
+    // un objeto nuevo por punto (~15.000 objetos por frame a 1080p, pura presión
+    // de GC) y además se calculaba un p2 por cada punto que sólo se usaba en el
+    // último. Mismo trazado, sin asignaciones.
     function drawLines() {
       const { width, height } = boundingRef.current;
       const ctx = ctxRef.current;
       ctx.clearRect(0, 0, width, height);
       ctx.beginPath();
       ctx.strokeStyle = configRef.current.lineColor;
-      linesRef.current.forEach(points => {
-        let p1 = moved(points[0], false);
-        ctx.moveTo(p1.x, p1.y);
-        points.forEach((p, idx) => {
-          const isLast = idx === points.length - 1;
-          p1 = moved(p, !isLast);
-          const p2 = moved(points[idx + 1] || points[points.length - 1], !isLast);
-          ctx.lineTo(p1.x, p1.y);
-          if (isLast) ctx.moveTo(p2.x, p2.y);
-        });
-      });
+      const lines = linesRef.current;
+      for (let i = 0; i < lines.length; i++) {
+        const points = lines[i];
+        const last = points.length - 1;
+        if (last < 0) continue;
+        const p0 = points[0];
+        ctx.moveTo(Math.round((p0.x + p0.wave.x) * 10) / 10, Math.round((p0.y + p0.wave.y) * 10) / 10);
+        for (let idx = 0; idx <= last; idx++) {
+          const p = points[idx];
+          const c = idx !== last;
+          const x = p.x + p.wave.x + (c ? p.cursor.x : 0);
+          const y = p.y + p.wave.y + (c ? p.cursor.y : 0);
+          ctx.lineTo(Math.round(x * 10) / 10, Math.round(y * 10) / 10);
+        }
+      }
       ctx.stroke();
     }
 
+    const FRAME_MS = 1000 / 30;
+    let running = false;
+    let lastDraw = 0;
+
     function tick(t) {
+      if (!running) return;
+      frameIdRef.current = requestAnimationFrame(tick);
+      if (t - lastDraw < FRAME_MS) return;
+      lastDraw = t;
+
       const mouse = mouseRef.current;
       mouse.sx += (mouse.x - mouse.sx) * 0.1;
       mouse.sy += (mouse.y - mouse.sy) * 0.1;
@@ -253,8 +263,24 @@ const Waves = ({
 
       movePoints(t);
       drawLines();
+    }
+
+    function start() {
+      if (running) return;
+      running = true;
+      lastDraw = 0;
       frameIdRef.current = requestAnimationFrame(tick);
     }
+    function stop() {
+      running = false;
+      if (frameIdRef.current) cancelAnimationFrame(frameIdRef.current);
+      frameIdRef.current = null;
+    }
+
+    let visible = true;
+    const sync = () => { (visible && !document.hidden) ? start() : stop(); };
+    const io = new IntersectionObserver(es => { visible = es[0].isIntersecting; sync(); });
+    const onVisibility = () => sync();
 
     function onResize() {
       setSize();
@@ -268,6 +294,7 @@ const Waves = ({
       updateMouse(touch.clientX, touch.clientY);
     }
     function updateMouse(x, y) {
+      if (!visible) return;
       const mouse = mouseRef.current,
         b = boundingRef.current;
       mouse.x = x - b.left;
@@ -283,16 +310,21 @@ const Waves = ({
 
     setSize();
     setLines();
-    frameIdRef.current = requestAnimationFrame(tick);
+    sync();           
+    io.observe(container);
+    document.addEventListener('visibilitychange', onVisibility);
     window.addEventListener('resize', onResize);
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
 
     return () => {
+      io.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
       window.removeEventListener('resize', onResize);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('touchmove', onTouchMove);
-      cancelAnimationFrame(frameIdRef.current);
+      stop();
     };
   }, []);
 
