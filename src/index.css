@@ -478,8 +478,10 @@ img {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1.3fr 0.7fr;
-  gap: clamp(2rem, 5vw, 4.5rem);
+  /* el sistema planetario necesita más aire que la vieja ventana de código:
+     las órbitas exteriores y sus etiquetas ocupan bastante más ancho */
+  grid-template-columns: 0.86fr 1.14fr;
+  gap: clamp(2rem, 4vw, 3rem);
   align-items: center;
 }
 

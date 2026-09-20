@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import Atropos from 'atropos/react';
 import Waves from './UI/Waves.jsx';
+import SaturnSystem from './UI/SaturnSystem.jsx';
 
 const readAccent = () =>
   getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#8b7cf6';
@@ -38,18 +38,8 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Ventana de código: martin.py (la clase es el retrato) — parallax 3D con Atropos */}
-        <Atropos className="code-atropos" highlight={false} shadow={false} rotateXMax={7} rotateYMax={7}>
-          <div className="code-window" aria-hidden="true">
-            <div className="code-bar" data-atropos-offset="5">
-              <span className="code-dot red"></span>
-              <span className="code-dot yellow"></span>
-              <span className="code-dot green"></span>
-              <span className="code-file">martin.py</span>
-            </div>
-            <pre className="code-body" data-atropos-offset="2"><code id="tw"></code></pre>
-          </div>
-        </Atropos>
+        {/* Sistema planetario: cada luna con nombre lleva a una sección */}
+        <SaturnSystem />
       </div>
     </section>
   );
