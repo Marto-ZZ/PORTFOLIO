@@ -229,17 +229,37 @@ const Rings = () => (
   </g>
 );
 
+// Mismo patrón que Hero.jsx con data-theme: se observa el atributo data-anim
+// del <html>, que escribe el switch "Reducir animaciones" del panel de ajustes.
+function useReducedAnim() {
+  const [reduced, setReduced] = useState(
+    () => typeof document !== 'undefined' && document.documentElement.getAttribute('data-anim') === 'off'
+  );
+  useEffect(() => {
+    const root = document.documentElement;
+    const sync = () => setReduced(root.getAttribute('data-anim') === 'off');
+    sync();
+    const obs = new MutationObserver(sync);
+    obs.observe(root, { attributes: true, attributeFilter: ['data-anim'] });
+    return () => obs.disconnect();
+  }, []);
+  return reduced;
+}
+
 export default function SaturnSystem({ variant = 'realista' }) {
   const ref = useRef(null);
   const compact = useCompact();
+  const reducedAnim = useReducedAnim();
 
-  // Sólo para el prototipo: ?planeta=linea permite comparar los dos estilos
-  // sin tocar código.
+  // Sólo para el prototipo: ?planeta=linea permite fijar un estilo a mano sin
+  // tocar código. El switch "Reducir animaciones" manda por encima: es la
+  // forma en tiempo real de comparar los dos estilos que pidió Martín.
   const [style, setStyle] = useState(variant);
   useEffect(() => {
     const q = new URLSearchParams(location.search).get('planeta');
     if (q === 'linea' || q === 'realista') setStyle(q);
   }, []);
+  const effectiveStyle = reducedAnim ? 'linea' : style;
 
   // Mismo patrón que el resto del sitio: si el sistema no está en pantalla
   // (o la pestaña está en segundo plano) se pausan las animaciones en vez de
@@ -256,10 +276,10 @@ export default function SaturnSystem({ variant = 'realista' }) {
   }, []);
 
   const paths = ORBITS.map(o => ellipsePath(o.rx, o.ry));
-  const linea = style === 'linea';
+  const linea = effectiveStyle === 'linea';
 
   return (
-    <div className="saturn" ref={ref} data-variant={style}>
+    <div className="saturn" ref={ref} data-variant={effectiveStyle}>
       <svg viewBox={compact ? LAYOUT.compact.viewBox : LAYOUT.wide.viewBox} className="saturn-svg"
         role="img" aria-label="Sistema planetario con accesos a las secciones del portfolio">
         <defs>
@@ -367,7 +387,7 @@ export default function SaturnSystem({ variant = 'realista' }) {
         <g className="sat-moons sat-moons--back" aria-hidden="true">
           {MOONS.map(m => (
             <MoonOrbiter key={`b-${m.href}`} m={m} path={paths[m.orbit]}
-              compact={compact} variant={style} layer="back" />
+              compact={compact} variant={effectiveStyle} layer="back" />
           ))}
         </g>
 
@@ -402,7 +422,7 @@ export default function SaturnSystem({ variant = 'realista' }) {
           {MOONS.map(m => (
             <a key={m.href} href={m.href} className="sat-link">
               <MoonOrbiter m={m} path={paths[m.orbit]}
-                compact={compact} variant={style} layer="front" />
+                compact={compact} variant={effectiveStyle} layer="front" />
             </a>
           ))}
         </g>
