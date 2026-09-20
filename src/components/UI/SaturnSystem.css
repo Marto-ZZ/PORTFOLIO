@@ -35,6 +35,7 @@
   --sat-glow-o: 0.55;
   --sat-label: var(--text-muted);
   --sat-label-on: var(--text);
+  --sat-line: #e8e4ff;   /* trazo del estilo dibujo */
 }
 
 #satBody .s1 { stop-color: var(--sat-p1); }
@@ -50,15 +51,15 @@
 #satGlow .g2 { stop-color: var(--sat-glow); stop-opacity: 0.12; }
 #satGlow .g3 { stop-color: var(--sat-glow); stop-opacity: 0; }
 
-#satMoonRock .s1 { stop-color: #c0bbdc; }
+#satMoonRock .s1 { stop-color: #c8c3e4; }
 #satMoonRock .s3 { stop-color: #5d5880; }
-#satMoonRock .s5 { stop-color: #17142e; }
-#satMoonGas .s1 { stop-color: #bdaaff; }
+#satMoonRock .s5 { stop-color: #14112a; }
+#satMoonGas .s1 { stop-color: #c6b4ff; }
 #satMoonGas .s3 { stop-color: #6d5ae6; }
-#satMoonGas .s5 { stop-color: #1b1340; }
-#satMoonIce .s1 { stop-color: #bcd8ff; }
+#satMoonGas .s5 { stop-color: #170f38; }
+#satMoonIce .s1 { stop-color: #c7e0ff; }
 #satMoonIce .s3 { stop-color: #5878c4; }
-#satMoonIce .s5 { stop-color: #131b3c; }
+#satMoonIce .s5 { stop-color: #101634; }
 
 /* /// órbitas /// */
 .sat-orbit {
@@ -69,10 +70,7 @@
 .sat-orbits path:nth-child(2) { stroke: var(--sat-orbit-strong); }
 
 /* /// anillos /// */
-.sat-ring {
-  fill: none;
-  stroke-linecap: round;
-}
+.sat-ring { fill: none; stroke-linecap: round; }
 .sat-ring--halo { stroke: var(--sat-ring-lo); stroke-width: 3;  opacity: 0.42; }
 .sat-ring--a    { stroke: var(--sat-ring-hi); stroke-width: 11; opacity: 0.72; }
 .sat-ring--b    { stroke: var(--sat-ring-mid);stroke-width: 17; opacity: 0.78; }
@@ -80,6 +78,8 @@
 .sat-ring--d    { stroke: var(--sat-ring-lo); stroke-width: 13; opacity: 0.55; }
 
 /* /// planeta /// */
+.sat-planet-body { fill: url(#satBody); }
+.sat-ring-shadow { fill: #0b0622; opacity: 0.32; }
 .sat-rim {
   fill: none;
   stroke: var(--sat-p1);
@@ -105,19 +105,52 @@
   to   { offset-distance: 100%; }
 }
 
+/* /// PROFUNDIDAD ///
+   El tramo 0→0.5 del recorrido es la mitad lejana de la órbita (pasa por
+   detrás del planeta) y 0.5→1 la cercana. Cada luna se dibuja dos veces, una
+   en la capa de atrás y otra en la de adelante, y estas animaciones —con la
+   misma duración y delay que la órbita— deciden cuál se ve. El planeta queda
+   entre las dos capas, así que la oclusión sale por orden de pintado. */
+@keyframes sat-half-back {
+  0%, 49.99%  { visibility: visible; }
+  50%, 100%   { visibility: hidden; }
+}
+@keyframes sat-half-front {
+  0%, 49.99%  { visibility: hidden; }
+  50%, 100%   { visibility: visible; }
+}
+.sat-moon-vis {
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.sat-moon-vis--back  { animation-name: sat-half-back; }
+.sat-moon-vis--front { animation-name: sat-half-front; }
+
 .sat-moon-body { fill: url(#satMoonRock); }
 .sat-moon-body--gas { fill: url(#satMoonGas); }
 .sat-moon-body--ice { fill: url(#satMoonIce); }
 .sat-moon-shade { fill: url(#satMoonShade); pointer-events: none; }
+.sat-moon-rim {
+  fill: none;
+  stroke: var(--sat-p1);
+  stroke-width: 1;
+  opacity: 0.32;
+  pointer-events: none;
+}
 
-.sat-moon--dust .sat-moon-body { opacity: 0.5; }
+/* relieve: es lo que saca a las lunas de verse como círculos planos */
+.sat-crater      { fill: #000; opacity: 0.30; }
+.sat-crater-lip  { fill: #fff; opacity: 0.09; }
+.sat-band-moon--light { fill: #fff; opacity: 0.15; }
+.sat-band-moon--dark  { fill: #000; opacity: 0.20; }
+.sat-ice-patch   { fill: #fff; opacity: 0.15; }
+.sat-moon-detail, .sat-band-moon, .sat-ice-patch { pointer-events: none; }
 
 /* zona de click amplia e invisible: el círculo visible es chico para apuntarle
    con precisión, sobre todo en pantallas táctiles */
 .sat-hit { fill: transparent; }
 
 .sat-lead {
-
   stroke: var(--sat-orbit-strong);
   stroke-width: 1;
   transition: stroke var(--dur-1) var(--ease);
@@ -146,11 +179,66 @@
 .sat-link { cursor: pointer; }
 .sat-link:focus { outline: none; }
 
+/* /// ESTILO DIBUJO (variant="linea") ///
+   Sólo contornos: el planeta pasa a ser un trazo con rayado en el terminador,
+   los anillos y las órbitas quedan finitos y las lunas son círculos con sus
+   cráteres dibujados. */
+/* Relleno del color del fondo, no 'none': un contorno vacío no tapa nada y se
+   verían los anillos y las lunas traseras a través del planeta. Con el fondo
+   como relleno el dibujo sigue siendo de línea pero conserva la profundidad. */
+.saturn[data-variant="linea"] .sat-planet-body,
+.saturn[data-variant="linea"] .sat-moon-body {
+  fill: var(--bg);
+  stroke: var(--sat-line);
+  stroke-width: 1.6;
+}
+.saturn[data-variant="linea"] .sat-planet-bands,
+.saturn[data-variant="linea"] .sat-ring-shadow,
+.saturn[data-variant="linea"] .sat-moon-shade,
+.saturn[data-variant="linea"] .sat-moon-rim,
+.saturn[data-variant="linea"] .sat-glow {
+  display: none;
+}
+.saturn[data-variant="linea"] .sat-rim { display: none; }
+.saturn[data-variant="linea"] .sat-hatch-line {
+  stroke: var(--sat-line);
+  stroke-width: 0.9;
+  opacity: 0.38;
+}
+.saturn[data-variant="linea"] .sat-ring {
+  stroke: var(--sat-line);
+  stroke-width: 1.6;
+  opacity: 0.9;
+}
+.saturn[data-variant="linea"] .sat-ring--halo,
+.saturn[data-variant="linea"] .sat-ring--b,
+.saturn[data-variant="linea"] .sat-ring--d { display: none; }
+.saturn[data-variant="linea"] .sat-orbit {
+  stroke: var(--sat-line);
+  stroke-width: 1.2;
+  stroke-dasharray: 7 9;
+  opacity: 0.5;
+}
+.saturn[data-variant="linea"] .sat-crater-line {
+  fill: none;
+  stroke: var(--sat-line);
+  stroke-width: 1.1;
+  opacity: 0.75;
+}
+.saturn[data-variant="linea"] .sat-spark {
+  fill: var(--sat-line);
+  opacity: 0.75;
+}
+.saturn[data-variant="linea"] .sat-label { fill: var(--sat-label-on); }
+.saturn[data-variant="linea"] .sat-lead { stroke: var(--sat-line); opacity: 0.8; }
+
 /* /// interacción ///
    Al entrar al sistema se frena TODO: perseguir un target en movimiento es
    incómodo (ley de Fitts). Quieto, apuntar y clickear es trivial. */
 .saturn:hover .sat-moon,
-.saturn:focus-within .sat-moon {
+.saturn:hover .sat-moon-vis,
+.saturn:focus-within .sat-moon,
+.saturn:focus-within .sat-moon-vis {
   animation-play-state: paused;
 }
 
@@ -159,13 +247,9 @@
   filter: drop-shadow(0 0 10px var(--accent-glow));
 }
 .sat-link:hover .sat-label,
-.sat-link:focus-visible .sat-label {
-  fill: var(--sat-label-on);
-}
+.sat-link:focus-visible .sat-label { fill: var(--sat-label-on); }
 .sat-link:hover .sat-lead,
-.sat-link:focus-visible .sat-lead {
-  stroke: var(--accent);
-}
+.sat-link:focus-visible .sat-lead { stroke: var(--accent); }
 .sat-link:focus-visible .sat-hit {
   stroke: var(--accent);
   stroke-width: 1.5;
@@ -173,15 +257,17 @@
 }
 
 /* /// pausa fuera de pantalla /// */
-.saturn.is-idle .sat-moon {
+.saturn.is-idle .sat-moon,
+.saturn.is-idle .sat-moon-vis {
   animation-play-state: paused;
 }
 
 /* /// animaciones desactivadas (panel de ajustes / reduced-motion) ///
-   Sin animación cada luna se queda en su offset-distance inicial, que se
-   escribe inline, así que el sistema sigue leyéndose repartido y no se
-   amontonan todas en el mismo punto. */
-html[data-anim="off"] .sat-moon {
+   Sin animación cada luna se queda en su offset-distance inicial y en la capa
+   que le corresponde (la visibilidad base se escribe inline), así que el
+   sistema se sigue leyendo repartido y con la profundidad correcta. */
+html[data-anim="off"] .sat-moon,
+html[data-anim="off"] .sat-moon-vis {
   animation-name: none;
 }
 
@@ -203,6 +289,7 @@ html[data-anim="off"] .sat-moon {
   --sat-orbit-strong: rgba(92, 64, 38, 0.45);
   --sat-glow: #C98F5E;
   --sat-glow-o: 0.22;
+  --sat-line: #4A3220;
 }
 :root[data-theme="light"] #satMoonRock .s1 { stop-color: #D8C7B5; }
 :root[data-theme="light"] #satMoonRock .s3 { stop-color: #8A7461; }
@@ -214,12 +301,11 @@ html[data-anim="off"] .sat-moon {
 :root[data-theme="light"] #satMoonIce .s3 { stop-color: #79866F; }
 :root[data-theme="light"] #satMoonIce .s5 { stop-color: #2E3528; }
 :root[data-theme="light"] .sat-rim { opacity: 0.28; }
+:root[data-theme="light"] .sat-crater { opacity: 0.22; }
+:root[data-theme="light"] .sat-ring-shadow { fill: #5A3A22; opacity: 0.22; }
 
 /* /// RESPONSIVE ///
-   En una columna el sistema se achica: las etiquetas necesitan aire, así que
-   por debajo de cierto ancho se ocultan las lunas decorativas y se agranda la
-   tipografía relativa para que siga siendo legible. */
-/* El SVG se escala al ancho disponible, así que cuanto más angosta la
+   El SVG se escala al ancho disponible, así que cuanto más angosta la
    pantalla, MÁS grande tiene que ser la tipografía en unidades del viewBox
    para conservar el mismo tamaño aparente en píxeles. */
 @media (max-width: 960px) {
@@ -228,15 +314,9 @@ html[data-anim="off"] .sat-moon {
 }
 
 @media (max-width: 560px) {
-  /* En una sola columna sobra alto y falta ancho, así que el sistema se sale
-     del contenedor para ganar tamaño. Las etiquetas quedan cerca de los bordes
-     pero siguen dentro: el viewBox ya reserva su espacio.
-     Acá las lunas son además la única navegación por sección, porque .nav-links
-     se oculta por debajo de 720px. */
   /* sin sangrado: el viewBox compacto ya reserva el espacio de las etiquetas,
      y cualquier desborde acá las recortaría contra el borde de la pantalla */
   .saturn { width: 100%; max-width: none; margin-left: 0; }
-  .sat-dust { display: none; }
   .sat-label { font-size: 38px; letter-spacing: 0.08em; stroke-width: 7px; }
   .sat-lead { stroke-width: 2; }
   /* objetivo táctil cómodo: las lunas son chicas en pantalla */
