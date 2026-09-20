@@ -1,0 +1,22 @@
+.galaxy-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: opacity 0.5s ease;
+}
+
+/* El shader cambia de color/clearColor al instante (es JS/WebGL, no CSS), así
+   que un toggle claro/oscuro sin esto se ve como un flash. html.theming es la
+   misma clase que el sitio ya agrega 600ms alrededor de cada cambio de tema
+   (ver portfolioEffects.js): durante esa ventana el fondo se esconde con un
+   fade, y cuando reaparece ya está pintado con los colores del tema nuevo. */
+html.theming .galaxy-container {
+  opacity: 0;
+}
+
+.galaxy-container canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
