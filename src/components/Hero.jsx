@@ -1,24 +1,11 @@
-import { useState, useEffect } from 'react';
-import Waves from './UI/Waves.jsx';
+import Starfield from './UI/Starfield.jsx';
 import SaturnSystem from './UI/SaturnSystem.jsx';
 
-const readAccent = () =>
-  getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#8b7cf6';
-
 export default function Hero() {
-  // El canvas necesita un color real, no una variable CSS: tomamos el acento activo
-  // y lo re-leemos cuando cambia el tema (atributo data-theme del <html>).
-  const [accent, setAccent] = useState(readAccent);
-  useEffect(() => {
-    const obs = new MutationObserver(() => setAccent(readAccent()));
-    obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-    return () => obs.disconnect();
-  }, []);
-
   return (
     <section id="inicio" className="hero">
       <div className="hero-bg" aria-hidden="true">
-        <Waves lineColor={accent} waveAmpX={32} waveAmpY={16} />
+        <Starfield />
       </div>
 
       <div className="container hero-inner">

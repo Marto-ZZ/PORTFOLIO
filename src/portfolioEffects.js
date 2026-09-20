@@ -445,8 +445,9 @@ export function initPortfolio() {
   const hero3D = (() => {
     const URL = 'https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js';
     const holder = document.getElementById('hero3d');
-    // El fondo 3D fue reemplazado por el componente <Waves/>; si no existe el
-    // holder, devolvemos una API inerte para no romper nada (tema, ajustes...).
+    // El fondo 3D fue reemplazado por componentes de React (hoy <Starfield/>);
+    // si no existe el holder, devolvemos una API inerte para no romper nada
+    // (tema, ajustes...).
     if (!holder) return { enable() {}, retheme() {}, sync() {} };
     const surface = document.getElementById('inicio');
     let THREE = null, renderer, scene, camera, group, lines = [];

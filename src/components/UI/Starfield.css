@@ -1,0 +1,36 @@
+/* /// FONDO DE ESTRELLAS DEL HERO /// */
+
+.starfield {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  --star-color: var(--text);
+}
+
+.starfield-dust circle,
+.starfield-twinkle circle {
+  fill: var(--star-color);
+}
+
+.starfield-twinkle circle {
+  opacity: var(--star-o);
+  animation-name: star-twinkle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+@keyframes star-twinkle {
+  0%, 100% { opacity: calc(var(--star-o) * 0.35); }
+  50%      { opacity: var(--star-o); }
+}
+
+/* /// TEMA CLARO ///
+   El tema claro es "atmósfera crema + marrón", no un cielo nocturno: un
+   campo de estrellas blancas ahí desentona. Se recolorea a un punteado tenue
+   y cálido (mismo --text-dim que usa el resto del sitio) y se atenúa, así
+   aporta la misma textura de fondo sin insistir en que es de noche. */
+:root[data-theme="light"] .starfield {
+  --star-color: var(--text-dim);
+  opacity: 0.5;
+}

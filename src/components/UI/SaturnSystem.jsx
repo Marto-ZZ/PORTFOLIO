@@ -9,8 +9,9 @@ import './SaturnSystem.css';
    MISMO string de path se usa para dibujar la órbita y para mover la luna,
    así la luna viaja exactamente sobre la línea que se ve.
 
-   Dos estilos: 'realista' (esferas con relieve) y 'linea' (trazo tipo dibujo).
-   Se elige con la prop variant. */
+   Dos estilos posibles, elegidos con la prop variant: 'linea' (trazo tipo
+   dibujo a mano, el que queda por defecto) y 'realista' (esferas con
+   relieve, se probó y quedó como alternativa). */
 
 const CX = 550;        // centro del sistema, en unidades del viewBox
 const CY = 350;
@@ -229,37 +230,19 @@ const Rings = () => (
   </g>
 );
 
-// Mismo patrón que Hero.jsx con data-theme: se observa el atributo data-anim
-// del <html>, que escribe el switch "Reducir animaciones" del panel de ajustes.
-function useReducedAnim() {
-  const [reduced, setReduced] = useState(
-    () => typeof document !== 'undefined' && document.documentElement.getAttribute('data-anim') === 'off'
-  );
-  useEffect(() => {
-    const root = document.documentElement;
-    const sync = () => setReduced(root.getAttribute('data-anim') === 'off');
-    sync();
-    const obs = new MutationObserver(sync);
-    obs.observe(root, { attributes: true, attributeFilter: ['data-anim'] });
-    return () => obs.disconnect();
-  }, []);
-  return reduced;
-}
-
-export default function SaturnSystem({ variant = 'realista' }) {
+export default function SaturnSystem({ variant = 'linea' }) {
   const ref = useRef(null);
   const compact = useCompact();
-  const reducedAnim = useReducedAnim();
 
-  // Sólo para el prototipo: ?planeta=linea permite fijar un estilo a mano sin
-  // tocar código. El switch "Reducir animaciones" manda por encima: es la
-  // forma en tiempo real de comparar los dos estilos que pidió Martín.
+  // Se probaron dos estilos ('linea', dibujado a mano, y 'realista', esferas
+  // con relieve) y ganó 'linea': es el que queda por defecto. ?planeta=
+  // sigue andando para volver a mirar el otro sin tocar código.
   const [style, setStyle] = useState(variant);
   useEffect(() => {
     const q = new URLSearchParams(location.search).get('planeta');
     if (q === 'linea' || q === 'realista') setStyle(q);
   }, []);
-  const effectiveStyle = reducedAnim ? 'linea' : style;
+  const effectiveStyle = style;
 
   // Mismo patrón que el resto del sitio: si el sistema no está en pantalla
   // (o la pestaña está en segundo plano) se pausan las animaciones en vez de
