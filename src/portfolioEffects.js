@@ -11,14 +11,11 @@ export function initPortfolio() {
   };
 
   const prefs = {
-    theme: root.getAttribute('data-theme') === 'light' ? 'light' : 'dark',
     lang: store.get('def-lang') === 'en' ? 'en' : 'es',
     anim: root.getAttribute('data-anim') !== 'off',
-    bg3d: store.get('def-3d') !== 'off',
   };
 
   const animOn = () => prefs.anim;
-  const isDark = () => root.getAttribute('data-theme') !== 'light';
 
   /* /// NAV: fondo, autoocultado, scroll-spy /// */
   const nav = document.getElementById('nav');
@@ -51,7 +48,7 @@ export function initPortfolio() {
       if (id === current) continue;
       const first = current === null;
       current = id;
-      document.querySelectorAll('.nav-links a').forEach(a =>
+      document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(a =>
         a.classList.toggle('active', a.getAttribute('href') === '#' + id));
       if (!first && animOn() && logoDot) {
         logoDot.classList.remove('pulse');
@@ -107,81 +104,6 @@ export function initPortfolio() {
       h1.appendChild(line);
     });
   })();
-
-  /* /// TERMINAL martin.py /// */
-  const codeLines = [
-    { t: 'class Developer:', c: 'kw' },
-    { t: '    name  = "Martín Sogoloff"', c: 'str' },
-    { t: '    role  = "Full Stack & Software Developer"', c: 'str' },
-    { t: '    focus = ["UX/UI", "Frontend", "Backend"]', c: 'fn' },
-    { t: '' },
-    { t: '    stack = [', c: 'txt' },
-    { t: '        "Python", "JavaScript", "Node.js",', c: 'str' },
-    { t: '        "HTML", "CSS", "React",', c: 'str' },
-    { t: '        "Figma", "Git",', c: 'str' },
-    { t: '    ]', c: 'txt' },
-    { t: '' },
-    { t: '    def build(self, idea):', c: 'kw' },
-    { t: '        # código + diseño', c: 'com' },
-    { t: '        return producto_real', c: 'txt' },
-  ];
-  const col = c => `var(--code-${c})`;
-  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  const tw = document.getElementById('tw');
-  const codeWin = document.querySelector('.code-window');
-   
-  function renderFull() {
-    if (tw) {
-      tw.innerHTML = codeLines
-        .map(l => `<span style="color:${col(l.c || 'txt')}">${esc(l.t)}</span>`).join('\n');
-    }
-  }
-  if (tw) {
-    if (!animOn()) {
-      renderFull();
-    } else {
-      let li = 0, ci = 0, done = '';
-      // El tipeo reescribe innerHTML ~40 veces por segundo y el ciclo se reinicia
-      // solo: si el hero no está en pantalla, se pausa (no tiene sentido pagar
-      // layout+paint por algo que nadie ve) y se reanuda al volver.
-      let heroVisible = true, waitingHero = false;
-      const step = () => {
-        if (!animOn()) { renderFull(); return; }
-        if (!heroVisible) { waitingHero = true; return; }
-        if (li >= codeLines.length) {
-          setTimeout(() => { tw.innerHTML = ''; done = ''; li = 0; ci = 0; step(); }, 3200);
-          return;
-        }
-        const line = codeLines[li];
-        const color = col(line.c || 'txt');
-        if (ci < line.t.length) {
-          tw.innerHTML = done + `<span style="color:${color}">${esc(line.t.slice(0, ++ci))}</span><span class="tw-caret">▋</span>`;
-          setTimeout(step, 26);
-        } else {
-          done += `<span style="color:${color}">${esc(line.t)}</span>\n`;
-          tw.innerHTML = done + `<span class="tw-caret">▋</span>`;
-          li++; ci = 0;
-          setTimeout(step, line.t === '' ? 70 : 120);
-        }
-      };
-      const heroEl = document.getElementById('inicio');
-      if (heroEl) {
-        new IntersectionObserver(es => {
-          heroVisible = es[0].isIntersecting;
-          if (heroVisible && waitingHero) { waitingHero = false; step(); }
-        }, { rootMargin: '150px' }).observe(heroEl);
-      }
-      setTimeout(step, 700);
-    }
-    // el punto verde "ejecuta" el código
-    const green = codeWin && codeWin.querySelector('.code-dot.green');
-    if (green && animOn()) {
-      green.addEventListener('pointerenter', () => codeWin.classList.add('running'));
-      codeWin.addEventListener('animationend', e => {
-        if (e.animationName === 'code-run') codeWin.classList.remove('running');
-      });
-    }
-  }
 
   /* /// GALERÍAS DE PROYECTO /// */
   const AUTO = 4600;
@@ -372,11 +294,11 @@ export function initPortfolio() {
   });
   applyLang(prefs.lang);
 
-  /* /// PANEL DE AJUSTES /// */
-  const metaTheme = document.getElementById('metaTheme');
+  /* /// PANEL DE AJUSTES ///
+     El sitio pasó a tener un solo tema (oscuro), así que acá sólo queda el
+     control de animaciones. */
   const sBtn = document.getElementById('settingsBtn');
   const sPanel = document.getElementById('settingsPanel');
-  const themeSeg = document.getElementById('themeSeg');
   const animSwitch = document.getElementById('animSwitch');
 
   sBtn.addEventListener('click', e => {
@@ -392,22 +314,35 @@ export function initPortfolio() {
     if (e.key === 'Escape' && !sPanel.hidden) { sPanel.hidden = true; sBtn.setAttribute('aria-expanded', 'false'); sBtn.focus(); }
   });
 
-  function syncSeg() {
-    themeSeg.querySelectorAll('.seg-btn').forEach(b => b.classList.toggle('is-on', b.dataset.themeVal === prefs.theme));
+  /* /// MENÚ MÓVIL ///
+     Por debajo de 720px .nav-links se oculta, y hasta ahora no había nada en
+     su lugar: el visitante quedaba sin forma de saltar entre secciones. */
+  const burger = document.getElementById('navBurger');
+  const navMobile = document.getElementById('navMobile');
+  if (burger && navMobile) {
+    const setMenu = (open) => {
+      navMobile.hidden = !open;
+      burger.setAttribute('aria-expanded', String(open));
+      burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+      burger.classList.toggle('is-open', open);
+    };
+    burger.addEventListener('click', e => {
+      e.stopPropagation();
+      setMenu(navMobile.hidden);
+    });
+    // Al tocar un link el menú se cierra solo: si quedara abierto taparía la
+    // sección a la que acaba de saltar.
+    navMobile.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+    document.addEventListener('click', e => {
+      if (!navMobile.hidden && !e.target.closest('.nav-mobile, .nav-burger')) setMenu(false);
+    });
+    addEventListener('keydown', e => {
+      if (e.key === 'Escape' && !navMobile.hidden) { setMenu(false); burger.focus(); }
+    });
+    // Si se agranda la ventana con el menú abierto, .nav-links vuelve a estar
+    // disponible y el panel queda huérfano.
+    matchMedia('(min-width: 721px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
   }
-  function applyTheme(t, animate) {
-    if (animate) { root.classList.add('theming'); setTimeout(() => root.classList.remove('theming'), 600); }
-    prefs.theme = t;
-    root.setAttribute('data-theme', t);
-    store.set('def-theme', t);
-    metaTheme.setAttribute('content', t === 'light' ? '#FAF6F1' : '#0a0a0f');
-    syncSeg();
-    hero3D.retheme();
-  }
-  themeSeg.addEventListener('click', e => {
-    const b = e.target.closest('.seg-btn');
-    if (b && b.dataset.themeVal !== prefs.theme) applyTheme(b.dataset.themeVal, true);
-  });
 
   function setSwitch(el, on) { el.setAttribute('aria-checked', String(on)); }
   setSwitch(animSwitch, prefs.anim);
@@ -420,14 +355,11 @@ export function initPortfolio() {
     if (prefs.anim) {
       initReveals();
       document.querySelectorAll('.gallery').forEach(startAuto);
-      if (tw) renderFull();
     } else {
       if (revealIO) revealIO.disconnect();
       document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
       document.querySelectorAll('.gallery').forEach(stopAuto);
-      if (tw) renderFull();
     }
-    hero3D.sync();
   });
 
   /* /// RELOJ DEL FOOTER (hora de Buenos Aires) /// */
@@ -441,140 +373,5 @@ export function initPortfolio() {
     } catch { el.textContent = 'Buenos Aires'; }
   })();
 
-  /* /// FONDO 3D: curvas de nivel flotantes /// */
-  const hero3D = (() => {
-    const URL = 'https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js';
-    const holder = document.getElementById('hero3d');
-    // El fondo 3D fue reemplazado por componentes de React (hoy <Starfield/>);
-    // si no existe el holder, devolvemos una API inerte para no romper nada
-    // (tema, ajustes...).
-    if (!holder) return { enable() {}, retheme() {}, sync() {} };
-    const surface = document.getElementById('inicio');
-    let THREE = null, renderer, scene, camera, group, lines = [];
-    let raf = 0, last = 0, built = false, failed = false, visible = true, building = false;
-    let tpx = 0, ppx = 0;
 
-    const palette = () => isDark()
-      ? { main: 0x8b7cf6, alt: 0xa99bff, near: 0.15, far: 0.02, additive: true }
-      : { main: 0x8B5E3C, alt: 0xA0724E, near: 0.16, far: 0.03, additive: false };
-
-    function retheme() {
-      if (!built) return;
-      const p = palette();
-      const blend = p.additive ? THREE.AdditiveBlending : THREE.NormalBlending;
-      const main = new THREE.Color(p.main), alt = new THREE.Color(p.alt);
-      for (const ln of lines) {
-        ln.mat.color.copy(p.additive ? main.clone().lerp(alt, (1 - ln.fade) * 0.8) : main);
-        ln.mat.opacity = p.far + (p.near - p.far) * ln.fade;
-        ln.mat.blending = blend;
-        ln.mat.needsUpdate = true;
-      }
-      if (!running() && renderer) renderer.render(scene, camera);
-    }
-
-    function build() {
-      const w = holder.clientWidth || innerWidth, h = holder.clientHeight || innerHeight;
-      const canvas = document.createElement('canvas');
-      const attrs = { antialias: true, alpha: true, powerPreference: 'low-power' };
-      const ctx = canvas.getContext('webgl2', attrs) || canvas.getContext('webgl', attrs);
-      if (!ctx) throw new Error('sin WebGL');
-      renderer = new THREE.WebGLRenderer({ canvas, context: ctx, ...attrs });
-      renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
-      renderer.setSize(w, h);
-      renderer.setClearColor(0x000000, 0);
-      holder.appendChild(renderer.domElement);
-
-      scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(46, w / h, 0.1, 140);
-      camera.position.set(0, 7.5, 18);
-      camera.lookAt(0, 1.2, -4);
-
-      const small = innerWidth < 760;
-      const COLS = small ? 70 : 130, ROWS = small ? 18 : 30, W = 56, D = 38;
-      group = new THREE.Group();
-      lines = [];
-      for (let j = 0; j < ROWS; j++) {
-        const z = -D / 2 + (j / (ROWS - 1)) * D;
-        const fade = j / (ROWS - 1);
-        const positions = new Float32Array(COLS * 3);
-        const base = new Array(COLS);
-        for (let i = 0; i < COLS; i++) {
-          const x = -W / 2 + (i / (COLS - 1)) * W;
-          base[i] = { x, z };
-          positions[i * 3] = x; positions[i * 3 + 1] = 0; positions[i * 3 + 2] = z;
-        }
-        const geo = new THREE.BufferGeometry();
-        geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        const mat = new THREE.LineBasicMaterial({ transparent: true, depthWrite: false });
-        group.add(new THREE.Line(geo, mat));
-        lines.push({ geo, mat, base, fade });
-      }
-      group.rotation.x = -0.6;
-      group.position.y = -1.4;
-      scene.add(group);
-
-      addEventListener('resize', onResize);
-      new IntersectionObserver(es => { visible = es[0].isIntersecting; sync(); }).observe(surface);
-      surface.addEventListener('pointermove', e => {
-        const r = surface.getBoundingClientRect();
-        tpx = ((e.clientX - r.left) / r.width - 0.5);
-      });
-      built = true;
-      retheme();
-    }
-
-    function onResize() {
-      if (!built) return;
-      const w = holder.clientWidth || innerWidth, h = holder.clientHeight || innerHeight;
-      renderer.setSize(w, h);
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-    }
-
-    function frame(t) {
-      raf = requestAnimationFrame(frame);
-      if (t - last < 33) return;
-      last = t;
-      const tt = t * 0.00034;
-      for (const ln of lines) {
-        const pos = ln.geo.attributes.position;
-        for (let i = 0; i < ln.base.length; i++) {
-          const { x, z } = ln.base[i];
-          pos.setY(i, Math.sin(x * 0.17 + tt) * Math.cos(z * 0.15 - tt * 0.7) * 1.7 + Math.sin(x * 0.4 - z * 0.3 + tt * 0.9) * 0.55);
-        }
-        pos.needsUpdate = true;
-      }
-      ppx += (tpx - ppx) * 0.04;
-      camera.position.x = ppx * 2.4;
-      camera.lookAt(0, 1.2, -4);
-      renderer.render(scene, camera);
-    }
-
-    const running = () => raf !== 0;
-    function sync() {
-      const should = prefs.bg3d && prefs.anim && built && visible;
-      if (should && !running()) { last = 0; raf = requestAnimationFrame(frame); }
-      else if (!should && running()) { cancelAnimationFrame(raf); raf = 0; }
-    }
-
-    async function enable(v) {
-      prefs.bg3d = v;
-      if (!v) { sync(); holder.hidden = true; return; }
-      if (failed || building || !prefs.anim) { if (!prefs.anim) holder.hidden = true; return; }
-      holder.hidden = false;
-      if (!built) {
-        building = true;
-        try { THREE = await import(/* @vite-ignore */ URL); build(); }
-        catch { failed = true; holder.hidden = true; bg3dSwitch.setAttribute('aria-checked', 'false'); }
-        building = false;
-      }
-      sync();
-    }
-
-    if (prefs.bg3d && prefs.anim) enable(true); else holder.hidden = true;
-    return { enable, retheme, sync };
-  })();
-
-  // refleja el estado inicial del tema sin animar
-  applyTheme(prefs.theme, false);
 }

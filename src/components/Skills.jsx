@@ -11,11 +11,60 @@ const techLogos = [
   { node: <i className="devicon-css3-plain colored" />, title: 'CSS', href: 'https://developer.mozilla.org/docs/Web/CSS' },
   { node: <i className="devicon-mongodb-plain colored" />, title: 'MongoDB', href: 'https://www.mongodb.com/' },
   { node: <i className="devicon-cloudflare-plain colored" />, title: 'Cloudflare', href: 'https://www.cloudflare.com/' },
-  { node: <i className="devicon-vitejs-plain colored" />, title: 'Vite', href: 'https://vite.dev/' },  
+  { node: <i className="devicon-vitejs-plain colored" />, title: 'Vite', href: 'https://vite.dev/' },
   { node: <i className="devicon-git-plain colored" />, title: 'Git', href: 'https://git-scm.com/' },
   { node: <i className="devicon-github-original" />, title: 'Git / GitHub', href: 'https://github.com/Marto-ZZ' },
   { node: <i className="devicon-figma-plain colored" />, title: 'Figma', href: 'https://www.figma.com/' },
 ];
+
+/* Agrupado por rol en vez de una pared plana de logos: un muro de 12 marcas
+   sin jerarquía es lo que tiene cualquier portfolio y no dice nada; agrupado
+   cuenta CÓMO trabaja (dónde se para en el stack) sin agregar texto de más.
+   Además 5+4+3 cae en filas prolijas en todos los breakpoints. */
+const GRUPOS = [
+  {
+    es: 'Frontend', en: 'Frontend',
+    items: [
+      { name: 'React', href: 'https://react.dev/', icon: 'devicon-react-original colored' },
+      { name: 'JavaScript', href: 'https://developer.mozilla.org/docs/Web/JavaScript', icon: 'devicon-javascript-plain colored' },
+      { name: 'HTML', href: 'https://developer.mozilla.org/docs/Web/HTML', icon: 'devicon-html5-plain colored' },
+      { name: 'CSS', href: 'https://developer.mozilla.org/docs/Web/CSS', icon: 'devicon-css3-plain colored' },
+      { name: 'Vite', href: 'https://vite.dev/', icon: 'devicon-vitejs-plain colored' },
+    ],
+  },
+  {
+    es: 'Backend & datos', en: 'Backend & data',
+    items: [
+      { name: 'Node.js', href: 'https://nodejs.org/', img: '/images/logo-nodejs.svg' },
+      { name: 'Python', href: 'https://www.python.org/', icon: 'devicon-python-plain colored' },
+      { name: 'MongoDB', href: 'https://www.mongodb.com/', icon: 'devicon-mongodb-plain colored' },
+      { name: 'Cloudflare', href: 'https://www.cloudflare.com/', icon: 'devicon-cloudflare-plain colored' },
+    ],
+  },
+  {
+    es: 'Diseño & flujo', en: 'Design & workflow',
+    items: [
+      { name: 'Figma', href: 'https://www.figma.com/', icon: 'devicon-figma-plain colored' },
+      // Antes era un PNG gris que sobre fondo oscuro quedaba casi invisible.
+      // Como es texto, va como texto: se lee siempre y escala sin pixelarse.
+      { name: 'UX / UI', href: 'https://en.wikipedia.org/wiki/User_experience_design', glyph: 'UX' },
+      { name: 'Git / GitHub', href: 'https://github.com/Marto-ZZ', icon: 'devicon-github-original' },
+    ],
+  },
+];
+
+function Skill({ s }) {
+  return (
+    <a className="skill reveal" href={s.href} target="_blank" rel="noopener">
+      <span className="skill-ico">
+        {s.icon && <i className={s.icon} aria-hidden="true"></i>}
+        {s.img && <img src={asset(s.img)} alt="" />}
+        {s.glyph && <span className="skill-glyph" aria-hidden="true">{s.glyph}</span>}
+      </span>
+      <span className="skill-name">{s.name}</span>
+    </a>
+  );
+}
 
 export default function Skills() {
   return (
@@ -27,56 +76,15 @@ export default function Skills() {
           <h2 className="section-title" data-es="Stack & herramientas" data-en="Stack & tools">Stack & herramientas</h2>
         </header>
 
-        <div className="skills-grid">
-          <a className="skill reveal" href="https://www.python.org/" target="_blank" rel="noopener">
-            <span className="skill-ico"><i className="devicon-python-plain colored"></i></span>
-            <span className="skill-name">Python</span>
-          </a>
-          <a className="skill reveal" href="https://developer.mozilla.org/docs/Web/JavaScript" target="_blank" rel="noopener">
-            <span className="skill-ico"><i className="devicon-javascript-plain colored"></i></span>
-            <span className="skill-name">JavaScript</span>
-          </a>
-          <a className="skill reveal" href="https://nodejs.org/" target="_blank" rel="noopener">
-            <span className="skill-ico"><img id="node-ico" src={asset('/images/logo-nodejs.svg')} /></span>
-            <span className="skill-name">Node.js</span>
-          </a>
-          <a className="skill reveal" href="https://react.dev/" target="_blank" rel="noopener">
-            <span className="skill-ico"><i className="devicon-react-original colored"></i></span>
-            <span className="skill-name">React</span>
-          </a>
-          <a className="skill reveal" href="https://developer.mozilla.org/docs/Web/HTML" target="_blank" rel="noopener">
-            <span className="skill-ico"><i className="devicon-html5-plain colored"></i></span>
-            <span className="skill-name">HTML</span>
-          </a>
-          <a className="skill reveal" href="https://developer.mozilla.org/docs/Web/CSS" target="_blank" rel="noopener">
-            <span className="skill-ico"><i className="devicon-css3-plain colored"></i></span>
-            <span className="skill-name">CSS</span>
-          </a>
-          <a className="skill reveal" href="https://github.com/Marto-ZZ" target="_blank" rel="noopener">
-            <span className="skill-ico"><i className="devicon-github-original"></i></span>
-            <span className="skill-name">Git / GitHub</span>
-          </a>
-
-          <a className="skill reveal" href="https://www.mongodb.com/" target="_blank" rel="noopener">
-            <span className="skill-ico"><i className="devicon-mongodb-plain colored"></i></span>
-            <span className="skill-name">MongoDB</span>
-          </a>
-          <a className="skill reveal" href="https://www.cloudflare.com/" target="_blank" rel="noopener">
-            <span className="skill-ico"><i className="devicon-cloudflare-plain colored"></i></span>
-            <span className="skill-name">Cloudflare</span>
-          </a>
-          <a className="skill reveal" href="https://vite.dev/" target="_blank" rel="noopener">
-            <span className="skill-ico"><i className="devicon-vitejs-plain colored"></i></span>
-            <span className="skill-name">Vite</span>
-          </a>
-          <a className="skill reveal" href="https://www.figma.com/" target="_blank" rel="noopener">
-            <span className="skill-ico"><i className="devicon-figma-plain colored"></i></span>
-            <span className="skill-name">Figma</span>
-          </a>
-          <a className="skill reveal" href="https://en.wikipedia.org/wiki/User_experience_design" target="_blank" rel="noopener">
-            <span className="skill-ico"><img src={asset('/images/ux_ui.png')} id="ux-ico" /></span>
-            <span className="skill-name">UX / UI</span>
-          </a>
+        <div className="skill-groups">
+          {GRUPOS.map(g => (
+            <div className="skill-group reveal" key={g.es}>
+              <p className="skill-group-label" data-es={g.es} data-en={g.en}>{g.es}</p>
+              <div className="skills-grid">
+                {g.items.map(s => <Skill key={s.name} s={s} />)}
+              </div>
+            </div>
+          ))}
         </div>
 
         <div className="skills-marquee reveal">

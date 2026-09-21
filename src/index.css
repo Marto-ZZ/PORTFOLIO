@@ -7,27 +7,51 @@
 }
 
 :root {
-  /* /// atmósfera oscura (por defecto) /// */
-  --bg: #0a0a0f;
+  /* /// atmósfera: un solo tema, espacial ///
+     Fondo casi negro con tinte azul. Al no tener que funcionar también en
+     claro, el color puede ser más saturado y jugado. */
+  --bg: #08080e;
   --bg-elev: #101017;
-  --surface: rgba(255, 255, 255, 0.026);
-  --surface-2: rgba(255, 255, 255, 0.05);
+  --surface: rgba(255, 255, 255, 0.03);
+  --surface-2: rgba(255, 255, 255, 0.055);
   --text: #ececf2;
-  --text-muted: #9a9aab;
-  --text-dim: #61616f;
+  --text-muted: #a9a9bd;
+  /* antes #61616f: daba 3.24:1 sobre el fondo, por debajo del mínimo AA de
+     4.5:1, y se usaba en etiquetas de 10-12px (lo peor de los dos mundos).
+     Este valor da 6.1:1 sin dejar de leerse como texto secundario. */
+  --text-dim: #8c8ca3;
   --border: rgba(255, 255, 255, 0.09);
   --border-strong: rgba(255, 255, 255, 0.17);
 
-  --accent: #8b7cf6;
+  /* /// NEBULOSA: los cuatro colores del sistema ///
+     Una nebulosa real tiene violeta, cian, magenta y oro a la vez, así que
+     ampliar la paleta suma variedad SIN romper la estética espacial.
+     Cada sección se queda con un color (ver "identidad por sección" abajo):
+     no es decoración al azar, es un código que el visitante aprende. */
+  --violeta: #8b7cf6;   /* marca, hero y contacto */
+  --cian: #34d8e8;      /* skills / tecnología */
+  --magenta: #f472b6;   /* proyectos / trabajo */
+  --ambar: #fbbf24;     /* formación / logros */
+
+  --accent: var(--violeta);
   --accent-2: #a99bff;
   --accent-deep: #6d5ae6;
   --accent-soft: rgba(139, 124, 246, 0.12);
   --accent-glow: rgba(139, 124, 246, 0.35);
   --hl: rgba(139, 124, 246, 0.32);
-  --accent-ink: #0a0a0f;
+  --accent-ink: #08080e;
+
+  /* --sx = acento de la sección actual. Por defecto la marca; cada sección
+     lo pisa más abajo. Los componentes usan var(--sx) en vez de --accent
+     para que hereden el color de donde están parados. */
+  --sx: var(--violeta);
 
   --live: #4ade80;
-  --logo-plate: #f3f3f6;
+  /* Placa de los logos de certificados. Tiene que ser clara (los logos de IBM,
+     Harvard y la UBA vienen en color sobre blanco), pero un blanco puro era lo
+     más brillante de toda la página y se robaba la atención por encima de lo
+     que Martín estudió. Bajado a un gris claro. */
+  --logo-plate: #dcdce4;
 
   /* sintaxis del código (martin.py) */
   --code-kw: #c4b5fd;
@@ -56,51 +80,15 @@
   --maxw: 1440px;
 }
 
-:root[data-theme="light"] {
-  /* /// atmósfera clara: crema + marrón /// */
-  --bg: #FAF6F1;
-  --bg-elev: #FFFDF9;
-  --surface: rgba(92, 64, 38, 0.04);
-  --surface-2: rgba(92, 64, 38, 0.07);
-  --text: #2C1E10;
-  --text-muted: #6B5443;
-  --text-dim: #9C8978;
-  --border: rgba(92, 64, 38, 0.12);
-  --border-strong: rgba(92, 64, 38, 0.22);
-
-  --accent: #8B5E3C;
-  --accent-2: #A0724E;
-  --accent-deep: #6E4528;
-  --accent-soft: rgba(139, 94, 60, 0.1);
-  --accent-glow: rgba(139, 94, 60, 0.28);
-  --hl: rgba(139, 94, 60, 0.18);
-  --accent-ink: #FFFDF9;
-
-  --live: #5A8A4A;
-  --logo-plate: #FFFDF9;
-
-  --code-kw: #8B5E3C;
-  --code-str: #5A8A4A;
-  --code-com: #B5A495;
-  --code-fn: #6E4528;
-  --code-txt: #3D2C1E;
-  --shadow-card: 0 1px 3px rgba(92, 64, 38, 0.06), 0 20px 50px -30px rgba(92, 64, 38, 0.18);
-  --grain-o: 0.35;
-  --grain-blend: multiply;
-}
-
-/* transición de atmósfera: breve y global */
-html.theming,
-html.theming *,
-html.theming *::before,
-html.theming *::after {
-  transition:
-    background-color 0.5s ease,
-    color 0.5s ease,
-    border-color 0.5s ease,
-    box-shadow 0.5s ease,
-    fill 0.5s ease !important;
-}
+/* /// IDENTIDAD POR SECCIÓN ///
+   Cada sección se queda con un color de la nebulosa. El kicker numerado, los
+   acentos y los estados hover de esa sección lo heredan vía --sx, así el
+   recorrido por la página cambia de color de a poco en vez de ser violeta de
+   principio a fin. */
+#sobre-mi  { --sx: var(--ambar); }
+#skills    { --sx: var(--cian); }
+#proyectos { --sx: var(--magenta); }
+#contacto  { --sx: var(--violeta); }
 
 html {
   scroll-behavior: smooth;
@@ -181,7 +169,7 @@ img {
   background: var(--text);
   color: var(--bg);
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   padding: 0.6rem 1.1rem;
   border-radius: 8px;
   transition: transform 0.25s var(--ease);
@@ -282,6 +270,75 @@ img {
   gap: 0.6rem;
 }
 
+/* /// MENÚ MÓVIL ///
+   Sólo existe por debajo de 720px, que es donde .nav-links desaparece. */
+.nav-burger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color var(--dur-1), background var(--dur-1);
+}
+.nav-burger:hover { border-color: var(--border-strong); }
+.burger-bar {
+  display: block;
+  width: 17px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: var(--text);
+  transition: transform var(--dur-1) var(--ease), opacity var(--dur-1);
+}
+/* abierto: las dos barras se cruzan en una X */
+.nav-burger.is-open .burger-bar:first-child { transform: translateY(3.25px) rotate(45deg); }
+.nav-burger.is-open .burger-bar:last-child { transform: translateY(-3.25px) rotate(-45deg); }
+
+.nav-mobile {
+  position: absolute;
+  top: 100%;
+  left: var(--gutter);
+  right: var(--gutter);
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  background: color-mix(in srgb, var(--bg-elev) 96%, transparent);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+  animation: menu-in 0.24s var(--ease);
+}
+.nav-mobile[hidden] { display: none; }
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(-8px); }
+}
+.nav-mobile a {
+  /* 48px de alto: objetivo táctil cómodo, no los 27px de los links de escritorio */
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 0.9rem;
+  border-radius: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color var(--dur-1), background var(--dur-1);
+}
+.nav-mobile a:hover { color: var(--text); background: var(--surface-2); }
+.nav-mobile a.active {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
 /* idioma: pastilla segmentada */
 .lang-seg {
   display: inline-flex;
@@ -292,7 +349,7 @@ img {
 }
 .lang-opt {
   font-family: var(--font-mono);
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   letter-spacing: 0.06em;
   padding: 0.3rem 0.62rem;
   border: none;
@@ -360,7 +417,7 @@ img {
 }
 .sp-title {
   font-family: var(--font-mono);
-  font-size: 0.56rem;
+  font-size: 0.68rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--text-dim);
@@ -397,7 +454,7 @@ img {
 }
 .seg-btn {
   font-family: var(--font-mono);
-  font-size: 0.64rem;
+  font-size: 0.75rem;
   letter-spacing: 0.05em;
   padding: 0.34rem 0.62rem;
   background: transparent;
@@ -766,7 +823,7 @@ html.js[data-anim="on"] .h-ch {
   flex-shrink: 0;
 }
 .kicker-num {
-  color: var(--accent);
+  color: var(--sx);
   font-weight: 600;
 }
 .section-title {
@@ -808,7 +865,7 @@ html.js[data-anim="on"] .section-head.reveal.in .rule {
 }
 .card-label {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.72rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-dim);
@@ -841,9 +898,11 @@ html.js[data-anim="on"] .section-head.reveal.in .rule {
 /* conceptos clave resaltados con color: texto en acento + marcador
    semitransparente que se "pinta" al entrar en vista (estilo OG) */
 .bio-p b {
-  color: var(--accent-2);
+  color: color-mix(in srgb, var(--sx) 82%, #fff);
   font-weight: 600;
-  background-image: linear-gradient(var(--hl), var(--hl));
+  background-image: linear-gradient(
+    color-mix(in srgb, var(--sx) 26%, transparent),
+    color-mix(in srgb, var(--sx) 26%, transparent));
   background-repeat: no-repeat;
   background-position: 0 86%;
   background-size: 100% 0.46em;
@@ -863,7 +922,10 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
 .edu-list {
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* Eran 3 columnas fijas con 5 certificados: la segunda fila quedaba con dos
+     tarjetas y un hueco. Con auto-fit entran las 5 en una fila en desktop y
+     reflowean solas cuando no hay lugar, sin huérfanas. */
+  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
   gap: 1rem;
 }
 /* cada certificado: tarjeta vertical con sticker grande arriba */
@@ -932,7 +994,7 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
 }
 .edu-state {
   font-family: var(--font-mono);
-  font-size: 0.54rem;
+  font-size: 0.68rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 0.3rem 0.5rem;
@@ -942,15 +1004,52 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   white-space: nowrap;
 }
 .edu-state.live {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--sx);
+  color: var(--sx);
 }
 
 /* /// 02 · skills /// */
+.skill-groups {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.6rem, 3vw, 2.4rem);
+}
+.skill-group-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sx);
+  margin-bottom: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+/* línea que sale del rótulo y se apaga: separa los grupos sin meter cajas */
+.skill-group-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--sx) 40%, transparent), transparent);
+}
+
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  /* auto-fill con ancho mínimo: los grupos tienen 5, 4 y 3 ítems y así ninguno
+     deja huecos raros ni obliga a tocar el número de columnas por breakpoint */
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 1.1rem;
+}
+
+/* "UX / UI" no tiene logo de marca: se dibuja con la tipografía display, del
+   color de la sección, para que tenga el mismo peso visual que los íconos. */
+.skill-glyph {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: -0.03em;
+  color: var(--sx);
+  line-height: 1;
 }
 
 /* marquesina infinita de tecnologías (LogoLoop) — full-bleed: ocupa todo el
@@ -1025,7 +1124,7 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   inset: -1px;
   border-radius: 16px;
   padding: 1px;
-  background: conic-gradient(from var(--ang, 0deg), transparent 0deg, var(--accent-2) 18deg, transparent 52deg);
+  background: conic-gradient(from var(--ang, 0deg), transparent 0deg, var(--sx) 18deg, transparent 52deg);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -1075,7 +1174,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
 .skill:hover .skill-name {
   color: var(--text);
 }
-#ux-ico { color: var(--accent); }
 
 /* /// 03 · proyectos /// */
 .projects {
@@ -1112,11 +1210,37 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   font-size: 0.68rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--sx);
   margin-bottom: 0.7rem;
 }
 .project-index span:first-child {
   color: var(--text-dim);
+}
+/* Vestige es la startup de Martín, no un proyecto más: la etiqueta lo marca
+   sin romper la grilla ni duplicar la tarjeta. */
+.project-flag {
+  display: inline-block;
+  margin-right: 0.7rem;
+  padding: 0.22rem 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--sx) 55%, transparent);
+  background: color-mix(in srgb, var(--sx) 14%, transparent);
+  border-radius: 999px;
+  color: var(--sx);
+}
+.project-flag + span { color: var(--text-dim); }
+
+/* Rol y estado: lo que alguien que contrata quiere saber (qué hizo él, no
+   sólo qué hace el producto). */
+.project-role {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  color: var(--text-dim);
+  margin: -0.7rem 0 1.3rem;
+  padding-left: 0.8rem;
+  border-left: 2px solid color-mix(in srgb, var(--sx) 40%, transparent);
+  max-width: 46ch;
 }
 .project-name {
   font-family: var(--font-display);
@@ -1173,7 +1297,7 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   cursor: pointer;
 }
 .project-stack li:hover {
-  color: var(--accent);
+  color: var(--sx);
 }
 .project-links a {
   display: inline-flex;
@@ -1189,9 +1313,9 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   transition: color var(--dur-1), border-color var(--dur-1), background var(--dur-1), transform var(--dur-1);
 }
 .project-links a:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: var(--accent-soft);
+  color: var(--sx);
+  border-color: var(--sx);
+  background: color-mix(in srgb, var(--sx) 12%, transparent);
   transform: translateY(-2px);
 }
 
@@ -1265,6 +1389,23 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
 .gallery:hover .gal-btn,
 .gallery:focus-within .gal-btn {
   opacity: 1;
+}
+/* En pantallas sin hover (táctiles) los controles quedaban invisibles para
+   siempre: no hay forma de "pasar el cursor". Ahí van siempre visibles y con
+   un objetivo táctil cómodo. */
+@media (hover: none) {
+  .gal-btn {
+    opacity: 1;
+    width: 44px;
+    height: 44px;
+  }
+  .gdot {
+    width: 34px;
+    height: 34px;
+  }
+  .gdot::before {
+    top: 16px;
+  }
 }
 .gal-btn:hover {
   background: var(--accent);
@@ -1343,6 +1484,36 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   background: var(--surface-2);
   box-shadow: 0 20px 50px -18px var(--accent-glow);
 }
+
+/* /// jerarquía de contacto ///
+   El email es la vía principal; LinkedIn y GitHub quedan como alternativas. */
+.contact-card--primary {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+}
+.contact-card--primary .cc-ico {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: transparent;
+}
+.cc-cta {
+  margin-top: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.cc-cta::after {
+  content: "→";
+  transition: transform var(--dur-1) var(--ease);
+}
+.contact-card--primary:hover .cc-cta::after {
+  transform: translateX(4px);
+}
 .cc-ico {
   display: grid;
   place-items: center;
@@ -1362,7 +1533,7 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
 }
 .cc-label {
   font-family: var(--font-mono);
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--text-dim);
@@ -1426,18 +1597,17 @@ html.js[data-anim="on"] .reveal.in {
   .project:nth-child(even) .project-media {
     order: 0;
   }
-  .skills-grid {
-    grid-template-columns: repeat(4, 1fr);
-    max-width: 620px;
-  }
 }
 
 @media (max-width: 720px) {
   .nav-links {
     display: none;
   }
+  /* toma su lugar el menú desplegable */
+  .nav-burger {
+    display: flex;
+  }
   .skills-grid {
-    grid-template-columns: repeat(3, 1fr);
     gap: 0.8rem;
   }
   .contact-grid {
@@ -1459,9 +1629,6 @@ html.js[data-anim="on"] .reveal.in {
 }
 
 @media (max-width: 420px) {
-  .skills-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 /* /// MOVIMIENTO REDUCIDO / DESACTIVADO ///

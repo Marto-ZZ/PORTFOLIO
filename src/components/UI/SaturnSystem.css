@@ -16,9 +16,9 @@
   overflow: visible;
 }
 
-/* /// paleta (tema oscuro) ///
-   Los stop-color se declaran acá para que el tema claro pueda re-tintar
-   todo el sistema sin duplicar el SVG. */
+/* /// paleta ///
+   Los stop-color se declaran en CSS (y no como atributos del SVG) para poder
+   ajustar el sistema entero desde un solo lugar. */
 .saturn {
   --sat-p1: #cbbcff;   /* zona iluminada */
   --sat-p2: #9b87ff;
@@ -271,38 +271,6 @@ html[data-anim="off"] .sat-moon-vis {
   animation-name: none;
 }
 
-/* /// TEMA CLARO ///
-   Una escena espacial sobre crema no funciona: el planeta se re-tinta al
-   acento marrón y se lee como un planeta de terracota, el resplandor baja
-   y las líneas se oscurecen para tener contraste sobre fondo claro. */
-:root[data-theme="light"] .saturn {
-  --sat-p1: #E5B78F;
-  --sat-p2: #B5784A;
-  --sat-p3: #8B5E3C;
-  --sat-p4: #5A3A22;
-  --sat-p5: #3B2616;
-  --sat-band: #F0D2B4;
-  --sat-ring-hi: #C98F5E;
-  --sat-ring-mid: #A0724E;
-  --sat-ring-lo: #8B5E3C;
-  --sat-orbit: rgba(92, 64, 38, 0.24);
-  --sat-orbit-strong: rgba(92, 64, 38, 0.45);
-  --sat-glow: #C98F5E;
-  --sat-glow-o: 0.22;
-  --sat-line: #4A3220;
-}
-:root[data-theme="light"] #satMoonRock .s1 { stop-color: #D8C7B5; }
-:root[data-theme="light"] #satMoonRock .s3 { stop-color: #8A7461; }
-:root[data-theme="light"] #satMoonRock .s5 { stop-color: #3B2E23; }
-:root[data-theme="light"] #satMoonGas .s1 { stop-color: #E3BC97; }
-:root[data-theme="light"] #satMoonGas .s3 { stop-color: #A0724E; }
-:root[data-theme="light"] #satMoonGas .s5 { stop-color: #402A19; }
-:root[data-theme="light"] #satMoonIce .s1 { stop-color: #CFD8CB; }
-:root[data-theme="light"] #satMoonIce .s3 { stop-color: #79866F; }
-:root[data-theme="light"] #satMoonIce .s5 { stop-color: #2E3528; }
-:root[data-theme="light"] .sat-rim { opacity: 0.28; }
-:root[data-theme="light"] .sat-crater { opacity: 0.22; }
-:root[data-theme="light"] .sat-ring-shadow { fill: #5A3A22; opacity: 0.22; }
 
 /* /// RESPONSIVE ///
    El SVG se escala al ancho disponible, así que cuanto más angosta la

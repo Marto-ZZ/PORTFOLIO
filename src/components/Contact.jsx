@@ -44,11 +44,14 @@ export default function Contact() {
             ¿Tenés un proyecto en mente? Estoy disponible para trabajo, freelance y colaboraciones.
           </p>
 
+          {/* El email es la acción principal: antes las tres vías pesaban
+              exactamente igual y ninguna se leía como "el" siguiente paso. */}
           <div className="contact-grid">
-            <a className="contact-card reveal" href="mailto:martinsogoloff@gmail.com">
-              <span className="cc-ico"><i className="fa-solid fa-envelope"></i></span>
+            <a className="contact-card contact-card--primary reveal" href="mailto:martinsogoloff@gmail.com">
+              <span className="cc-ico"><i className="fa-solid fa-envelope" aria-hidden="true"></i></span>
               <span className="cc-label">Email</span>
               <span className="cc-handle">martinsogoloff@gmail.com</span>
+              <span className="cc-cta" data-es="Escribime" data-en="Write to me">Escribime</span>
             </a>
             <a className="contact-card reveal" href="https://www.linkedin.com/in/mart%C3%ADn-sogoloff/" target="_blank" rel="noopener">
               <span className="cc-ico"><i className="devicon-linkedin-plain"></i></span>

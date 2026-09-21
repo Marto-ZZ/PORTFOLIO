@@ -72,20 +72,23 @@ export default function About() {
 
         <div className="about-grid">
           <article className="card bio-card reveal">
+            {/* Un solo resaltado por párrafo, y corto. Antes eran ocho, varios
+                de ellos frases enteras: cuando todo está resaltado, nada
+                resalta, y encima llenaba el bloque de manchas de color. */}
             <p className="bio-p"
-              data-es="Soy <b>Martín</b>, desarrollador de software y estudiante de <b>Ciencias de la Computación en la UBA</b>. Construyo productos de punta a punta, <b>del frontend al backend</b>, traduciendo lógica compleja en experiencias claras, sólidas y bien resueltas."
-              data-en="I'm <b>Martín</b>, a software developer and <b>Computer Science student at UBA</b>. I build products end to end, <b>from frontend to backend</b>, turning complex logic into clear, solid and well-resolved experiences.">
-              Soy <b>Martín</b>, desarrollador de software y estudiante de <b>Ciencias de la Computación en la UBA</b>. Construyo productos de punta a punta, <b>del frontend al backend</b>, traduciendo lógica compleja en experiencias claras, sólidas y bien resueltas.
+              data-es="Soy Martín, desarrollador de software y estudiante de <b>Ciencias de la Computación en la UBA</b>. Construyo productos de punta a punta, del frontend al backend, traduciendo lógica compleja en experiencias claras, sólidas y bien resueltas."
+              data-en="I'm Martín, a software developer and <b>Computer Science student at UBA</b>. I build products end to end, from frontend to backend, turning complex logic into clear, solid and well-resolved experiences.">
+              Soy Martín, desarrollador de software y estudiante de <b>Ciencias de la Computación en la UBA</b>. Construyo productos de punta a punta, del frontend al backend, traduciendo lógica compleja en experiencias claras, sólidas y bien resueltas.
             </p>
             <p className="bio-p"
-              data-es="Trabajo bajo una premisa simple: <b>menos es más</b>, siempre que sea <b>escalable y esté bien construido</b>. Cuido cada detalle porque la calidad técnica solo se nota cuando la <b>experiencia es impecable</b>."
-              data-en="I work under a simple premise: <b>less is more</b>, as long as it's <b>scalable and well-built</b>. I obsess over the details, because technical quality only shows when the <b>experience is flawless</b>.">
-              Trabajo bajo una premisa simple: <b>menos es más</b>, siempre que sea <b>escalable y esté bien construido</b>. Cuido cada detalle porque la calidad técnica solo se nota cuando la <b>experiencia es impecable</b>.
+              data-es="Trabajo bajo una premisa simple: <b>menos es más</b>, siempre que sea escalable y esté bien construido. Cuido cada detalle porque la calidad técnica solo se nota cuando la experiencia es impecable."
+              data-en="I work under a simple premise: <b>less is more</b>, as long as it's scalable and well-built. I obsess over the details, because technical quality only shows when the experience is flawless.">
+              Trabajo bajo una premisa simple: <b>menos es más</b>, siempre que sea escalable y esté bien construido. Cuido cada detalle porque la calidad técnica solo se nota cuando la experiencia es impecable.
             </p>
             <p className="bio-p"
-              data-es="Me motivan los <b>equipos</b> que entienden el software como un <b>oficio</b>: entornos donde aportar, aprender y elevar el producto sean parte del día a día."
-              data-en="I'm driven by <b>teams</b> that treat software as a <b>craft</b>: places where contributing, learning and raising the bar are part of everyday work.">
-              Me motivan los <b>equipos</b> que entienden el software como un <b>oficio</b>: entornos donde aportar, aprender y elevar el producto sean parte del día a día.
+              data-es="Me motivan los equipos que entienden el software como un <b>oficio</b>: entornos donde aportar, aprender y elevar el producto sean parte del día a día."
+              data-en="I'm driven by teams that treat software as a <b>craft</b>: places where contributing, learning and raising the bar are part of everyday work.">
+              Me motivan los equipos que entienden el software como un <b>oficio</b>: entornos donde aportar, aprender y elevar el producto sean parte del día a día.
             </p>
           </article>
 

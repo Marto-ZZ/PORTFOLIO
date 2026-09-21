@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="no-js" data-theme="dark">
+<html lang="es" class="no-js">
 
 <head>
   <meta charset="UTF-8" />
@@ -7,18 +7,15 @@
   <title>Martín Sogoloff Portfolio</title>
   <meta name="description"
     content="Portfolio de Martín Sogoloff" />
-  <meta name="theme-color" content="#0a0a0f" id="metaTheme" />
+  <meta name="theme-color" content="#08080e" />
 
-  <!-- Preferencias antes del primer paint: sin destello de tema ni de animación -->
+  <!-- Preferencia de animación antes del primer paint, para que el revelado no
+       arranque si el visitante pidió menos movimiento. El tema es único
+       (oscuro), así que ya no hay nada de tema que resolver acá. -->
   <script>
     (function () {
       var d = document.documentElement;
       try {
-        var t = localStorage.getItem('def-theme');
-        if (t !== 'dark' && t !== 'light') {
-          t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-        }
-        d.setAttribute('data-theme', t);
         var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         var anim = localStorage.getItem('def-anim');
         var off = anim === 'off' || (anim === null && reduce);

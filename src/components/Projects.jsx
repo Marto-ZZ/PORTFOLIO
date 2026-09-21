@@ -36,13 +36,23 @@ export default function Projects() {
               </div>
             </div>
             <div className="project-body">
-              <p className="project-index"><span data-es="Startup"
-                  data-en="Startup">Startup</span> 2026</p>
+              <p className="project-index">
+                <span className="project-flag" data-es="Proyecto principal" data-en="Flagship">Proyecto principal</span>
+                <span data-es="Startup" data-en="Startup">Startup</span> 2026
+              </p>
               <h3 className="project-name">Vestige Play</h3>
+              {/* La descripción era casi el triple de larga que la de los demás
+                  proyectos y contaba features. Ahora dice qué es y qué hizo él,
+                  que es lo que a alguien que contrata le importa. */}
               <p className="project-desc"
-                data-es="Mi startup: una app de escritorio dedicada al gaming, que conecta tu biblioteca de Steam y la convierte en un plan para trackear tus sesiones de juego de forma realista en base a tu tiempo libre. Categoriza tus juegos olvidados automáticamente, arma un calendario semanal a tu medida y sigue tu progreso con rachas y niveles. Como founder, lidero el producto de punta a punta, del diseño a la infraestructura."
-                data-en="My startup: a desktop app dedicated to gaming, that connects to your Steam library and turns it into a realistic tracker gaming plan based on your free time. It auto-sorts your forgotten games, builds a weekly schedule tailored to your free time, and tracks your progress with streaks and levels. As founder, I lead the product end to end, from design to infrastructure.">
-                Mi startup: una app de escritorio dedicada al gaming, que conecta tu biblioteca de Steam y la convierte en un plan para trackear tus sesiones de juego de forma realista en base a tu tiempo libre. Categoriza tus juegos olvidados automáticamente, arma un calendario semanal a tu medida y sigue tu progreso con rachas y niveles. Como founder, lidero el producto de punta a punta, del diseño a la infraestructura.
+                data-es="App de escritorio que conecta tu biblioteca de Steam y la convierte en un plan de juego realista: categoriza el backlog sola, arma un calendario semanal según tu tiempo libre y sigue el progreso con rachas y niveles."
+                data-en="Desktop app that connects your Steam library and turns it into a realistic gaming plan: it auto-sorts your backlog, builds a weekly schedule around your free time and tracks progress with streaks and levels.">
+                App de escritorio que conecta tu biblioteca de Steam y la convierte en un plan de juego realista: categoriza el backlog sola, arma un calendario semanal según tu tiempo libre y sigue el progreso con rachas y niveles.
+              </p>
+              <p className="project-role"
+                data-es="Founder · Producto de punta a punta, del diseño a la infraestructura · En alpha pública"
+                data-en="Founder · End-to-end product, from design to infrastructure · In public alpha">
+                Founder · Producto de punta a punta, del diseño a la infraestructura · En alpha pública
               </p>
               <ul className="project-stack" aria-label="Stack">
                 <li title="React"><a href="https://react.dev/" target="_blank" rel="noopener" aria-label="React"><i className="devicon-react-original colored"></i></a></li>
@@ -92,6 +102,11 @@ export default function Projects() {
                 Aplicación web de traducción de texto. Proyecto final de Harvard CS50P escalado a aplicacón web, que
                 integra deep-translator para traducciones precisas y contextuales en múltiples idiomas.
               </p>
+              <p className="project-role"
+                data-es="Proyecto personal · Del final de CS50P a una app web desplegada"
+                data-en="Personal project · From the CS50P final to a deployed web app">
+                Proyecto personal · Del final de CS50P a una app web desplegada
+              </p>
               <ul className="project-stack" aria-label="Stack">
                 <li title="Python"><a href="https://docs.python.org/3/" target="_blank" rel="noopener" aria-label="Python"><i className="devicon-python-plain colored"></i></a></li>
                 <li title="Flask"><a href="https://flask.palletsprojects.com/" target="_blank" rel="noopener" aria-label="Flask"><i className="devicon-flask-original"></i></a></li>
@@ -135,6 +150,11 @@ export default function Projects() {
                 data-en="Minimalist tool to convert images between JPG, PNG, WEBP and GIF. Drag & drop interface with dynamic feedback, smart alpha-channel handling and automatic download.">
                 Herramienta minimalista para convertir imágenes entre JPG, PNG, WEBP y GIF. Interfaz drag & drop con
                 feedback dinámico, gestión inteligente de canales alfa y descarga automática.
+              </p>
+              <p className="project-role"
+                data-es="Proyecto personal · Diseño y desarrollo completos"
+                data-en="Personal project · Design and development end to end">
+                Proyecto personal · Diseño y desarrollo completos
               </p>
               <ul className="project-stack" aria-label="Stack">
                 <li title="Python"><a href="https://docs.python.org/3/" target="_blank" rel="noopener" aria-label="Python"><i className="devicon-python-plain colored"></i></a></li>
@@ -180,6 +200,11 @@ export default function Projects() {
                 Proyecto de diseño UX/UI de una app móvil (Coderhouse). Investigación de usuarios, arquitectura
                 de información, wireframes, prototipado interactivo y un sistema de diseño completo. Publicado en
                 Behance.
+              </p>
+              <p className="project-role"
+                data-es="Proyecto de curso (Coderhouse) · Investigación, prototipo y sistema de diseño"
+                data-en="Course project (Coderhouse) · Research, prototype and design system">
+                Proyecto de curso (Coderhouse) · Investigación, prototipo y sistema de diseño
               </p>
               <ul className="project-stack" aria-label="Stack">
                 <li title="Figma"><a href="https://www.figma.com/" target="_blank" rel="noopener" aria-label="Figma"><i className="devicon-figma-plain colored"></i></a></li>

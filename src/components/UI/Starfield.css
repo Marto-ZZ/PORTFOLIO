@@ -25,12 +25,3 @@
   50%      { opacity: var(--star-o); }
 }
 
-/* /// TEMA CLARO ///
-   El tema claro es "atmósfera crema + marrón", no un cielo nocturno: un
-   campo de estrellas blancas ahí desentona. Se recolorea a un punteado tenue
-   y cálido (mismo --text-dim que usa el resto del sitio) y se atenúa, así
-   aporta la misma textura de fondo sin insistir en que es de noche. */
-:root[data-theme="light"] .starfield {
-  --star-color: var(--text-dim);
-  opacity: 0.5;
-}

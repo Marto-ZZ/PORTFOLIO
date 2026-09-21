@@ -1,13 +1,24 @@
+/* El menú móvil se renderiza siempre y se muestra/oculta por CSS + una clase
+   que togglea portfolioEffects.js, en vez de con estado de React. Es a
+   propósito: el cambio de idioma reescribe el innerHTML de todo lo que tenga
+   data-es/data-en, y si React re-renderizara el nav al abrir el menú, pisaría
+   esa traducción y los links volverían al español. */
 export default function Nav() {
+  const links = [
+    { href: '#sobre-mi', es: 'Sobre mí', en: 'About' },
+    { href: '#skills', es: 'Skills', en: 'Skills' },
+    { href: '#proyectos', es: 'Proyectos', en: 'Projects' },
+    { href: '#contacto', es: 'Contacto', en: 'Contact' },
+  ];
+
   return (
     <header className="nav" id="nav">
       <a className="nav-logo" href="#inicio" aria-label="Inicio">MS<span className="dot">.</span></a>
 
       <nav className="nav-links" aria-label="Secciones">
-        <a href="#sobre-mi" data-es="Sobre mí" data-en="About">Sobre mí</a>
-        <a href="#skills">Skills</a>
-        <a href="#proyectos" data-es="Proyectos" data-en="Projects">Proyectos</a>
-        <a href="#contacto" data-es="Contacto" data-en="Contact">Contacto</a>
+        {links.map(l => (
+          <a key={l.href} href={l.href} data-es={l.es} data-en={l.en}>{l.es}</a>
+        ))}
       </nav>
 
       <div className="nav-controls">
@@ -26,23 +37,28 @@ export default function Nav() {
             <p className="sp-title">Ajustes <span lang="en">settings</span></p>
 
             <div className="sp-row">
-              <span className="sp-label">Tema <i lang="en">theme</i></span>
-              <div className="seg" id="themeSeg" role="group" aria-label="Tema">
-                <button className="seg-btn" data-theme-val="light">Claro</button>
-                <button className="seg-btn" data-theme-val="dark">Oscuro</button>
-              </div>
-            </div>
-
-            <div className="sp-row">
               <span className="sp-label">Animaciones <i lang="en">motion</i></span>
               <button className="switch" id="animSwitch" role="switch" aria-checked="true">
                 <span className="switch-knob"></span>
               </button>
             </div>
-
           </div>
         </div>
+
+        {/* Sólo visible en pantallas chicas: hasta ahora no había ninguna
+            forma de navegar entre secciones por debajo de 720px. */}
+        <button className="nav-burger" id="navBurger" aria-expanded="false" aria-controls="navMobile"
+          aria-label="Abrir menú">
+          <span className="burger-bar" aria-hidden="true"></span>
+          <span className="burger-bar" aria-hidden="true"></span>
+        </button>
       </div>
+
+      <nav className="nav-mobile" id="navMobile" aria-label="Secciones" hidden>
+        {links.map(l => (
+          <a key={l.href} href={l.href} data-es={l.es} data-en={l.en}>{l.es}</a>
+        ))}
+      </nav>
     </header>
   );
 }

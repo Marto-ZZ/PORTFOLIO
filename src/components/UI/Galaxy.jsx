@@ -1,5 +1,5 @@
 import { Renderer, Program, Mesh, Color, Triangle } from 'ogl';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import './Galaxy.css';
 
 /* Fondo del hero: shader de galaxia de reactbits.dev (https://reactbits.dev/backgrounds/galaxy),
@@ -195,22 +195,6 @@ void main() {
 }
 `;
 
-// Mismo patrón que ya usa el resto del hero para leer el tema activo.
-function useTheme() {
-  const [dark, setDark] = useState(
-    () => typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') !== 'light'
-  );
-  useEffect(() => {
-    const root = document.documentElement;
-    const sync = () => setDark(root.getAttribute('data-theme') !== 'light');
-    sync();
-    const obs = new MutationObserver(sync);
-    obs.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-    return () => obs.disconnect();
-  }, []);
-  return dark;
-}
-
 export default function Galaxy({
   focal = [0.5, 0.5],
   rotation = [1.0, 0.0],
@@ -225,16 +209,6 @@ export default function Galaxy({
   ...rest
 }) {
   const ctnDom = useRef(null);
-  const dark = useTheme();
-  // El contexto WebGL se crea UNA sola vez (ver el effect de abajo, sin
-  // dependencias). El tema se sincroniza aparte, sobre lo ya creado: la
-  // primera versión recreaba todo el contexto cada vez que cambiaba el
-  // tema, y como el shader cambia de color al instante mientras el resto
-  // del sitio hace un fade de 0.5s, el toggle claro/oscuro se veía como un
-  // flash. glRef/programRef exponen lo creado acá al otro effect.
-  const glRef = useRef(null);
-  const programRef = useRef(null);
-  const darkRef = useRef(dark);
 
   useEffect(() => {
     if (!ctnDom.current) return;
@@ -243,13 +217,12 @@ export default function Galaxy({
     const renderer = new Renderer({ alpha: transparent, premultipliedAlpha: false });
     const gl = renderer.gl;
 
-    if (darkRef.current) {
-      gl.enable(gl.BLEND);
-      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-      gl.clearColor(0, 0, 0, 0);
-    } else {
-      gl.clearColor(1, 1, 1, 1);
-    }
+    // El sitio es de un solo tema (oscuro), así que el canvas siempre va
+    // transparente sobre el fondo; el modo "tinta" del shader (uLightMode)
+    // queda sin usar.
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    gl.clearColor(0, 0, 0, 0);
 
     let program;
     function resize() {
@@ -286,11 +259,9 @@ export default function Galaxy({
         uMouseActiveFactor: { value: 0 },
         uAutoCenterRepulsion: { value: 0 },
         uTransparent: { value: transparent },
-        uLightMode: { value: darkRef.current ? 0 : 1 },
+        uLightMode: { value: 0 },
       },
     });
-    glRef.current = gl;
-    programRef.current = program;
 
     const mesh = new Mesh(gl, { geometry, program });
     ctn.appendChild(gl.canvas);
@@ -341,29 +312,10 @@ export default function Galaxy({
       window.removeEventListener('resize', resize);
       ctn.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
-      glRef.current = null;
-      programRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- se crea una
     // sola vez a propósito; ver el comentario de arriba.
   }, []);
-
-  // Sincroniza sólo el tema sobre el contexto ya existente (no lo recrea).
-  // El fade que tapa el cambio de color vive en Galaxy.css, atado a la misma
-  // clase .theming que ya usa el resto del sitio durante la transición.
-  useEffect(() => {
-    darkRef.current = dark;
-    const gl = glRef.current, program = programRef.current;
-    if (!gl || !program) return; // primer montaje: ya lo tomó darkRef arriba
-    if (dark) {
-      gl.enable(gl.BLEND);
-      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-      gl.clearColor(0, 0, 0, 0);
-    } else {
-      gl.clearColor(1, 1, 1, 1);
-    }
-    program.uniforms.uLightMode.value = dark ? 0 : 1;
-  }, [dark]);
 
   return <div ref={ctnDom} className="galaxy-container" aria-hidden="true" {...rest} />;
 }
