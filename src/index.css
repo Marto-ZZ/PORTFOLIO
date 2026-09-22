@@ -808,8 +808,16 @@ html.js[data-anim="on"] .h-ch {
 .section-head {
   display: flex;
   align-items: center;
-  gap: 1.3rem;
+  gap: clamp(1rem, 2vw, 1.6rem);
   margin-bottom: clamp(2.6rem, 6vh, 4.2rem);
+}
+/* El numeral y el título pasan a apilarse al lado de la luna: antes iban en
+   una sola línea y el título quedaba desplazado hacia la derecha. */
+.section-head-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
 }
 .kicker {
   display: inline-flex;
@@ -862,6 +870,28 @@ html.js[data-anim="on"] .section-head.reveal.in .rule {
   border-color: var(--border-strong);
   box-shadow: 0 24px 60px -20px rgba(0,0,0,0.12), 0 0 0 1px var(--border);
   transform: translateY(-3px);
+}
+
+/* /// SUPERFICIES TEÑIDAS POR SECCIÓN ///
+   Todo lo que es una "caja" toma el color de su luna en el borde superior y en
+   el resplandor del hover. Es sutil a propósito: alcanza para que las tarjetas
+   se sientan parte del lugar donde están, sin convertir cada sección en un
+   tema distinto ni romper la coherencia del sitio. */
+.section .card,
+.section .project,
+.section .contact-card,
+.section .skill,
+.section .edu-item {
+  border-top-color: color-mix(in srgb, var(--sx) 30%, var(--border));
+}
+.section .card:hover,
+.section .project:hover {
+  box-shadow: 0 24px 60px -24px color-mix(in srgb, var(--sx) 30%, transparent),
+              0 0 0 1px var(--border);
+}
+.contact-card:hover {
+  border-color: var(--sx);
+  box-shadow: 0 20px 50px -18px color-mix(in srgb, var(--sx) 40%, transparent);
 }
 .card-label {
   font-family: var(--font-mono);

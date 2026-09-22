@@ -1,4 +1,6 @@
 import { asset } from '../assets.js';
+import SectionSky from './UI/SectionSky.jsx';
+import SectionHead from './UI/SectionHead.jsx';
 
 const slide = (e, dir) => window.slideGallery(e.currentTarget, dir);
 const goTo = (e, i) => window.goToSlide(e.currentTarget, i);
@@ -6,12 +8,10 @@ const goTo = (e, i) => window.goToSlide(e.currentTarget, i);
 export default function Projects() {
   return (
     <section id="proyectos" className="section">
+      <SectionSky patron="orbitas" />
       <div className="container">
-        <header className="section-head reveal">
-          <span className="kicker"><span className="kicker-num">03</span><span data-es="Trabajos"
-              data-en="Work">Trabajos</span></span>
-          <h2 className="section-title" data-es="Proyectos seleccionados" data-en="Selected projects">Proyectos seleccionados</h2>
-        </header>
+        <SectionHead id="proyectos" num="03" kickerEs="Trabajos" kickerEn="Work"
+          titleEs="Proyectos seleccionados" titleEn="Selected projects" />
 
         <div className="projects">
 

@@ -1,0 +1,48 @@
+/* /// LUNA DE SECCIÓN ///
+   Trazo fino como el Saturno del hero, teñida con el color de la sección.
+   Los grosores van en unidades del viewBox (la luna mide 1 de radio), por eso
+   son números chicos. */
+
+.section-moon {
+  width: clamp(44px, 5vw, 64px);
+  height: clamp(44px, 5vw, 64px);
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.luna-cuerpo {
+  fill: var(--bg);
+  stroke: var(--sx);
+  stroke-width: 0.045;
+}
+
+/* el halo hace que la luna se sienta "encendida" sin usar filtros caros */
+.luna-halo {
+  fill: none;
+  stroke: var(--sx);
+  stroke-width: 0.16;
+  opacity: 0.12;
+}
+
+.luna-crater,
+.luna-hielo {
+  fill: none;
+  stroke: var(--sx);
+  stroke-width: 0.035;
+  opacity: 0.75;
+}
+
+.luna-banda {
+  stroke: var(--sx);
+  opacity: 0.6;
+  stroke-linecap: round;
+}
+
+.luna-fractura {
+  fill: none;
+  stroke: var(--sx);
+  stroke-width: 0.05;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.8;
+}

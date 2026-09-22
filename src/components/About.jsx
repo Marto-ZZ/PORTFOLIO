@@ -1,4 +1,6 @@
 import StickerPeel from './MyComponents/StickerPeel.jsx';
+import SectionSky from './UI/SectionSky.jsx';
+import SectionHead from './UI/SectionHead.jsx';
 import { asset } from '../assets.js';
 
 // Lista de certificados/formación. Para sumar uno nuevo, agregá un objeto acá:
@@ -63,12 +65,10 @@ function EduItem({ c }) {
 export default function About() {
   return (
     <section id="sobre-mi" className="section">
+      <SectionSky patron="crateres" />
       <div className="container">
-        <header className="section-head reveal">
-          <span className="kicker"><span className="kicker-num">01</span><span data-es="Sobre mí"
-              data-en="About me">Sobre mí</span></span>
-          <h2 className="section-title" data-es="¿Quién soy?" data-en="Who I am">¿Quién soy?</h2>
-        </header>
+        <SectionHead id="sobre-mi" num="01" kickerEs="Sobre mí" kickerEn="About me"
+          titleEs="¿Quién soy?" titleEn="Who I am" />
 
         <div className="about-grid">
           <article className="card bio-card reveal">

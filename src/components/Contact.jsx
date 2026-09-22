@@ -1,15 +1,15 @@
 import ProfileCard from './MyComponents/ProfileCard.jsx';
+import SectionSky from './UI/SectionSky.jsx';
+import SectionHead from './UI/SectionHead.jsx';
 import { asset } from '../assets.js';
 
 export default function Contact() {
   return (
     <section id="contacto" className="section">
+      <SectionSky patron="senal" />
       <div className="container">
-        <header className="section-head reveal">
-          <span className="kicker"><span className="kicker-num">04</span><span data-es="Trabajemos juntos"
-              data-en="Let's work together">Trabajemos juntos</span></span>
-          <h2 className="section-title" data-es="Contacto" data-en="Contact">Contacto</h2>
-        </header>
+        <SectionHead id="contacto" num="04" kickerEs="Trabajemos juntos" kickerEn="Let&rsquo;s work together"
+          titleEs="Contacto" titleEn="Contact" />
 
         <div className="contact">
           <div className="profile-wrap reveal">

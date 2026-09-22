@@ -1,4 +1,6 @@
 import LogoLoop from './MyComponents/LogoLoop.jsx';
+import SectionSky from './UI/SectionSky.jsx';
+import SectionHead from './UI/SectionHead.jsx';
 import { asset } from '../assets.js';
 
 // Marquesina infinita: reutiliza exactamente los mismos iconos/marcas del grid.
@@ -69,12 +71,10 @@ function Skill({ s }) {
 export default function Skills() {
   return (
     <section id="skills" className="section">
+      <SectionSky patron="bandas" />
       <div className="container">
-        <header className="section-head reveal">
-          <span className="kicker"><span className="kicker-num">02</span><span data-es="Que uso en mi día a día?"
-              data-en="What do I use in my daily life?">Que uso en mi día a día?</span></span>
-          <h2 className="section-title" data-es="Stack & herramientas" data-en="Stack & tools">Stack & herramientas</h2>
-        </header>
+        <SectionHead id="skills" num="02" kickerEs="Que uso en mi día a día?" kickerEn="What do I use in my daily life?"
+          titleEs="Stack & herramientas" titleEn="Stack & tools" />
 
         <div className="skill-groups">
           {GRUPOS.map(g => (
