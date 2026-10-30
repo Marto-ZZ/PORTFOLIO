@@ -1,25 +1,5 @@
-import { Renderer, Program, Mesh, Color, Triangle } from 'ogl';
 import { useEffect, useRef } from 'react';
 import './Galaxy.css';
-
-/* Fondo del hero: shader de galaxia de reactbits.dev (https://reactbits.dev/backgrounds/galaxy),
-   adaptado a los criterios de rendimiento y tema del resto del sitio. El shader
-   en sí (vertex/fragment) NO se tocó, para no arriesgar romperlo a mano; lo
-   que se adaptó es todo lo que lo rodea:
-
-   - El original llama requestAnimationFrame para siempre y sólo deja de
-     avanzar uTime con disableAnimation, pero sigue renderizando cada frame
-     igual (GPU trabajando en vano). Acá el loop se PARA del todo — mismo
-     criterio que Waves/LogoLoop/SaturnSystem — cuando el hero no está en
-     pantalla, la pestaña está oculta, o "Reducir animaciones" está activo.
-   - lightMode se ata al tema del sitio (mismo patrón de MutationObserver
-     sobre data-theme que ya usa el resto del hero): en el tema oscuro es la
-     galaxia normal, transparente sobre el fondo; en el claro usa el modo
-     "tinta" que trae el propio shader, pensado para fondos claros.
-   - mouseInteraction queda apagado: .hero-bg tiene pointer-events:none (para
-     no robarle clicks a los botones y a las lunas de Saturno), así que la
-     repulsión al mouse del componente original necesitaría reescribir esa
-     regla; no se pidió, así que no se toca. */
 
 const vertexShader = `
 attribute vec2 uv;
@@ -213,108 +193,148 @@ export default function Galaxy({
   useEffect(() => {
     if (!ctnDom.current) return;
     const ctn = ctnDom.current;
-    const transparent = true;
-    const renderer = new Renderer({ alpha: transparent, premultipliedAlpha: false });
-    const gl = renderer.gl;
-
-    // El sitio es de un solo tema (oscuro), así que el canvas siempre va
-    // transparente sobre el fondo; el modo "tinta" del shader (uLightMode)
-    // queda sin usar.
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    gl.clearColor(0, 0, 0, 0);
-
-    let program;
-    function resize() {
-      renderer.setSize(ctn.offsetWidth, ctn.offsetHeight);
-      if (program) {
-        program.uniforms.uResolution.value = new Color(
-          gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height
-        );
-      }
-    }
-    window.addEventListener('resize', resize, false);
-    resize();
-
-    const geometry = new Triangle(gl);
-    program = new Program(gl, {
-      vertex: vertexShader,
-      fragment: fragmentShader,
-      uniforms: {
-        uTime: { value: 0 },
-        uResolution: { value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height) },
-        uFocal: { value: new Float32Array(focal) },
-        uRotation: { value: new Float32Array(rotation) },
-        uStarSpeed: { value: starSpeed },
-        uDensity: { value: density },
-        uHueShift: { value: hueShift },
-        uSpeed: { value: speed },
-        uMouse: { value: new Float32Array([0.5, 0.5]) },
-        uGlowIntensity: { value: glowIntensity },
-        uSaturation: { value: saturation },
-        uMouseRepulsion: { value: false },
-        uTwinkleIntensity: { value: twinkleIntensity },
-        uRotationSpeed: { value: rotationSpeed },
-        uRepulsionStrength: { value: 0 },
-        uMouseActiveFactor: { value: 0 },
-        uAutoCenterRepulsion: { value: 0 },
-        uTransparent: { value: transparent },
-        uLightMode: { value: 0 },
-      },
-    });
-
-    const mesh = new Mesh(gl, { geometry, program });
-    ctn.appendChild(gl.canvas);
-
-    // El original programa requestAnimationFrame para siempre y sólo deja de
-    // avanzar uTime con disableAnimation, pero renderiza cada frame igual
-    // (GPU trabajando en vano). Acá el loop se PARA del todo cuando el hero
-    // sale de pantalla, la pestaña queda oculta, o "Reducir animaciones" está
-    // activo -- mismo criterio que Waves/LogoLoop/SaturnSystem en el resto
-    // del sitio.
-    let raf = 0;
-    let running = false;
-    function frame(t) {
-      if (!running) return;
-      raf = requestAnimationFrame(frame);
-      program.uniforms.uTime.value = t * 0.001;
-      program.uniforms.uStarSpeed.value = (t * 0.001 * starSpeed) / 10.0;
-      renderer.render({ scene: mesh });
-    }
-    function start() {
-      if (running) return;
-      running = true;
-      raf = requestAnimationFrame(frame);
-    }
-    function stop() {
-      running = false;
-      if (raf) cancelAnimationFrame(raf);
-      raf = 0;
-    }
-
-    let visible = true;
-    const sync = () => { (visible && !document.hidden && root.getAttribute('data-anim') !== 'off') ? start() : stop(); };
     const root = document.documentElement;
-    const io = new IntersectionObserver(es => { visible = es[0].isIntersecting; sync(); });
-    io.observe(ctn);
-    document.addEventListener('visibilitychange', sync);
-    const animObs = new MutationObserver(sync);
-    animObs.observe(root, { attributes: true, attributeFilter: ['data-anim'] });
-    sync();
-    // primer frame ya, para no depender de que el observer dispare antes de pintar
-    if (!running) renderer.render({ scene: mesh });
+    let cancelado = false;
+    let limpiar = () => {};
+
+    const arrancar = () => {
+      if (cancelado) return;
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl', { alpha: true, depth: false, antialias: false, premultipliedAlpha: false });
+      if (!gl) return;
+      const paralelo = gl.getExtension('KHR_parallel_shader_compile');
+
+      const shader = (tipo, fuente) => {
+        const sh = gl.createShader(tipo);
+        gl.shaderSource(sh, fuente);
+        gl.compileShader(sh);
+        return sh;
+      };
+      const vs = shader(gl.VERTEX_SHADER, vertexShader);
+      const fsh = shader(gl.FRAGMENT_SHADER, fragmentShader);
+      const prog = gl.createProgram();
+      gl.attachShader(prog, vs);
+      gl.attachShader(prog, fsh);
+      gl.linkProgram(prog);
+
+      canvas.style.opacity = '0';
+      canvas.style.transition = 'opacity 0.9s ease';
+      ctn.appendChild(canvas);
+
+      let u = null;
+      const resize = () => {
+        canvas.width = ctn.offsetWidth;
+        canvas.height = ctn.offsetHeight;
+        canvas.style.width = ctn.offsetWidth + 'px';
+        canvas.style.height = ctn.offsetHeight + 'px';
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        if (u) gl.uniform3f(u.uResolution, canvas.width, canvas.height, canvas.width / canvas.height);
+      };
+      window.addEventListener('resize', resize, false);
+      resize();
+
+      const preparar = () => {
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+          console.warn('Galaxy: el shader no compiló', gl.getProgramInfoLog(prog), gl.getShaderInfoLog(fsh));
+          return false;
+        }
+        gl.useProgram(prog);
+        const atributo = (datos, nombre) => {
+          const b = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, b);
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(datos), gl.STATIC_DRAW);
+          const loc = gl.getAttribLocation(prog, nombre);
+          if (loc >= 0) {
+            gl.enableVertexAttribArray(loc);
+            gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+          }
+        };
+        atributo([-1, -1, 3, -1, -1, 3], 'position');
+        atributo([0, 0, 2, 0, 0, 2], 'uv');
+        u = {};
+        for (const n of ['uTime', 'uResolution', 'uFocal', 'uRotation', 'uStarSpeed', 'uDensity', 'uHueShift',
+          'uSpeed', 'uMouse', 'uGlowIntensity', 'uSaturation', 'uMouseRepulsion', 'uTwinkleIntensity',
+          'uRotationSpeed', 'uRepulsionStrength', 'uMouseActiveFactor', 'uAutoCenterRepulsion', 'uTransparent',
+          'uLightMode']) {
+          u[n] = gl.getUniformLocation(prog, n);
+        }
+        gl.uniform3f(u.uResolution, canvas.width, canvas.height, canvas.width / canvas.height);
+        gl.uniform2fv(u.uFocal, focal);
+        gl.uniform2fv(u.uRotation, rotation);
+        gl.uniform1f(u.uDensity, density);
+        gl.uniform1f(u.uHueShift, hueShift);
+        gl.uniform1f(u.uSpeed, speed);
+        gl.uniform2f(u.uMouse, 0.5, 0.5);
+        gl.uniform1f(u.uGlowIntensity, glowIntensity);
+        gl.uniform1f(u.uSaturation, saturation);
+        gl.uniform1i(u.uMouseRepulsion, 0);
+        gl.uniform1f(u.uTwinkleIntensity, twinkleIntensity);
+        gl.uniform1f(u.uRotationSpeed, rotationSpeed);
+        gl.uniform1f(u.uRepulsionStrength, 0);
+        gl.uniform1f(u.uMouseActiveFactor, 0);
+        gl.uniform1f(u.uAutoCenterRepulsion, 0);
+        gl.uniform1i(u.uTransparent, 1);
+        gl.uniform1f(u.uLightMode, 0);
+        gl.clearColor(0, 0, 0, 0);
+        return true;
+      };
+
+      const dibujar = (t) => {
+        gl.uniform1f(u.uTime, t * 0.001);
+        gl.uniform1f(u.uStarSpeed, (t * 0.001 * starSpeed) / 10.0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      };
+
+      let raf = 0, running = false, listo = false;
+      const frame = (t) => { if (!running) return; raf = requestAnimationFrame(frame); dibujar(t); };
+      const start = () => { if (running || !listo) return; running = true; raf = requestAnimationFrame(frame); };
+      const stop = () => { running = false; if (raf) cancelAnimationFrame(raf); raf = 0; };
+
+      let visible = true;
+      const sync = () => { (visible && !document.hidden && root.getAttribute('data-anim') !== 'off') ? start() : stop(); };
+      const io = new IntersectionObserver(es => { visible = es[0].isIntersecting; sync(); });
+      io.observe(ctn);
+      document.addEventListener('visibilitychange', sync);
+      const animObs = new MutationObserver(sync);
+      animObs.observe(root, { attributes: true, attributeFilter: ['data-anim'] });
+
+      let espera = 0;
+      const esperarCompilacion = () => {
+        if (cancelado) return;
+        if (paralelo && !gl.getProgramParameter(prog, paralelo.COMPLETION_STATUS_KHR)) {
+          espera = requestAnimationFrame(esperarCompilacion);
+          return;
+        }
+        if (!preparar()) return;
+        listo = true;
+        dibujar(performance.now());
+        canvas.style.opacity = '1';
+        sync();
+      };
+      espera = requestAnimationFrame(esperarCompilacion);
+
+      limpiar = () => {
+        cancelAnimationFrame(espera);
+        stop();
+        io.disconnect();
+        animObs.disconnect();
+        document.removeEventListener('visibilitychange', sync);
+        window.removeEventListener('resize', resize);
+        canvas.remove();
+        gl.getExtension('WEBGL_lose_context')?.loseContext();
+      };
+    };
+
+    const idle = window.requestIdleCallback
+      ? requestIdleCallback(arrancar, { timeout: 1200 })
+      : setTimeout(arrancar, 300);
 
     return () => {
-      stop();
-      io.disconnect();
-      animObs.disconnect();
-      document.removeEventListener('visibilitychange', sync);
-      window.removeEventListener('resize', resize);
-      ctn.removeChild(gl.canvas);
-      gl.getExtension('WEBGL_lose_context')?.loseContext();
+      cancelado = true;
+      if (window.cancelIdleCallback) cancelIdleCallback(idle); else clearTimeout(idle);
+      limpiar();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- se crea una
-    // sola vez a propósito; ver el comentario de arriba.
   }, []);
 
   return <div ref={ctnDom} className="galaxy-container" aria-hidden="true" {...rest} />;

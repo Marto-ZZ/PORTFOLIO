@@ -1,7 +1,5 @@
 'use strict';
 
-/* Lógica del portfolio portada tal cual desde el script.js original.
-   Se ejecuta una vez tras montar la app de React (DOM ya disponible). */
 export function initPortfolio() {
   const root = document.documentElement;
   const FINE = matchMedia('(pointer: fine)').matches;
@@ -17,13 +15,10 @@ export function initPortfolio() {
 
   const animOn = () => prefs.anim;
 
-  /* /// NAV: fondo, autoocultado, scroll-spy /// */
   const nav = document.getElementById('nav');
   const logoDot = document.querySelector('.nav-logo .dot');
   let lastY = scrollY;
 
-  // Con scroll suave (Lenis) el evento llega en cada frame o más; agrupar en un
-  // rAF evita encadenar recálculos de estilo durante el scroll.
   let navRaf = 0;
   addEventListener('scroll', () => {
     if (navRaf) return;
@@ -59,7 +54,6 @@ export function initPortfolio() {
   }, { rootMargin: '-45% 0px -45% 0px' });
   ids.forEach(id => { const el = document.getElementById(id); if (el) spy.observe(el); });
 
-  /* /// REVELADO COREOGRAFIADO /// */
   let revealIO = null;
   function initReveals() {
     if (!animOn()) return;
@@ -68,16 +62,15 @@ export function initPortfolio() {
         .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
       batch.forEach((entry, i) => {
         const el = entry.target;
-        el.style.setProperty('--reveal-delay', (i * 80) + 'ms');
+        el.style.setProperty('--reveal-delay', Math.min(i, 4) * 60 + 'ms');
         el.classList.add('in');
         revealIO.unobserve(el);
       });
-    }, { threshold: 0.14 });
+    }, { rootMargin: '100000px 0px 0px 0px' });
     document.querySelectorAll('.reveal:not(.in)').forEach(el => revealIO.observe(el));
   }
   initReveals();
 
-  /* /// NOMBRE: las letras suben (sólo en carga) /// */
   (function splitName() {
     const h1 = document.querySelector('.hero-name');
     if (!h1) return;
@@ -91,8 +84,6 @@ export function initPortfolio() {
     lines.forEach(ln => {
       const line = document.createElement('span');
       line.className = 'h-line';
-      // El apellido va en color de marca (no contorno transparente): el tratamiento
-      // visible vive en CSS (.h-line--stroke) para que sea legible y respete el tema.
       if (ln.stroke) line.classList.add('h-line--stroke');
       [...ln.t].forEach(ch => {
         const s = document.createElement('span');
@@ -105,7 +96,6 @@ export function initPortfolio() {
     });
   })();
 
-  /* /// GALERÍAS DE PROYECTO /// */
   const AUTO = 4600;
   const timers = new Map();
 
@@ -136,8 +126,6 @@ export function initPortfolio() {
   }
   function startAuto(g) {
     if (!animOn()) return;
-    // Sólo rotan las galerías visibles: animar slides fuera de pantalla es
-    // paint puro tirado a la basura.
     if (g.dataset.inview === '0') return;
     stopAuto(g);
     timers.set(g, setInterval(() => apply(g, (parseInt(g.dataset.index, 10) || 0) + 1, 1), AUTO));
@@ -148,11 +136,14 @@ export function initPortfolio() {
   window.slideGallery = (btn, dir) => { const g = btn.closest('.gallery'); apply(g, (parseInt(g.dataset.index, 10) || 0) + dir, dir); restart(g); };
   window.goToSlide = (dot, i) => { const g = dot.closest('.gallery'); apply(g, i, 0); restart(g); };
 
+  const iniciales = [];
   document.querySelectorAll('.gallery').forEach(g => {
     const slides = g.querySelectorAll('.slide');
     const active = parseInt(g.dataset.index, 10) || 0;
     slides.forEach((s, i) => {
-      setSlide(s, i === active ? 0 : (i > active ? 1 : -1), { instant: true, z: i === active ? 3 : 1 });
+      s.classList.add('gs-instant');
+      setSlide(s, i === active ? 0 : (i > active ? 1 : -1), { z: i === active ? 3 : 1 });
+      iniciales.push(s);
       s.querySelectorAll('img').forEach(img => img.addEventListener('dragstart', e => e.preventDefault()));
     });
     g.tabIndex = 0;
@@ -178,9 +169,6 @@ export function initPortfolio() {
     g.addEventListener('focusin', () => stopAuto(g));
     g.addEventListener('focusout', () => startAuto(g));
     startAuto(g);
-    // El observer corrige enseguida: apaga las galerías que quedaron fuera de
-    // pantalla y las vuelve a encender al entrar. Arrancar antes de observar
-    // deja el comportamiento igual al anterior si el observer tarda.
     new IntersectionObserver(es => {
       const vis = es[0].isIntersecting;
       g.dataset.inview = vis ? '1' : '0';
@@ -188,7 +176,6 @@ export function initPortfolio() {
     }, { rootMargin: '150px' }).observe(g);
   });
 
-  /* /// SKILLS: color de marca + borde cónico /// */
   const skills = [...document.querySelectorAll('.skill')];
   const glowMap = [
     ['devicon-python-plain', '#4b8bbe'],
@@ -205,9 +192,6 @@ export function initPortfolio() {
   skills.forEach(card => {
     let glow = 'var(--accent-glow)';
     for (const [cls, c] of glowMap) if (card.querySelector('.' + cls)) { glow = c; break; }
-    if (card.querySelector('#ux-ico')) glow = '#cfcfe6';
-    if (card.querySelector('#node-ico')) glow = '#5FA04E';
-    if (card.querySelector('#fastapi-ico')) glow = '#009688';
     card.style.setProperty('--glow', glow);
   });
 
@@ -215,9 +199,6 @@ export function initPortfolio() {
   let px = -999, py = -999, pointerMoved = false;
   const skillsSection = document.getElementById('skills');
   if (skillsSection && FINE) {
-    // Los centros se guardan en coordenadas de página (no cambian al scrollear),
-    // así el frame no vuelve a leer el layout. Se refrescan como mucho 2 veces
-    // por segundo, que alcanza para reveals/resize sin costar un reflow por frame.
     let centers = [], measuredAt = 0;
     const measure = () => {
       const sx = scrollX, sy = scrollY;
@@ -228,8 +209,6 @@ export function initPortfolio() {
       measuredAt = performance.now();
     };
 
-    // El rAF no queda encolado para siempre: corre sólo mientras haya movimiento
-    // real del puntero dentro de la sección, y se apaga solo.
     let raf = 0;
     const loop = () => {
       raf = 0;
@@ -256,31 +235,6 @@ export function initPortfolio() {
     }, { passive: true });
   }
 
-  /* /// BOTONES MAGNÉTICOS (sutil) /// */
-  if (FINE) {
-    document.querySelectorAll('.btn').forEach(el => {
-      // pointermove puede dispararse >100 veces por segundo. Medir y escribir en
-      // cada evento intercala lectura/escritura de layout; agrupando en un rAF
-      // queda como mucho un reflow por frame y sólo del botón bajo el cursor.
-      let raf = 0, mx = 0, my = 0;
-      el.addEventListener('pointermove', e => {
-        if (!animOn()) return;
-        mx = e.clientX; my = e.clientY;
-        if (raf) return;
-        raf = requestAnimationFrame(() => {
-          raf = 0;
-          const r = el.getBoundingClientRect();
-          el.style.transform = `translate(${((mx - (r.left + r.width / 2)) * 0.12).toFixed(1)}px, ${((my - (r.top + r.height / 2)) * 0.18 - 2).toFixed(1)}px)`;
-        });
-      }, { passive: true });
-      el.addEventListener('pointerleave', () => {
-        if (raf) { cancelAnimationFrame(raf); raf = 0; }
-        el.style.transform = '';
-      }, { passive: true });
-    });
-  }
-
-  /* /// IDIOMA ES / EN /// */
   function applyLang(lang) {
     prefs.lang = lang;
     store.set('def-lang', lang);
@@ -294,9 +248,6 @@ export function initPortfolio() {
   });
   applyLang(prefs.lang);
 
-  /* /// PANEL DE AJUSTES ///
-     El sitio pasó a tener un solo tema (oscuro), así que acá sólo queda el
-     control de animaciones. */
   const sBtn = document.getElementById('settingsBtn');
   const sPanel = document.getElementById('settingsPanel');
   const animSwitch = document.getElementById('animSwitch');
@@ -314,9 +265,6 @@ export function initPortfolio() {
     if (e.key === 'Escape' && !sPanel.hidden) { sPanel.hidden = true; sBtn.setAttribute('aria-expanded', 'false'); sBtn.focus(); }
   });
 
-  /* /// MENÚ MÓVIL ///
-     Por debajo de 720px .nav-links se oculta, y hasta ahora no había nada en
-     su lugar: el visitante quedaba sin forma de saltar entre secciones. */
   const burger = document.getElementById('navBurger');
   const navMobile = document.getElementById('navMobile');
   if (burger && navMobile) {
@@ -330,8 +278,6 @@ export function initPortfolio() {
       e.stopPropagation();
       setMenu(navMobile.hidden);
     });
-    // Al tocar un link el menú se cierra solo: si quedara abierto taparía la
-    // sección a la que acaba de saltar.
     navMobile.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
     document.addEventListener('click', e => {
       if (!navMobile.hidden && !e.target.closest('.nav-mobile, .nav-burger')) setMenu(false);
@@ -339,8 +285,6 @@ export function initPortfolio() {
     addEventListener('keydown', e => {
       if (e.key === 'Escape' && !navMobile.hidden) { setMenu(false); burger.focus(); }
     });
-    // Si se agranda la ventana con el menú abierto, .nav-links vuelve a estar
-    // disponible y el panel queda huérfano.
     matchMedia('(min-width: 721px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
   }
 
@@ -362,16 +306,19 @@ export function initPortfolio() {
     }
   });
 
-  /* /// RELOJ DEL FOOTER (hora de Buenos Aires) /// */
-  (function clock() {
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    iniciales.forEach(s => s.classList.remove('gs-instant'));
+  }));
+
+  const cuandoEsteLibre = (fn) => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 2000 }) : setTimeout(fn, 600));
+
+  cuandoEsteLibre(function clock() {
     const el = document.getElementById('footClock');
     if (!el) return;
     try {
       const fmt = new Intl.DateTimeFormat('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Argentina/Buenos_Aires' });
-      const tick = () => { el.textContent = 'Buenos Aires · ' + fmt.format(new Date()); };
+      const tick = () => { el.textContent = 'Buenos Aires, ' + fmt.format(new Date()); };
       tick(); setInterval(tick, 30000);
     } catch { el.textContent = 'Buenos Aires'; }
-  })();
-
-
+  });
 }

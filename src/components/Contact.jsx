@@ -15,7 +15,7 @@ export default function Contact() {
           <div className="profile-wrap reveal">
             <ProfileCard
               name="Martín Sogoloff"
-              title="Software Developer · UX/UI"
+              title="Software Developer - UX/UI"
               handle="Marto-ZZ"
               status="Disponible"
               contactText="Contacto"
@@ -23,8 +23,8 @@ export default function Contact() {
               miniAvatarUrl={asset('/images/profile2.png')}
               iconUrl=""
               grainUrl=""
-              innerGradient="linear-gradient(145deg, var(--accent-soft) 0%, var(--accent-glow) 100%)"
-              behindGlowColor="var(--accent-glow)"
+              innerGradient="linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.09) 100%)"
+              behindGlowColor="rgba(236, 236, 242, 0.28)"
               onContactClick={() => {
                 const target = document.querySelector('.contact-grid');
                 if (!target) return;
@@ -44,8 +44,6 @@ export default function Contact() {
             ¿Tenés un proyecto en mente? Estoy disponible para trabajo, freelance y colaboraciones.
           </p>
 
-          {/* El email es la acción principal: antes las tres vías pesaban
-              exactamente igual y ninguna se leía como "el" siguiente paso. */}
           <div className="contact-grid">
             <a className="contact-card contact-card--primary reveal" href="mailto:martinsogoloff@gmail.com">
               <span className="cc-ico"><i className="fa-solid fa-envelope" aria-hidden="true"></i></span>

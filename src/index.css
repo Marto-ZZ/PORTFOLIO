@@ -7,84 +7,50 @@
 }
 
 :root {
-  /* /// atmósfera: un solo tema, espacial ///
-     Fondo casi negro con tinte azul. Al no tener que funcionar también en
-     claro, el color puede ser más saturado y jugado. */
   --bg: #08080e;
   --bg-elev: #101017;
   --surface: rgba(255, 255, 255, 0.03);
   --surface-2: rgba(255, 255, 255, 0.055);
   --text: #ececf2;
   --text-muted: #a9a9bd;
-  /* antes #61616f: daba 3.24:1 sobre el fondo, por debajo del mínimo AA de
-     4.5:1, y se usaba en etiquetas de 10-12px (lo peor de los dos mundos).
-     Este valor da 6.1:1 sin dejar de leerse como texto secundario. */
   --text-dim: #8c8ca3;
   --border: rgba(255, 255, 255, 0.09);
   --border-strong: rgba(255, 255, 255, 0.17);
 
-  /* /// NEBULOSA: los cuatro colores del sistema ///
-     Una nebulosa real tiene violeta, cian, magenta y oro a la vez, así que
-     ampliar la paleta suma variedad SIN romper la estética espacial.
-     Cada sección se queda con un color (ver "identidad por sección" abajo):
-     no es decoración al azar, es un código que el visitante aprende. */
-  --violeta: #8b7cf6;   /* marca, hero y contacto */
-  --cian: #34d8e8;      /* skills / tecnología */
-  --magenta: #f472b6;   /* proyectos / trabajo */
-  --ambar: #fbbf24;     /* formación / logros */
+  --violeta: #8b7cf6;
+  --cian: #34d8e8;
+  --magenta: #f472b6;
+  --ambar: #fbbf24;
 
   --accent: var(--violeta);
   --accent-2: #a99bff;
   --accent-deep: #6d5ae6;
   --accent-soft: rgba(139, 124, 246, 0.12);
   --accent-glow: rgba(139, 124, 246, 0.35);
-  --hl: rgba(139, 124, 246, 0.32);
   --accent-ink: #08080e;
 
-  /* --sx = acento de la sección actual. Por defecto la marca; cada sección
-     lo pisa más abajo. Los componentes usan var(--sx) en vez de --accent
-     para que hereden el color de donde están parados. */
   --sx: var(--violeta);
 
-  --live: #4ade80;
-  /* Placa de los logos de certificados. Tiene que ser clara (los logos de IBM,
-     Harvard y la UBA vienen en color sobre blanco), pero un blanco puro era lo
-     más brillante de toda la página y se robaba la atención por encima de lo
-     que Martín estudió. Bajado a un gris claro. */
   --logo-plate: #dcdce4;
 
-  /* sintaxis del código (martin.py) */
-  --code-kw: #c4b5fd;
-  --code-str: #86efac;
-  --code-com: #6b7280;
-  --code-fn: #7dd3fc;
-  --code-txt: #d6d6e0;
   --shadow-card: 0 1px 1px rgba(0, 0, 0, 0.3), 0 24px 60px -34px rgba(0, 0, 0, 0.8);
   --grain-o: 0.5;
   --grain-blend: screen;
 
-  /* /// tipografía /// */
   --font-display: "Syne", system-ui, sans-serif;
   --font-body: "DM Sans", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
 
-  /* /// movimiento /// */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-spring: cubic-bezier(0.34, 1.4, 0.5, 1);
   --dur-1: 0.2s;
   --dur-2: 0.45s;
   --dur-3: 0.8s;
 
-  /* /// layout /// */
   --gutter: clamp(1.25rem, 4vw, 4rem);
   --maxw: 1440px;
 }
 
-/* /// IDENTIDAD POR SECCIÓN ///
-   Cada sección se queda con un color de la nebulosa. El kicker numerado, los
-   acentos y los estados hover de esa sección lo heredan vía --sx, así el
-   recorrido por la página cambia de color de a poco en vez de ser violeta de
-   principio a fin. */
 #sobre-mi  { --sx: var(--ambar); }
 #skills    { --sx: var(--cian); }
 #proyectos { --sx: var(--magenta); }
@@ -105,7 +71,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* grano sutil: textura, no ruido */
 body::after {
   content: "";
   position: fixed;
@@ -178,8 +143,6 @@ img {
   transform: translate(-50%, 0);
 }
 
-/* /// NAVBAR /// */
-
 .nav {
   position: fixed;
   top: 0;
@@ -234,6 +197,9 @@ img {
 }
 .nav-links a {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   font-family: var(--font-mono);
   font-size: 0.74rem;
   letter-spacing: 0.1em;
@@ -270,8 +236,6 @@ img {
   gap: 0.6rem;
 }
 
-/* /// MENÚ MÓVIL ///
-   Sólo existe por debajo de 720px, que es donde .nav-links desaparece. */
 .nav-burger {
   display: none;
   width: 44px;
@@ -295,7 +259,6 @@ img {
   background: var(--text);
   transition: transform var(--dur-1) var(--ease), opacity var(--dur-1);
 }
-/* abierto: las dos barras se cruzan en una X */
 .nav-burger.is-open .burger-bar:first-child { transform: translateY(3.25px) rotate(45deg); }
 .nav-burger.is-open .burger-bar:last-child { transform: translateY(-3.25px) rotate(-45deg); }
 
@@ -320,9 +283,9 @@ img {
   from { opacity: 0; transform: translateY(-8px); }
 }
 .nav-mobile a {
-  /* 48px de alto: objetivo táctil cómodo, no los 27px de los links de escritorio */
   display: flex;
   align-items: center;
+  gap: 0.8rem;
   min-height: 48px;
   padding: 0 0.9rem;
   border-radius: 10px;
@@ -339,7 +302,6 @@ img {
   background: color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
-/* idioma: pastilla segmentada */
 .lang-seg {
   display: inline-flex;
   border: 1px solid var(--border);
@@ -364,7 +326,6 @@ img {
   color: var(--accent-ink);
 }
 
-/* /// ajustes /// */
 .settings {
   position: relative;
 }
@@ -446,35 +407,6 @@ img {
   margin-left: 0.35em;
 }
 
-.seg {
-  display: inline-flex;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  overflow: hidden;
-}
-.seg-btn {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  padding: 0.34rem 0.62rem;
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: color var(--dur-1), background var(--dur-1);
-}
-.seg-btn + .seg-btn {
-  border-left: 1px solid var(--border);
-}
-.seg-btn:hover {
-  color: var(--text);
-}
-.seg-btn.is-on {
-  background: var(--accent);
-  color: var(--accent-ink);
-}
-
-/* switch premium */
 .switch {
   position: relative;
   width: 42px;
@@ -505,7 +437,24 @@ img {
   background: var(--accent-ink);
 }
 
-/* /// HERO /// */
+@media (pointer: coarse) {
+  .lang-opt,
+  .settings-btn {
+    position: relative;
+  }
+  .lang-opt {
+    padding-inline: 0.8rem;
+  }
+  .lang-opt::after,
+  .settings-btn::after {
+    content: "";
+    position: absolute;
+    inset: -9px 0;
+  }
+  .settings-btn::after {
+    inset: -4px;
+  }
+}
 
 .hero {
   position: relative;
@@ -535,8 +484,6 @@ img {
   position: relative;
   z-index: 1;
   display: grid;
-  /* el sistema planetario necesita más aire que la vieja ventana de código:
-     las órbitas exteriores y sus etiquetas ocupan bastante más ancho */
   grid-template-columns: 0.86fr 1.14fr;
   gap: clamp(2rem, 4vw, 3rem);
   align-items: center;
@@ -547,15 +494,6 @@ img {
   min-width: 0;
 }
 
-.hero-kicker {
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 1.6rem;
-}
- 
 .hero-name {
   position: relative;
   font-family: var(--font-display);
@@ -565,16 +503,6 @@ img {
   letter-spacing: -0.035em;
   color: var(--text);
 }
-.hero-lastname {
-  position: relative;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(3.2rem, 5.2vw, 7rem);
-  line-height: 1;
-  letter-spacing: -0.035em;
-  color: var(--accent-deep);
-}
-/* Ocultar el nombre antes de que JS lo divida en caracteres para evitar flash */
 html.js[data-anim="on"] .hero-name {
   visibility: hidden;
 }
@@ -582,10 +510,6 @@ html.js[data-anim="on"] .hero-name .h-line {
   visibility: visible;
 }
 
-/* Apellido "Sogoloff": relleno de marca con leve profundidad mono-tono.
-   Reemplaza el viejo contorno transparente, que se perdía sobre el fondo de olas.
-   El relleno va por letra (.h-ch) porque cada glifo vive en su propio span;
-   color sólido como fallback si background-clip:text no está disponible. */
 .h-line--stroke {
   color: var(--accent-2);
 }
@@ -605,7 +529,6 @@ html.js[data-anim="on"] .hero-name .h-line {
   -webkit-text-fill-color: transparent;
 }
 
-/* entrada del nombre: las letras suben (sólo en carga, no sigue al mouse) */
 .h-line {
   display: block;
   overflow: hidden;
@@ -618,12 +541,11 @@ html.js[data-anim="on"] .hero-name .h-line {
   display: inline-block;
 }
 html.js[data-anim="on"] .h-ch {
-  transform: translateY(115%);
-  animation: ch-rise 0.85s var(--ease) both;
+  animation: ch-rise 0.85s var(--ease) backwards;
   animation-delay: calc(0.15s + var(--i, 0) * 0.04s);
 }
 @keyframes ch-rise {
-  to { transform: translateY(0); }
+  from { transform: translateY(115%); }
 }
 
 .hero-lead {
@@ -631,8 +553,6 @@ html.js[data-anim="on"] .h-ch {
   margin-top: 2rem;
   font-size: 1.12rem;
   line-height: 1.7;
-  /* casi del color de texto principal: es el claim del hero y va sobre el fondo
-     animado, así que prioriza la lectura sin perder jerarquía frente al nombre */
   color: color-mix(in srgb, var(--text) 84%, var(--text-muted));
 }
 
@@ -642,8 +562,10 @@ html.js[data-anim="on"] .h-ch {
   gap: 1rem;
   margin-top: 2.6rem;
 }
+@media (max-width: 420px) {
+  .hero-ctas .btn { padding-inline: 1.1rem; }
+}
 
-/* botones: pastilla, nunca cuadrados */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -656,148 +578,28 @@ html.js[data-anim="on"] .h-ch {
   border-radius: 999px;
   border: 1px solid transparent;
   cursor: pointer;
-  transition:
-    transform var(--dur-1) var(--ease),
-    box-shadow var(--dur-2) var(--ease),
-    background var(--dur-1),
-    border-color var(--dur-1),
-    color var(--dur-1);
 }
 .btn-primary {
   background: var(--accent);
   color: var(--accent-ink);
   box-shadow: 0 8px 24px -10px var(--accent-glow);
 }
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 34px -10px var(--accent-glow);
-  background: var(--accent-2);
-}
 .btn-ghost {
   background: var(--surface);
   border-color: var(--border-strong);
   color: var(--text);
 }
-.btn-ghost:hover {
-  transform: translateY(-2px);
-  border-color: var(--accent);
-  color: var(--accent);
-}
-.btn-arrow {
-  transition: transform var(--dur-1) var(--ease);
-}
-.btn-primary:hover .btn-arrow {
-  transform: translateX(4px);
-}
-
-/* /// ventana de código martin.py /// */
-/* wrapper de Atropos (parallax 3D): ocupa la columna y respeta el redondeo */
-.code-atropos {
-  width: 100%;
-  max-width: 33rem;
-  margin-inline: auto;
-}
-.code-atropos .atropos-inner {
-  border-radius: 14px;
-}
-.code-atropos .code-window {
-  width: 100%;
-}
-.code-window {
-  background: var(--bg-elev);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
-  font-family: var(--font-mono);
-  font-size: 0.88rem;
-  box-shadow: var(--shadow-card);
-  position: relative;
-  min-width: 340px;
-}
-.code-window::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: 0.6;
-}
-.code-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.7rem 1rem;
-  background: color-mix(in srgb, var(--bg) 55%, transparent);
-  border-bottom: 1px solid var(--border);
-}
-.code-dot {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  transition: transform var(--dur-1) var(--ease);
-}
-.code-dot.red { background: #ff5f57; }
-.code-dot.yellow { background: #febc2e; }
-.code-dot.green { background: #28c840; cursor: pointer; }
-.code-dot.green:hover {
-  transform: scale(1.35);
-  box-shadow: 0 0 10px rgba(40, 200, 64, 0.7);
-}
-.code-file {
-  margin-left: 0.5rem;
-  color: var(--text-dim);
-  font-size: 0.72rem;
-}
-.code-body {
-  margin: 0;
-  padding: 1.5rem 1.8rem;
-  min-height: 340px;
-  white-space: pre;
-  line-height: 1.7;
-  overflow: hidden;
-  position: relative;
-}
-.code-body::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 1.7em;
-  background: linear-gradient(90deg, transparent, rgba(40, 200, 64, 0.12), transparent);
-  opacity: 0;
-  pointer-events: none;
-}
-.code-window.running .code-body::after {
-  animation: code-run 0.8s var(--ease);
-}
-@keyframes code-run {
-  0% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(260px); }
-}
-.tw-caret {
-  color: var(--accent);
-  animation: blink 0.85s step-end infinite;
-}
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-/* /// SECCIONES /// */
 
 .section {
   padding: clamp(5rem, 12vh, 9rem) 0;
   position: relative;
 }
 
-/* línea decorativa sutil entre secciones */
 .section::before {
   content: "";
   position: absolute;
   top: 0;
+  z-index: 1;
   left: 50%;
   transform: translateX(-50%);
   width: min(80%, 600px);
@@ -811,8 +613,6 @@ html.js[data-anim="on"] .h-ch {
   gap: clamp(1rem, 2vw, 1.6rem);
   margin-bottom: clamp(2.6rem, 6vh, 4.2rem);
 }
-/* El numeral y el título pasan a apilarse al lado de la luna: antes iban en
-   una sola línea y el título quedaba desplazado hacia la derecha. */
 .section-head-txt {
   display: flex;
   flex-direction: column;
@@ -843,27 +643,13 @@ html.js[data-anim="on"] .h-ch {
   color: var(--text);
   flex-shrink: 0;
 }
-.rule {
-  display: none;
-}
-html.js[data-anim="on"] .reveal .rule,
-html.js[data-anim="on"] .section-head.reveal .rule {
-  transform: scaleX(0);
-  transition: transform 1s var(--ease) 0.2s;
-}
-html.js[data-anim="on"] .section-head.reveal.in .rule {
-  transform: scaleX(1);
-}
 
-/* tarjeta base */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: clamp(1.6rem, 3vw, 2.4rem);
   box-shadow: var(--shadow-card);
-  /* sin backdrop-filter: detrás de esta tarjeta sólo hay fondo plano, así que el
-     desenfoque no se ve, pero obliga a recomponer el fondo en cada frame de scroll */
   transition: border-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease), transform var(--dur-2) var(--ease);
 }
 .card:hover {
@@ -872,11 +658,6 @@ html.js[data-anim="on"] .section-head.reveal.in .rule {
   transform: translateY(-3px);
 }
 
-/* /// SUPERFICIES TEÑIDAS POR SECCIÓN ///
-   Todo lo que es una "caja" toma el color de su luna en el borde superior y en
-   el resplandor del hover. Es sutil a propósito: alcanza para que las tarjetas
-   se sientan parte del lugar donde están, sin convertir cada sección en un
-   tema distinto ni romper la coherencia del sitio. */
 .section .card,
 .section .project,
 .section .contact-card,
@@ -902,8 +683,6 @@ html.js[data-anim="on"] .section-head.reveal.in .rule {
   margin-bottom: 1.4rem;
 }
 
-/* /// 01 · sobre mí /// */
-/* bio centrada (ancho de lectura cómodo) y Formación abajo, más ancha */
 .about-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -925,8 +704,6 @@ html.js[data-anim="on"] .section-head.reveal.in .rule {
   color: var(--text-muted);
   max-width: 65ch;
 }
-/* conceptos clave resaltados con color: texto en acento + marcador
-   semitransparente que se "pinta" al entrar en vista (estilo OG) */
 .bio-p b {
   color: color-mix(in srgb, var(--sx) 82%, #fff);
   font-weight: 600;
@@ -952,13 +729,9 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
 .edu-list {
   list-style: none;
   display: grid;
-  /* Eran 3 columnas fijas con 5 certificados: la segunda fila quedaba con dos
-     tarjetas y un hueco. Con auto-fit entran las 5 en una fila en desktop y
-     reflowean solas cuando no hay lugar, sin huérfanas. */
   grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
   gap: 1rem;
 }
-/* cada certificado: tarjeta vertical con sticker grande arriba */
 .edu-item {
   position: relative;
   display: flex;
@@ -976,7 +749,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
 .edu-item:hover {
   border-color: var(--border-strong);
 }
-/* "zócalo" donde vive el sticker; queda visible al despegarlo/arrastrarlo */
 .edu-logo-slot {
   width: 80px;
   height: 80px;
@@ -985,20 +757,15 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   border: 1px dashed var(--border);
   background: var(--surface);
 }
-/* el logo, como sticker despegable y arrastrable dentro de su carta */
 .edu-sticker {
   top: 1.6rem;
   left: 50%;
   margin-left: -40px;
   z-index: 3;
 }
-/* el <svg> de filtros es inline y generaba una línea vacía (~27px) que
-   inflaba la caja del sticker y descuadraba los límites del arrastre */
 .edu-sticker > svg {
   display: block;
 }
-/* cuadrado fijo: así el centrado y los límites del drag no dependen del
-   aspect-ratio de cada logo */
 .edu-sticker .sticker-image,
 .edu-sticker .flap-image {
   display: block;
@@ -1038,7 +805,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   color: var(--sx);
 }
 
-/* /// 02 · skills /// */
 .skill-groups {
   display: flex;
   flex-direction: column;
@@ -1055,7 +821,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   align-items: center;
   gap: 0.8rem;
 }
-/* línea que sale del rótulo y se apaga: separa los grupos sin meter cajas */
 .skill-group-label::after {
   content: "";
   flex: 1;
@@ -1065,14 +830,10 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
 
 .skills-grid {
   display: grid;
-  /* auto-fill con ancho mínimo: los grupos tienen 5, 4 y 3 ítems y así ninguno
-     deja huecos raros ni obliga a tocar el número de columnas por breakpoint */
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 1.1rem;
 }
 
-/* "UX / UI" no tiene logo de marca: se dibuja con la tipografía display, del
-   color de la sección, para que tenga el mismo peso visual que los íconos. */
 .skill-glyph {
   font-family: var(--font-display);
   font-weight: 800;
@@ -1082,8 +843,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   line-height: 1;
 }
 
-/* marquesina infinita de tecnologías (LogoLoop) — full-bleed: ocupa todo el
-   ancho del viewport para que los degradados laterales lleguen a los bordes */
 .skills-marquee {
   position: relative;
   width: 100vw;
@@ -1094,8 +853,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
-/* logos atenuados en gris (textura ambiente, no compiten con el grid de arriba);
-   recuperan color al pasar el cursor */
 .skills-marquee .logoloop__node {
   color: var(--text-muted);
   filter: grayscale(1);
@@ -1110,14 +867,12 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   display: block;
 }
 
-/* tarjeta de perfil con tilt 3D (ProfileCard) */
 .profile-wrap {
   display: flex;
   justify-content: center;
   margin-bottom: clamp(2.4rem, 5vh, 3.4rem);
 }
 
-/* banda de texto que reacciona al scroll (ScrollVelocity) */
 .velocity-band {
   padding: clamp(2.4rem, 7vh, 5rem) 0;
   position: relative;
@@ -1147,7 +902,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
     box-shadow var(--dur-2) var(--ease),
     transform var(--dur-2) var(--ease);
 }
-/* borde cónico que apunta al cursor (--ang lo escribe el JS) */
 .skill::before {
   content: "";
   position: absolute;
@@ -1205,7 +959,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   color: var(--text);
 }
 
-/* /// 03 · proyectos /// */
 .projects {
   display: flex;
   flex-direction: column;
@@ -1221,7 +974,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   border-radius: 22px;
   padding: clamp(1rem, 1.6vw, 1.4rem);
   box-shadow: var(--shadow-card);
-  /* ídem .card: el desenfoque de fondo acá no aporta y encarece el scroll */
   transition: border-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease), transform var(--dur-2) var(--ease);
 }
 .project:hover {
@@ -1246,8 +998,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
 .project-index span:first-child {
   color: var(--text-dim);
 }
-/* Vestige es la startup de Martín, no un proyecto más: la etiqueta lo marca
-   sin romper la grilla ni duplicar la tarjeta. */
 .project-flag {
   display: inline-block;
   margin-right: 0.7rem;
@@ -1259,8 +1009,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
 }
 .project-flag + span { color: var(--text-dim); }
 
-/* Rol y estado: lo que alguien que contrata quiere saber (qué hizo él, no
-   sólo qué hace el producto). */
 .project-role {
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -1287,7 +1035,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   margin-bottom: 1.4rem;
   max-width: 46ch;
 }
-/* stack como fila de iconos (las marcas conservan su color; lo mono usa la tinta) */
 .project-stack {
   list-style: none;
   display: flex;
@@ -1317,7 +1064,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   display: block;
   line-height: 1;
 }
-/* cada icono del stack lleva a su documentación oficial / Wikipedia */
 .project-stack li a {
   display: grid;
   place-items: center;
@@ -1349,7 +1095,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   transform: translateY(-2px);
 }
 
-/* galería */
 .project-media {
   position: relative;
 }
@@ -1420,9 +1165,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
 .gallery:focus-within .gal-btn {
   opacity: 1;
 }
-/* En pantallas sin hover (táctiles) los controles quedaban invisibles para
-   siempre: no hay forma de "pasar el cursor". Ahí van siempre visibles y con
-   un objetivo táctil cómodo. */
 @media (hover: none) {
   .gal-btn {
     opacity: 1;
@@ -1474,7 +1216,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   background: var(--accent);
 }
 
-/* /// 04 · contacto /// */
 .contact {
   text-align: center;
 }
@@ -1493,7 +1234,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   grid-template-columns: repeat(3, 1fr);
   gap: 1.1rem;
 }
-/* las tres vías de contacto: misma jerarquía exacta */
 .contact-card {
   position: relative;
   display: flex;
@@ -1505,7 +1245,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   border: 1px solid var(--border);
   border-radius: 18px;
   overflow: hidden;
-  /* ídem .card: el desenfoque de fondo acá no aporta y encarece el scroll */
   transition: border-color var(--dur-2) var(--ease), transform var(--dur-2) var(--ease), background var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
 }
 .contact-card:hover {
@@ -1515,8 +1254,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   box-shadow: 0 20px 50px -18px var(--accent-glow);
 }
 
-/* /// jerarquía de contacto ///
-   El email es la vía principal; LinkedIn y GitHub quedan como alternativas. */
 .contact-card--primary {
   border-color: color-mix(in srgb, var(--accent) 45%, transparent);
   background: color-mix(in srgb, var(--accent) 7%, var(--surface));
@@ -1574,8 +1311,6 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   word-break: break-word;
 }
 
-
-/* /// FOOTER /// */
 .footer {
   border-top: 1px solid var(--border);
   padding: 2.2rem 0;
@@ -1597,10 +1332,9 @@ html.js[data-anim="on"] .bio-card.reveal.in .bio-p b {
   font-variant-numeric: tabular-nums;
 }
 
-/* /// REVELADO /// */
 html.js[data-anim="on"] .reveal {
   opacity: 0;
-  transform: translateY(26px);
+  transform: translateY(18px);
   transition:
     opacity var(--dur-3) var(--ease),
     transform var(--dur-3) var(--ease);
@@ -1611,14 +1345,10 @@ html.js[data-anim="on"] .reveal.in {
   transform: none;
 }
 
-/* /// RESPONSIVE /// */
 @media (max-width: 960px) {
   .hero-inner {
     grid-template-columns: 1fr;
     gap: 2.5rem;
-  }
-  .code-atropos {
-    max-width: 30rem;
   }
   .project,
   .project:nth-child(even) {
@@ -1633,7 +1363,6 @@ html.js[data-anim="on"] .reveal.in {
   .nav-links {
     display: none;
   }
-  /* toma su lugar el menú desplegable */
   .nav-burger {
     display: flex;
   }
@@ -1658,12 +1387,6 @@ html.js[data-anim="on"] .reveal.in {
   }
 }
 
-@media (max-width: 420px) {
-}
-
-/* /// MOVIMIENTO REDUCIDO / DESACTIVADO ///
-   El atributo data-anim="off" lo controla el panel de ajustes; el
-   media query cubre a quien lo pide a nivel sistema. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1677,7 +1400,3 @@ html[data-anim="off"] *::after {
   transition-duration: 0.001ms !important;
   scroll-behavior: auto !important;
 }
-/* Antes ocultaba .hero-bg entero: tenía sentido cuando era el canvas de las
-   ondas animadas, pero el campo de estrellas es fondo, no movimiento — con
-   animaciones reducidas se queda quieto (por la regla de arriba) en vez de
-   desaparecer del todo. */

@@ -128,7 +128,6 @@
   cursor: grabbing;
 }
 
-/* Mobile-specific optimizations */
 @media (hover: none) and (pointer: coarse) {
   .draggable {
     cursor: default;
@@ -147,12 +146,4 @@
 .sticker-main,
 .flap {
   will-change: clip-path, transform;
-}
-
-.sticker-ripple {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.6);
-  pointer-events: none;
-  z-index: 10;
 }

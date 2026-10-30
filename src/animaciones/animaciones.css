@@ -1,0 +1,151 @@
+html[data-saltando] .nav.hidden {
+  transform: none;
+}
+
+.trayecto {
+  display: none;
+}
+.trayecto-barra {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 210;
+  height: 2px;
+  pointer-events: none;
+  background: linear-gradient(90deg, var(--ambar), var(--cian), var(--magenta), var(--violeta));
+  transform-origin: left;
+  transform: scaleX(var(--avance, 0));
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease);
+}
+.trayecto-barra.en-viaje {
+  opacity: 0.9;
+}
+@media (min-width: 1024px) and (pointer: fine) {
+  .trayecto-barra {
+    display: none;
+  }
+}
+@media (min-width: 1024px) and (pointer: fine) {
+  .trayecto {
+    position: fixed;
+    top: 50%;
+    right: clamp(0.4rem, 0.9vw, 1.4rem);
+    z-index: 150;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    translate: 0 -50%;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(14px);
+    transition:
+      opacity var(--dur-2) var(--ease),
+      transform var(--dur-2) var(--ease),
+      visibility 0s linear var(--dur-2);
+  }
+  .trayecto.en-viaje {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+  }
+}
+.trayecto-orbita {
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  left: 50%;
+  width: 1px;
+  translate: -50% 0;
+  background: var(--border-strong, var(--border));
+}
+.trayecto-avance {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(var(--ambar), var(--cian), var(--magenta), var(--violeta));
+  transform-origin: top;
+  transform: scaleY(var(--avance, 0));
+  opacity: 0.8;
+}
+.trayecto-luna {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--text-dim);
+  transition: color var(--dur-1) var(--ease);
+}
+.trayecto-luna::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--bg);
+}
+.trayecto-luna .doodle {
+  transition: transform var(--dur-2) var(--ease), filter var(--dur-2) var(--ease);
+}
+.trayecto-luna:hover,
+.trayecto-luna:focus-visible,
+.trayecto-luna.active {
+  color: var(--luna);
+}
+.trayecto-luna:hover .doodle {
+  transform: rotate(-18deg);
+}
+.trayecto-luna.active .doodle {
+  transform: scale(1.3);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--luna) 55%, transparent));
+}
+.trayecto-nombre {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 0.55rem);
+  translate: 0 -50%;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--luna) 32%, transparent);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  color: var(--luna);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
+}
+.trayecto-luna:hover .trayecto-nombre,
+.trayecto-luna:focus-visible .trayecto-nombre,
+.trayecto-luna.llega .trayecto-nombre {
+  opacity: 1;
+  transform: none;
+}
+
+.nav .nav-links a::after { background: var(--luna, var(--accent)); }
+.nav-luna {
+  opacity: 0.55;
+  transition: color var(--dur-1), opacity var(--dur-1), transform var(--dur-2) var(--ease);
+}
+.nav-links a:hover .nav-luna,
+.nav-links a.active .nav-luna,
+.nav-mobile a:hover .nav-luna,
+.nav-mobile a.active .nav-luna {
+  color: var(--luna);
+  opacity: 1;
+}
+.nav-links a:hover .nav-luna { transform: rotate(-18deg); }
+
+.section:not(.lista) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1200px;
+}

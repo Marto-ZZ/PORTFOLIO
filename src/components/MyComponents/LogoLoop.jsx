@@ -19,7 +19,6 @@ const useResizeObserver = (callback, elements, dependencies) => {
       observer.observe(ref.current);
       return observer;
     });
-    callback();
     return () => {
       observers.forEach(observer => observer?.disconnect());
     };
@@ -30,13 +29,13 @@ const useImageLoader = (seqRef, onLoad, dependencies) => {
   useEffect(() => {
     const images = seqRef.current?.querySelectorAll('img') ?? [];
     if (images.length === 0) {
-      onLoad();
-      return;
+      const raf = requestAnimationFrame(onLoad);
+      return () => cancelAnimationFrame(raf);
     }
     let remainingImages = images.length;
     const handleImageLoad = () => {
       remainingImages -= 1;
-      if (remainingImages === 0) onLoad();
+      if (remainingImages === 0) requestAnimationFrame(onLoad);
     };
     images.forEach(img => {
       const htmlImg = img;

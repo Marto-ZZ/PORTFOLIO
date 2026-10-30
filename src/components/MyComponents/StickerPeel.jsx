@@ -50,20 +50,23 @@ const StickerPeel = ({
     const target = dragTargetRef.current;
     const boundsEl = target.parentNode;
 
-    draggableInstanceRef.current = Draggable.create(target, {
-      type: 'x,y',
-      bounds: boundsEl,
-      inertia: true,
-      onDrag() {
-        const rot = gsap.utils.clamp(-24, 24, this.deltaX * 0.4);
-        gsap.to(target, { rotation: rot, duration: 0.15, ease: 'power1.out' });
-      },
-      onDragEnd() {
-        const rotationEase = 'power2.out';
-        const duration = 0.8;
-        gsap.to(target, { rotation: 0, duration, ease: rotationEase });
-      }
-    })[0];
+    const crear = () => {
+      draggableInstanceRef.current = Draggable.create(target, {
+        type: 'x,y',
+        bounds: boundsEl,
+        inertia: true,
+        onDrag() {
+          const rot = gsap.utils.clamp(-24, 24, this.deltaX * 0.4);
+          gsap.to(target, { rotation: rot, duration: 0.15, ease: 'power1.out' });
+        },
+        onDragEnd() {
+          const rotationEase = 'power2.out';
+          const duration = 0.8;
+          gsap.to(target, { rotation: 0, duration, ease: rotationEase });
+        }
+      })[0];
+    };
+    const idle = window.requestIdleCallback ? requestIdleCallback(crear, { timeout: 3000 }) : setTimeout(crear, 800);
 
     const handleResize = () => {
       if (draggableInstanceRef.current) {
@@ -96,6 +99,7 @@ const StickerPeel = ({
     window.addEventListener('orientationchange', handleResize);
 
     return () => {
+      if (window.cancelIdleCallback) cancelIdleCallback(idle); else clearTimeout(idle);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('orientationchange', handleResize);
       if (draggableInstanceRef.current) {

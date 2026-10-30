@@ -3,7 +3,6 @@ import SectionSky from './UI/SectionSky.jsx';
 import SectionHead from './UI/SectionHead.jsx';
 import { asset } from '../assets.js';
 
-// Marquesina infinita: reutiliza exactamente los mismos iconos/marcas del grid.
 const techLogos = [
   { node: <i className="devicon-python-plain colored" />, title: 'Python', href: 'https://www.python.org/' },
   { node: <i className="devicon-javascript-plain colored" />, title: 'JavaScript', href: 'https://developer.mozilla.org/docs/Web/JavaScript' },
@@ -19,10 +18,6 @@ const techLogos = [
   { node: <i className="devicon-figma-plain colored" />, title: 'Figma', href: 'https://www.figma.com/' },
 ];
 
-/* Agrupado por rol en vez de una pared plana de logos: un muro de 12 marcas
-   sin jerarquía es lo que tiene cualquier portfolio y no dice nada; agrupado
-   cuenta CÓMO trabaja (dónde se para en el stack) sin agregar texto de más.
-   Además 5+4+3 cae en filas prolijas en todos los breakpoints. */
 const GRUPOS = [
   {
     es: 'Frontend', en: 'Frontend',
@@ -47,8 +42,6 @@ const GRUPOS = [
     es: 'Diseño & flujo', en: 'Design & workflow',
     items: [
       { name: 'Figma', href: 'https://www.figma.com/', icon: 'devicon-figma-plain colored' },
-      // Antes era un PNG gris que sobre fondo oscuro quedaba casi invisible.
-      // Como es texto, va como texto: se lee siempre y escala sin pixelarse.
       { name: 'UX / UI', href: 'https://en.wikipedia.org/wiki/User_experience_design', glyph: 'UX' },
       { name: 'Git / GitHub', href: 'https://github.com/Marto-ZZ', icon: 'devicon-github-original' },
     ],

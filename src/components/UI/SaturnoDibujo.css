@@ -1,0 +1,12 @@
+.sat-tinta {
+  fill: none;
+  stroke: var(--sat-line, #e8e4ff);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sat-tinta--tenue { opacity: 0.55; }
+
+.sat-tinta--sombra { opacity: 0.8; }
+
+.sat-fondo { fill: var(--bg, #08080e); }

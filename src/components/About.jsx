@@ -3,8 +3,6 @@ import SectionSky from './UI/SectionSky.jsx';
 import SectionHead from './UI/SectionHead.jsx';
 import { asset } from '../assets.js';
 
-// Lista de certificados/formación. Para sumar uno nuevo, agregá un objeto acá:
-// el logo se vuelve un sticker despegable y arrastrable sobre su propia carta.
 const certificates = [
   {
     logo: asset('/images/logo-uba.svg'), alt: 'Universidad de Buenos Aires',
@@ -72,9 +70,6 @@ export default function About() {
 
         <div className="about-grid">
           <article className="card bio-card reveal">
-            {/* Un solo resaltado por párrafo, y corto. Antes eran ocho, varios
-                de ellos frases enteras: cuando todo está resaltado, nada
-                resalta, y encima llenaba el bloque de manchas de color. */}
             <p className="bio-p"
               data-es="Soy Martín, desarrollador de software y estudiante de <b>Ciencias de la Computación en la UBA</b>. Construyo productos de punta a punta, del frontend al backend, traduciendo lógica compleja en experiencias claras, sólidas y bien resueltas."
               data-en="I'm Martín, a software developer and <b>Computer Science student at UBA</b>. I build products end to end, from frontend to backend, turning complex logic into clear, solid and well-resolved experiences.">

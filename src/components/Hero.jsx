@@ -1,26 +1,12 @@
-import { useEffect, useState } from 'react';
-import Starfield from './UI/Starfield.jsx';
 import Galaxy from './UI/Galaxy.jsx';
 import SaturnSystem from './UI/SaturnSystem.jsx';
-
-// Se está probando el fondo Galaxy (reactbits.dev) en reemplazo de Starfield.
-// ?fondo=starfield vuelve al anterior sin tocar código, para comparar.
-function useHeroBg() {
-  const [bg, setBg] = useState('galaxy');
-  useEffect(() => {
-    const q = new URLSearchParams(location.search).get('fondo');
-    if (q === 'starfield' || q === 'galaxy') setBg(q);
-  }, []);
-  return bg;
-}
+import { Cohete, Satelite } from './UI/Doodles.jsx';
 
 export default function Hero() {
-  const bg = useHeroBg();
-
   return (
     <section id="inicio" className="hero">
       <div className="hero-bg" aria-hidden="true">
-        {bg === 'starfield' ? <Starfield /> : <Galaxy />}
+        <Galaxy />
       </div>
 
       <div className="container hero-inner">
@@ -28,19 +14,23 @@ export default function Hero() {
           <h1 className="hero-name">Martín<span>Sogoloff</span></h1>
 
           <p className="hero-lead"
-            data-es="Desarrollador de software y diseñador UX/UI."
-            data-en="Software developer and UX/UI designer.">
-            Desarrollador de software y diseñador UX/UI.
+            data-es="Desarrollador fullstack & software."
+            data-en="Fullstack & software developer.">
+            Desarrollador fullstack &amp; software.
           </p>
 
           <div className="hero-ctas">
-            <a className="btn btn-primary" href="#proyectos" data-es="Ver proyectos" data-en="View projects">Ver proyectos
-              <span className="btn-arrow" aria-hidden="true">→</span></a>
-            <a className="btn btn-ghost" href="#contacto" data-es="Contacto" data-en="Get in touch">Contacto</a>
+            <a className="btn btn-primary" href="#proyectos">
+              <span data-es="Ver proyectos" data-en="View projects">Ver proyectos</span>
+              <Cohete size={18} />
+            </a>
+            <a className="btn btn-ghost" href="#contacto">
+              <Satelite size={17} />
+              <span data-es="Contacto" data-en="Get in touch">Contacto</span>
+            </a>
           </div>
         </div>
 
-        {/* Sistema planetario: cada luna con nombre lleva a una sección */}
         <SaturnSystem />
       </div>
     </section>

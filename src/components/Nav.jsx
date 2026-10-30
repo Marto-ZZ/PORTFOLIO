@@ -1,24 +1,30 @@
-/* El menú móvil se renderiza siempre y se muestra/oculta por CSS + una clase
-   que togglea portfolioEffects.js, en vez de con estado de React. Es a
-   propósito: el cambio de idioma reescribe el innerHTML de todo lo que tenga
-   data-es/data-en, y si React re-renderizara el nav al abrir el menú, pisaría
-   esa traducción y los links volverían al español. */
+import { Planetita } from './UI/Doodles.jsx';
+
+export const LINKS = [
+  { href: '#sobre-mi', es: 'Sobre mí', en: 'About', luna: 'rocosa', color: '--ambar' },
+  { href: '#skills', es: 'Skills', en: 'Skills', luna: 'gaseosa', color: '--cian' },
+  { href: '#proyectos', es: 'Proyectos', en: 'Projects', luna: 'volcanica', color: '--magenta' },
+  { href: '#contacto', es: 'Contacto', en: 'Contact', luna: 'helada', color: '--violeta' },
+];
+
+function NavLink({ l, size }) {
+  return (
+    <a href={l.href} style={{ '--luna': `var(${l.color})` }}>
+      <Planetita tipo={l.luna} size={size} className="nav-luna" />
+      <span data-es={l.es} data-en={l.en}>{l.es}</span>
+    </a>
+  );
+}
+
 export default function Nav() {
-  const links = [
-    { href: '#sobre-mi', es: 'Sobre mí', en: 'About' },
-    { href: '#skills', es: 'Skills', en: 'Skills' },
-    { href: '#proyectos', es: 'Proyectos', en: 'Projects' },
-    { href: '#contacto', es: 'Contacto', en: 'Contact' },
-  ];
+  const links = LINKS;
 
   return (
     <header className="nav" id="nav">
       <a className="nav-logo" href="#inicio" aria-label="Inicio">MS<span className="dot">.</span></a>
 
       <nav className="nav-links" aria-label="Secciones">
-        {links.map(l => (
-          <a key={l.href} href={l.href} data-es={l.es} data-en={l.en}>{l.es}</a>
-        ))}
+        {links.map(l => <NavLink key={l.href} l={l} size={15} />)}
       </nav>
 
       <div className="nav-controls">
@@ -45,8 +51,6 @@ export default function Nav() {
           </div>
         </div>
 
-        {/* Sólo visible en pantallas chicas: hasta ahora no había ninguna
-            forma de navegar entre secciones por debajo de 720px. */}
         <button className="nav-burger" id="navBurger" aria-expanded="false" aria-controls="navMobile"
           aria-label="Abrir menú">
           <span className="burger-bar" aria-hidden="true"></span>
@@ -55,9 +59,7 @@ export default function Nav() {
       </div>
 
       <nav className="nav-mobile" id="navMobile" aria-label="Secciones" hidden>
-        {links.map(l => (
-          <a key={l.href} href={l.href} data-es={l.es} data-en={l.en}>{l.es}</a>
-        ))}
+        {links.map(l => <NavLink key={l.href} l={l} size={22} />)}
       </nav>
     </header>
   );

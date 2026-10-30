@@ -39,6 +39,24 @@ const ProfileCardComponent = ({
   const wrapRef = useRef(null);
   const shellRef = useRef(null);
 
+  const medida = useMemo(() => ({ vieja: true, left: 0, top: 0, width: 1, height: 1 }), []);
+  const medirShell = () => {
+    const shell = shellRef.current;
+    if (medida.vieja && shell) {
+      const r = shell.getBoundingClientRect();
+      medida.left = r.left; medida.top = r.top;
+      medida.width = r.width || 1; medida.height = r.height || 1;
+      medida.vieja = false;
+    }
+    return medida;
+  };
+  useEffect(() => {
+    const marcar = () => { medida.vieja = true; };
+    addEventListener('scroll', marcar, { passive: true });
+    addEventListener('resize', marcar);
+    return () => { removeEventListener('scroll', marcar); removeEventListener('resize', marcar); };
+  }, [medida]);
+
   const enterTimerRef = useRef(null);
   const leaveRafRef = useRef(null);
 
@@ -54,17 +72,16 @@ const ProfileCardComponent = ({
     let targetX = 0;
     let targetY = 0;
 
-    const DEFAULT_TAU = 0.14;
+    const DEFAULT_TAU = 0.05;
     const INITIAL_TAU = 0.6;
     let initialUntil = 0;
 
+    const ultimo = {};
     const setVarsFromXY = (x, y) => {
-      const shell = shellRef.current;
       const wrap = wrapRef.current;
-      if (!shell || !wrap) return;
+      if (!wrap) return;
 
-      const width = shell.clientWidth || 1;
-      const height = shell.clientHeight || 1;
+      const { width, height } = medirShell();
 
       const percentX = clamp((100 / width) * x);
       const percentY = clamp((100 / height) * y);
@@ -77,14 +94,17 @@ const ProfileCardComponent = ({
         '--pointer-y': `${percentY}%`,
         '--background-x': `${adjust(percentX, 0, 100, 35, 65)}%`,
         '--background-y': `${adjust(percentY, 0, 100, 35, 65)}%`,
-        '--pointer-from-center': `${clamp(Math.hypot(percentY - 50, percentX - 50) / 50, 0, 1)}`,
         '--pointer-from-top': `${percentY / 100}`,
         '--pointer-from-left': `${percentX / 100}`,
         '--rotate-x': `${round(-(centerX / 5))}deg`,
         '--rotate-y': `${round(centerY / 4)}deg`
       };
 
-      for (const [k, v] of Object.entries(properties)) wrap.style.setProperty(k, v);
+      for (const k in properties) {
+        if (ultimo[k] === properties[k]) continue;
+        ultimo[k] = properties[k];
+        wrap.style.setProperty(k, properties[k]);
+      }
     };
 
     const step = ts => {
@@ -101,7 +121,7 @@ const ProfileCardComponent = ({
 
       setVarsFromXY(currentX, currentY);
 
-      const stillFar = Math.abs(targetX - currentX) > 0.05 || Math.abs(targetY - currentY) > 0.05;
+      const stillFar = Math.abs(targetX - currentX) > 0.5 || Math.abs(targetY - currentY) > 0.5;
 
       if (stillFar) {
         rafId = requestAnimationFrame(step);
@@ -134,9 +154,8 @@ const ProfileCardComponent = ({
         start();
       },
       toCenter() {
-        const shell = shellRef.current;
-        if (!shell) return;
-        this.setTarget(shell.clientWidth / 2, shell.clientHeight / 2);
+        const { width, height } = medirShell();
+        this.setTarget(width / 2, height / 2);
       },
       beginInitial(durationMs) {
         initialUntil = performance.now() + durationMs;
@@ -154,8 +173,8 @@ const ProfileCardComponent = ({
     };
   }, [enableTilt]);
 
-  const getOffsets = (evt, el) => {
-    const rect = el.getBoundingClientRect();
+  const getOffsets = (evt) => {
+    const rect = medirShell();
     return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
   };
 
@@ -163,7 +182,7 @@ const ProfileCardComponent = ({
     event => {
       const shell = shellRef.current;
       if (!shell || !tiltEngine) return;
-      const { x, y } = getOffsets(event, shell);
+      const { x, y } = getOffsets(event);
       tiltEngine.setTarget(x, y);
     },
     [tiltEngine]
@@ -181,7 +200,8 @@ const ProfileCardComponent = ({
         shell.classList.remove('entering');
       }, ANIMATION_CONFIG.ENTER_TRANSITION_MS);
 
-      const { x, y } = getOffsets(event, shell);
+      medida.vieja = true;
+      const { x, y } = getOffsets(event);
       tiltEngine.setTarget(x, y);
     },
     [tiltEngine]
@@ -262,13 +282,17 @@ const ProfileCardComponent = ({
     };
     shell.addEventListener('click', handleClick);
 
-    const initialX = (shell.clientWidth || 0) - ANIMATION_CONFIG.INITIAL_X_OFFSET;
-    const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
-    tiltEngine.setImmediate(initialX, initialY);
-    tiltEngine.toCenter();
-    tiltEngine.beginInitial(ANIMATION_CONFIG.INITIAL_DURATION);
+    const arrancar = () => {
+      const initialX = (shell.clientWidth || 0) - ANIMATION_CONFIG.INITIAL_X_OFFSET;
+      const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
+      tiltEngine.setImmediate(initialX, initialY);
+      tiltEngine.toCenter();
+      tiltEngine.beginInitial(ANIMATION_CONFIG.INITIAL_DURATION);
+    };
+    const idle = window.requestIdleCallback ? requestIdleCallback(arrancar, { timeout: 2000 }) : setTimeout(arrancar, 600);
 
     return () => {
+      if (window.cancelIdleCallback) cancelIdleCallback(idle); else clearTimeout(idle);
       shell.removeEventListener('pointerenter', pointerEnterHandler);
       shell.removeEventListener('pointermove', pointerMoveHandler);
       shell.removeEventListener('pointerleave', pointerLeaveHandler);
@@ -310,7 +334,7 @@ const ProfileCardComponent = ({
       <div ref={shellRef} className="pc-card-shell">
         <section className="pc-card">
           <div className="pc-inside">
-            <div className="pc-shine" />
+            <div className="pc-shine"><span className="pc-shine-base" /></div>
             <div className="pc-glare" />
             <div className="pc-content pc-avatar-content">
               <img

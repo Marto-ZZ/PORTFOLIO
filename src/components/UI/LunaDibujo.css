@@ -1,0 +1,9 @@
+.luna-disco { fill: var(--bg); }
+
+.luna-tinta {
+  fill: none;
+  stroke: var(--sx);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.luna-punto { fill: var(--sx); }
